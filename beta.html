@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+<head><meta name="app-version" content="1.7.2-beta">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -1838,6 +1838,34 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
 #rxBar{position:absolute;z-index:46;inset-inline-start:10px;bottom:10px;display:flex;align-items:center;gap:6px;direction:ltr}#rxBar .rx-t{width:42px;height:42px;border-radius:50%;background:rgba(8,12,24,.82);border:1px solid rgba(255,255,255,.22);font-size:22px;cursor:pointer}#rxBar .rx-r{display:flex;gap:4px;background:rgba(8,12,24,.88);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:3px 6px}#rxBar .rx-r[hidden]{display:none}#rxBar .rx-r button{background:none;border:0;font-size:22px;padding:3px 5px;cursor:pointer}
 #rxLayer{position:absolute;inset:0;z-index:47;pointer-events:none;overflow:hidden}#rxLayer span{position:absolute;bottom:14%;font-size:34px;animation:rxUp 2.1s ease-out forwards;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
 @keyframes rxUp{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1;transform:translateY(-30px) scale(1.15)}100%{transform:translateY(-240px) scale(1);opacity:0}}
+
+/* phones: the cards lying on the pitch use the room freed by moving my hand to the goal line (the game still shrinks them only if they do not fit) */
+@media (max-width:700px){:root{--fw:clamp(44px,min(17vw,10.5vh),84px)}}
+
+/* the end-of-match panel: coaches under the crests, and drawn icons instead of emoji */
+.res-ico{--c:#8fa0c0;width:66px;height:66px;margin:2px auto 8px;border-radius:50%;display:grid;place-items:center;color:var(--c);border:2px solid var(--c);background:rgba(255,255,255,.04)}.res-ico svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.res-ico.win{--c:#ffd166;background:rgba(255,209,102,.1);box-shadow:0 0 0 5px rgba(255,209,102,.08)}.res-ico.draw{--c:#c6f432;background:rgba(198,244,50,.08)}.res-ico.info{--c:#9fb4e8}.res-ico.lose{--c:#ff8a8a;background:rgba(255,138,138,.07)}
+.tbs-co .crw{position:relative;display:inline-block;line-height:0}.tbs-co .cav2{position:absolute;bottom:-7px;left:-9px;width:28px;height:28px;border-radius:50%;line-height:0;background:#0b1020;box-shadow:0 0 0 2px #0b1020}.scoreline>.tbs-side:last-child .cav2{left:auto;right:-9px}
+.tbs-co strong{font:800 17px "Barlow Semi Condensed",Cairo,sans-serif;letter-spacing:.03em;margin-top:6px}.tbs-co .cnm{display:flex;align-items:center;justify-content:center;font:700 11.5px Cairo,sans-serif;opacity:.8;margin-top:-3px}.tbs-co .cnm .vseal{width:1.1em;height:1.1em}
+
+/* the connection dot sits on the same line as the coach's name, so it never makes the name block taller */
+.board .tname .cnm .netdot{margin-inline-start:6px;width:7px;height:7px}
+
+/* tournament lobby: settings in sections, a summary for guests */
+.tk-sec{background:var(--s1);border:1px solid var(--sbd);border-radius:16px;margin-bottom:8px;overflow:hidden}.tk-sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.tk-sec>summary::-webkit-details-marker{display:none}.tk-sec>summary b{font-weight:900}.tk-sec>summary span{color:var(--smu);font-weight:700;font-size:12.5px}.tk-sec>summary:after{content:"‹";color:var(--smu);transition:transform .2s}.tk-sec[open]>summary:after{transform:rotate(-90deg)}.tk-sec[open]>summary{border-bottom:1px solid var(--sbd)}.tk-body{padding:4px 14px 14px}.tk-body h4{margin-top:12px}.tk-hint{margin:6px 0 0;color:var(--smu);font-size:12px;font-weight:700}
+.tk-sum{display:flex;flex-wrap:wrap;gap:6px;background:var(--s1);border:1px solid var(--sbd);border-radius:16px;padding:12px}.tk-sum span{background:var(--s2);border:1px solid var(--sbd);border-radius:12px;padding:3px 11px;font:800 12.5px Cairo,sans-serif}
+/* the owner of every team: an avatar on the crest and the coach's name (or CPU) under the club */
+.tkw{position:relative}.cav3{position:absolute;bottom:-5px;left:-7px;width:20px;height:20px;border-radius:50%;line-height:0;background:#0b1020;box-shadow:0 0 0 2px #0b1020;z-index:2}.cav3 .av{width:100%!important;height:100%!important}
+.tmn{display:flex;flex-direction:column;min-width:0;line-height:1.2}.cnm2,.cpu{display:flex;align-items:center;font:700 10.5px Cairo,sans-serif;opacity:.82}.cpu{font:800 9px Rajdhani,sans-serif;letter-spacing:.16em;color:var(--smu);opacity:.9;border:1px solid var(--sbd);border-radius:6px;padding:0 5px;width:fit-content}.cnm2 .vseal{width:1.1em;height:1.1em}
+.fx.hum,tr.hum,.sorow.hum{border-color:rgba(159,180,232,.4)}.tk-who{display:inline-flex;align-items:center;gap:5px;vertical-align:middle}.tk-who .av{display:inline-block}
+
+/* the Champions League board has no red/white stripe on its right edge any more: both sides look the same */
+.board.cup.th-ucl::after{display:none!important}
+/* "a newer version is available" */
+#updBar{position:fixed;z-index:300;top:max(8px,env(safe-area-inset-top,0px));left:10px;right:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#c6f432;color:#10150a;border:0;border-radius:14px;padding:10px 14px;font:800 14px Cairo,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.5);cursor:pointer;animation:sheetUp .25s ease-out}#updBar span{background:#10150a;color:#c6f432;border-radius:10px;padding:2px 12px;font-size:12.5px}
+
+/* the coach's name may be cut with "..." but the online dot beside it never is */
+.board .tname .cnm{display:flex;align-items:center;gap:5px;overflow:visible;text-overflow:clip;white-space:nowrap;max-width:100%}.board .tname .cnm .cn-t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.board .tname .cnm .netdot{flex:none;margin:0;width:7px;height:7px}
 </style>
 </head>
 <body>
@@ -2108,11 +2136,12 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     </div>
     <div id="tkLobby" hidden>
       <section class="sh-card tk-code"><small>كود البطولة</small><b id="tkCode">----</b><div class="acts"><button class="sh-chip" type="button" id="tkCopy">نسخ</button></div></section>
-      <div id="tkSettings"></div>
       <h4>اللاعبين</h4><div class="sh-list" id="tkSeats"></div>
+      <button type="button" class="pickbtn" id="tkClubBtn"></button>
+      <div class="tk-actions"><button class="btn ghost" id="tkReady" type="button">أنا جاهز</button></div>
+      <h4>إعدادات البطولة</h4><div id="tkSettings"></div>
       <h4>الشات</h4><div id="tkChat"></div>
-      <h4>فريقك</h4><button type="button" class="pickbtn" id="tkClubBtn"></button>
-      <div class="tk-actions"><button class="btn ghost" id="tkReady" type="button">أنا جاهز</button><button class="btn" id="tkStart" type="button" hidden>ابدأ البطولة</button></div>
+      <div class="tk-actions"><button class="btn" id="tkStart" type="button" hidden>ابدأ البطولة</button></div>
       <p class="ol-status" id="tkStartNote"></p>
     </div>
     <div id="tkWait" hidden><p class="sh-empty">⏳ بنحمّل البطولة…</p></div>
@@ -5589,6 +5618,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
       h.appendChild(el);
     });
     h.classList.toggle('disabled', !(turn === 'me' && !busy && !M.auto));
+    if (document.body.classList.contains('pro3d')) { clearTimeout(renderHands._t); renderHands._t = setTimeout(() => { try { p3Layout(); } catch (e) {} }, h.querySelector('.dealt') ? 900 : 90); }
     const o = $('#ohand'); o.innerHTML = '';
     hands[topWho()].forEach((c, i) => {
       const el = document.createElement('div');
@@ -5778,10 +5808,12 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   }
 
   /* ================= panels ================= */
+  const BIG_ICO = {"🏆": ["win", "<path d=\"M7 4h10v5a5 5 0 0 1-10 0z\"/><path d=\"M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5A3.5 3.5 0 0 1 16.5 11\"/><path d=\"M12 14v3.5M8.5 20h7M9.5 17.5h5\"/>"], "🏁": ["win", "<path d=\"M5 21V4M5 4h12l-2 4 2 4H5\"/>"], "😅": ["lose", "<path d=\"M12 3l7 2.5v6c0 4.5-3 7.6-7 9.5-4-1.9-7-5-7-9.5v-6z\"/><path d=\"M9 10l6 5M15 10l-6 5\"/>"], "🤝": ["draw", "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 8.2l3.2 2.3-1.2 3.7h-4l-1.2-3.7z\"/><path d=\"M12 8.2V3.2M15.2 10.5l4.7-1.5M14 14.2l2.9 4M10 14.2l-2.9 4M8.8 10.5L4.1 9\"/>"], "⏱️": ["info", "<circle cx=\"12\" cy=\"13.5\" r=\"7\"/><path d=\"M12 13.5V9.5M9.5 3h5M12 3v3M18 7l1.4-1.4\"/>"], "🎯": ["info", "<path d=\"M3 20V7h18v13\"/><path d=\"M3 11h18M3 15h18M8 7v13M13 7v13M18 7v13\"/>"], "⚡": ["info", "<path d=\"M13 3L5 13.5h6L10 21l8-11h-6z\"/>"], "📋": ["info", "<rect x=\"6\" y=\"4\" width=\"12\" height=\"17\" rx=\"2\"/><path d=\"M9 4V3h6v1M9 10h6M9 14h6M9 17.5h3.5\"/>"], "👋": ["info", "<circle cx=\"9\" cy=\"8\" r=\"3\"/><path d=\"M3.5 19c0-3.3 2.4-5.5 5.5-5.5s5.5 2.2 5.5 5.5\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\"/><path d=\"M16 13.8c3 .1 5 1.8 5 5.2\"/>"], "🔒": ["info", "<rect x=\"5\" y=\"11\" width=\"14\" height=\"9\" rx=\"2\"/><path d=\"M8 11V8a4 4 0 0 1 8 0v3\"/>"], "⚠️": ["lose", "<path d=\"M12 3.5l9.5 16.5h-19z\"/><path d=\"M12 10v5M12 17.2v.6\"/>"]};
+  const bigIco = h => h.replace(/<div class="big-emoji">([^<]+)<\/div>/, (m, e) => { const d = BIG_ICO[e.trim()]; return d ? `<div class="res-ico ${d[0]}"><svg viewBox="0 0 24 24" aria-hidden="true">${d[1]}</svg></div>` : m; });
   function panel(html, buttons) {
     return new Promise(res => {
       const ov = $('#overlay');
-      ov.innerHTML = `<div class="panel">${html}<div class="btns"></div></div>`;
+      ov.innerHTML = `<div class="panel">${bigIco(html)}<div class="btns"></div></div>`;
       const box = ov.querySelector('.btns');
       buttons.forEach(b => {
         const btn = document.createElement('button');
@@ -5799,7 +5831,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   const sidesLR = () => (oppHome() ? ['opp', 'me'] : ['me', 'opp']);
   const sideCrest = t => (t && (t.short || t.badge || (t.id && LOGOS[t.id])) ? crest(t, true) : '');
   const scoreline = () => {
-    const [L, R] = sidesLR(), side = w => `<span class="tbs-side">${M.named || M.auto ? sideCrest(M[w]) : ''}<strong>${nm(w)}</strong></span>`;
+    const [L, R] = sidesLR(), club = M.named || M.auto, side = w => { if (!club) return `<span class="tbs-side"><strong>${nm(w)}</strong></span>`; let c = null; try { c = M.auto ? null : coachData(w); } catch (e) {} return `<span class="tbs-side tbs-co"><span class="crw">${sideCrest(M[w])}${c ? `<span class="cav2">${avHtml(c.av, 26, '')}</span>` : ''}</span><strong>${esc(M[w].short || M[w].name)}</strong><small class="cnm">${c ? nameHtml(c.name, c.vf) : esc(M[w].name)}</small></span>`; };
     return `<div class="scoreline tbsl">${side(L)}<b>${scores[L]}</b><i>-</i><b>${scores[R]}</b>${side(R)}</div>`;
   };
   function statsHtml() {
@@ -6196,6 +6228,11 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     return `<div class="scoreline tbsl">${sd(A)}<b class="${w === 'a' ? 'w' : ''}">${ga}</b><i>-</i><b class="${w === 'b' ? 'w' : ''}">${gb}</b>${sd(B)}</div>` +
       (pen ? `<p class="pen-note">ركلات الترجيح: ${pen.a} - ${pen.b}</p>` : '');
   };
+  const repHead2 = (A, B, ga, gb, pen, wa, wb) => {
+    const w = ga !== gb ? (ga > gb ? 'a' : 'b') : pen ? (pen.a > pen.b ? 'a' : 'b') : null;
+    const sd = (t, who) => { let c = null; try { c = who && !M.auto ? coachData(who) : null; } catch (e) {} return `<span class="tbs-side tbs-co"><span class="crw">${sideCrest(t)}${c ? `<span class="cav2">${avHtml(c.av, 26, '')}</span>` : ''}</span><strong>${esc(t.short || t.name)}</strong><small class="cnm">${c ? nameHtml(c.name, c.vf) : esc(t.name)}</small></span>`; };
+    return `<div class="scoreline tbsl">${sd(A, wa)}<b class="${w === 'a' ? 'w' : ''}">${ga}</b><i>-</i><b class="${w === 'b' ? 'w' : ''}">${gb}</b>${sd(B, wb)}</div>` + (pen ? `<p class="pen-note">ركلات الترجيح: ${pen.a} - ${pen.b}</p>` : '');
+  };
   function repSummary(rep, A, B, ga, gb) {
     const named = !!rep.rat, st = rep.st, sideName = s => esc((s === 'a' ? A : B).name);
     let h = '';
@@ -6281,7 +6318,8 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     const rep = liveRep(winSide);
     res.rep = rep;
     if (rep.motm) res.motm = {who: rep.motm.s === 'a' ? 'me' : 'opp', name: rep.motm.n, rating: rep.motm.r};
-    const v = await panel(`<div class="big-emoji">${head[0]}</div><h2>${head[1]}</h2>${oppHome() ? repHead(M.opp, M.me, scores.opp, scores.me, pen ? {a: pen.opp, b: pen.me} : null) + repTabs(swapRep(rep), M.opp, M.me, scores.opp, scores.me) : repHead(M.me, M.opp, scores.me, scores.opp, pen ? {a: pen.me, b: pen.opp} : null) + repTabs(rep, M.me, M.opp, scores.me, scores.opp)}`, buttons);
+    if (M.onResult) { try { M.onResult(res); } catch (e) {} }
+    const v = await panel(`<div class="big-emoji">${head[0]}</div><h2>${head[1]}</h2>${oppHome() ? repHead2(M.opp, M.me, scores.opp, scores.me, pen ? {a: pen.opp, b: pen.me} : null, 'opp', 'me') + repTabs(swapRep(rep), M.opp, M.me, scores.opp, scores.me) : repHead2(M.me, M.opp, scores.me, scores.opp, pen ? {a: pen.me, b: pen.opp} : null, 'me', 'opp') + repTabs(rep, M.me, M.opp, scores.me, scores.opp)}`, buttons);
     if (my !== tok) return;
     if (M.onDone) M.onDone(res);
     else if (M.online) { if (v === 'rematch' && NET) olRematch(); else { leaveNet(true); show('home'); renderHome(); } }
@@ -6306,7 +6344,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.6.0-beta';
+  const APP_VER = '1.7.2-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -6580,9 +6618,9 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     }));
     const kits = onlineKits(n.my.club, olKitFor(n.my.club), cleanTeam(rt), n.role);
     kits.me.coachName = coachOf(n); kits.opp.coachName = String(otherName || '').slice(0, 16); kits.opp.coachAv = n.other && n.other.av || null; kits.opp.coachLv = n.other && n.other.lv || ''; kits.opp.coachVf = !!(n.other && n.other.vf);
-    startMatchCtx(Object.assign({me: kits.me, opp: kits.opp, homeName: n.role === 'h' ? kits.me.name : kits.opp.name, named: true, kind: n.tk ? (koKind(n.tk.fx) ? 'ko' : 'league') : 'friendly', agg: n.tk ? aggFor(n.tk.fx, n.tk.meIsA) : undefined, online: true, flip: n.role === 'g', seed: n.seed, onDone: n.tk ? res => tkH2HDone(n, res) : null}, compCtx(comp)));
+    startMatchCtx(Object.assign({me: kits.me, opp: kits.opp, homeName: n.role === 'h' ? kits.me.name : kits.opp.name, named: true, kind: n.tk ? (koKind(n.tk.fx) ? 'ko' : 'league') : 'friendly', agg: n.tk ? aggFor(n.tk.fx, n.tk.meIsA) : undefined, online: true, flip: n.role === 'g', seed: n.seed, onResult: n.tk ? res => tkH2HReport(n, res) : null, onDone: n.tk ? () => tkH2HFinish(n) : null}, compCtx(comp)));
     coachStrip();
-    setTimeout(() => { const el = $('#tnOpp'); if (el && !$('#netDot')) { const d = document.createElement('i'); d.className = 'netdot'; d.id = 'netDot'; el.appendChild(d); } }, 200);
+    setTimeout(() => { const el = $('#tnOpp'); if (el && !$('#netDot')) { const d = document.createElement('i'); d.className = 'netdot'; d.id = 'netDot'; (el.querySelector('.cnm') || el).appendChild(d); } }, 200);
   }
   function coachStrip() {
     return;
@@ -6937,7 +6975,7 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
     const pb = el.querySelector('.hm-go'); if (pb) pb.onclick = () => { renderProfile(false, false); show('profile'); };
     const on = FR.ids.filter(id => FR.pres[id] && FR.pres[id].on === true).slice(0, 5);
     $('#homeFrBox').hidden = false;
-    $('#homeFr').innerHTML = on.map(id => `<button type="button" class="fr1" data-id="${id}">${frAv(id, 46)}<i class="o on"></i><span>${esc(frName(id))}</span></button>`).join('') + '<button type="button" class="fr1 add" id="homeFrAdd"><span class="plus">＋</span><span>الأصدقاء</span></button>';
+    $('#homeFr').innerHTML = on.map(id => `<button type="button" class="fr1" data-id="${id}">${frAv(id, 46)}<span>${esc(frName(id))}</span></button>`).join('') + '<button type="button" class="fr1 add" id="homeFrAdd"><span class="plus">＋</span><span>الأصدقاء</span></button>';
     $$('#homeFr .fr1[data-id]').forEach(b => { b.onclick = () => { show('friends'); }; }); const ad = $('#homeFrAdd'); if (ad) ad.onclick = () => show('friends');
   }
   $('#hSquad') && 0;
@@ -6971,7 +7009,7 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
   }
   function frRow(id) {
     const s = frStatus(id), mutual = FR.back[id];
-    return `<a class="sh-row${s.on ? '' : ' off'}" data-id="${id}">${frAv(id, 46)}<div><b>${nameHtml(frName(id), FR.users[id] && FR.users[id].vf)}</b><small class="${s.on ? 'ok' : ''}">${s.on ? '<i class="dot"></i>' : ''}${s.txt}${mutual === false ? ' · لسه ما وافقش' : ''}</small></div>${s.on ? (s.busy ? '<button class="sm ghost" disabled>مشغول</button>' : '<button class="sm" data-act="inv">العب</button>') : ''}${chatOn() ? `<button class="sm ghost cbtn" data-act="chat" aria-label="شات">💬${chatUnread(id) ? '<i class="ud"></i>' : ''}</button>` : ''}<button class="sm ghost x" data-act="del" aria-label="شيل" title="شيل من الأصدقاء">✕</button></a>`;
+    return `<a class="sh-row${s.on ? '' : ' off'}" data-id="${id}">${frAv(id, 46)}<div><b>${nameHtml(frName(id), FR.users[id] && FR.users[id].vf)}</b><small class="${s.on ? 'ok' : ''}">${s.txt}${mutual === false ? ' · لسه ما وافقش' : ''}</small></div>${s.on ? (s.busy ? '<button class="sm ghost" disabled>مشغول</button>' : '<button class="sm" data-act="inv">العب</button>') : ''}${chatOn() ? `<button class="sm ghost cbtn" data-act="chat" aria-label="شات">💬${chatUnread(id) ? '<i class="ud"></i>' : ''}</button>` : ''}<button class="sm ghost x" data-act="del" aria-label="شيل" title="شيل من الأصدقاء">✕</button></a>`;
   }
   function bindFrRows(box) { box.querySelectorAll('[data-act]').forEach(b => { b.onclick = e => { e.stopPropagation(); const id = b.closest('[data-id]').dataset.id; if (b.dataset.act === 'inv') friendInvite(id); else if (b.dataset.act === 'chat') chatOpen(id); else friendDel(id); }; }); }
   FR.back = {};
@@ -7053,10 +7091,11 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
   function paintCoaches() {
     [['me', 'Me'], ['opp', 'Opp']].forEach(([w, side]) => {
       const bd = $('#bd' + side), tn = $('#tn' + side); if (!bd || !tn) return;
+      const nd0 = document.getElementById('netDot'); if (nd0 && tn.contains(nd0)) nd0.remove();
       bd.querySelectorAll('.cav').forEach(e => e.remove()); tn.querySelectorAll('.cnm').forEach(e => e.remove());
       const d = coachData(w); if (!d) return;
       const av = document.createElement('span'); av.className = 'cav'; av.innerHTML = avHtml(d.av, 20, ''); bd.appendChild(av);
-      const nm = document.createElement('small'); nm.className = 'cnm'; nm.innerHTML = nameHtml(d.name, d.vf); tn.appendChild(nm);
+      const nm = document.createElement('small'); nm.className = 'cnm'; nm.innerHTML = '<span class="cn-t">' + nameHtml(d.name, d.vf) + '</span>'; if (nd0 && w === 'opp') nm.appendChild(nd0); tn.appendChild(nm);
     });
   }
   { const rt0 = renderTeams; renderTeams = function () { rt0.apply(this, arguments); try { paintCoaches(); } catch (e) {} }; }
@@ -7068,9 +7107,12 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
 
   /* ================= friends tournament (online): one host runs the engine, everybody else plays and reports ================= */
   const TK = {code: '', host: false, seats: {}, meta: null, ver: 0, offs: [], applied: {}, sub: false};
+  const TK_CUP_N = [2, 4, 8, 16], TK_LG_N = [2, 3, 4, 5, 6, 8, 10, 12, 16, 20];
+  const tkSizes = kind => (kind === 'league' ? TK_LG_N : TK_CUP_N);
+  const tkDefN = (kind, humans) => { const l = tkSizes(kind), want = kind === 'league' ? Math.max(humans, 4) : Math.max(humans, 2); return l.find(n => n >= want) || l[l.length - 1]; };
   const TK_MAX = 8, TK_THEMES = [['auto', 'حسب الفريقين'], ['ucl', 'دوري أبطال أوروبا'], ['eng', 'الدوري الإنجليزي'], ['esp', 'الدوري الإسباني'], ['ita', 'الدوري الإيطالي'], ['ger', 'الدوري الألماني'], ['fra', 'الدوري الفرنسي'], ['egy', 'الدوري المصري'], ['wc', 'كأس العالم'], ['', 'ودي']];
   const tkRef = p => ACCT.fb.D.ref(ACCT.fb.db, 'cardgoal/tourneys/' + TK.code + (p ? '/' + p : ''));
-  const tkOpts = () => Object.assign({kind: 'league', n: 6, dbl: true, fmt: 'ko', legGrp: 1, legKo: 1, legFin: 1, away: false, theme: 'auto'}, (TK.meta && TK.meta.opts) || {});
+  const tkOpts = () => Object.assign({kind: 'league', n: 4, dbl: true, fmt: 'ko', legGrp: 1, legKo: 1, legFin: 1, away: false, theme: 'auto', auto: true}, (TK.meta && TK.meta.opts) || {});
   const tkMyClub = () => { const s = TK.seats[ACCT.user.uid]; return s && s.c ? s.c : ''; };
   const tkSeatList = () => Object.keys(TK.seats).map(u => Object.assign({u}, TK.seats[u])).sort((a, b) => (a.ts || 0) - (b.ts || 0));
   const tkMsg = t => { const e = $('#tkMsg'); if (e) e.textContent = t || ''; };
@@ -7080,7 +7122,7 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
     const {D} = ACCT.fb; tkOff(); let ok = false;
     for (let i = 0; i < 6 && !ok; i++) {
       TK.code = genCode();
-      try { const ex = await D.get(tkRef('meta')); if (ex.exists()) continue; await D.set(tkRef('meta'), {host: ACCT.user.uid, hostName: ACCT.profile.name, created: D.serverTimestamp(), v: APP_VER, st: 'lobby', opts: {kind: 'league', n: 6, dbl: true, theme: 'auto'}}); ok = true; } catch (e) { tkMsg(acErr(e)); return; }
+      try { const ex = await D.get(tkRef('meta')); if (ex.exists()) continue; await D.set(tkRef('meta'), {host: ACCT.user.uid, hostName: ACCT.profile.name, created: D.serverTimestamp(), v: APP_VER, st: 'lobby', opts: {kind: 'league', n: 4, dbl: true, theme: 'auto', auto: true}}); ok = true; } catch (e) { tkMsg(acErr(e)); return; }
     }
     if (!ok) { tkMsg('مقدرناش نفتح بطولة. جرّب تاني.'); return; }
     TK.host = true; TK.applied = {}; TK.ver = 0; await tkSeat({c: prefs.myClub && clubDef(prefs.myClub) ? prefs.myClub : ''}); tkWatch(); tkShow('lobby');
@@ -7105,49 +7147,70 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
   function tkWatch() {
     if (TK.sub) return; TK.sub = true; const {D} = ACCT.fb, offs = TK.offs;
     offs.push(D.onValue(tkRef('meta'), s => { TK.meta = s.val(); if (TK.meta) TK.host = TK.meta.host === ACCT.user.uid; tkRenderLobby(); }));
-    offs.push(D.onValue(tkRef('seats'), s => { TK.seats = s.val() || {}; Object.keys(TK.seats).forEach(u => userLite(u).then(() => tkRenderLobby())); tkRenderLobby(); }));
+    offs.push(D.onValue(tkRef('seats'), s => { TK.seats = s.val() || {}; Object.keys(TK.seats).forEach(u => userLite(u).then(() => tkRenderLobby())); tkAutoSize(); tkRenderLobby(); }));
     offs.push(D.onValue(tkRef('state'), s => { const v = s.val(); if (v && v.d && v.v > TK.ver) tkApplyState(v); }));
     offs.push(D.onChildAdded(tkRef('rep'), s => { if (TK.host && T && T.online) tkHostApply(s.key, s.val()); }));
     tkChatInit(); prefs.tkCode = TK.code; savePrefs();
   }
+  function tkAutoSize() { if (!TK.host || !TK.meta) return; const o = tkOpts(); if (o.auto === false) return; const want = tkDefN(o.kind, Math.max(1, Object.keys(TK.seats).length)); if (want !== o.n) ACCT.fb.D.update(tkRef('meta'), {opts: Object.assign({}, o, {n: want})}).catch(() => {}); }
   function tkShow(v) { show('tk'); if (v === 'lobby' && !TK.v1 && $('#tkChat')) TK.v1 = tkChatView($('#tkChat')); $('#tkEntry').hidden = v !== 'entry'; $('#tkLobby').hidden = v !== 'lobby'; $('#tkWait').hidden = v !== 'wait'; tkRenderLobby(); }
-  const tkSeg = (id, items, cur, dis) => `<div class="seg" id="${id}" role="group">${items.map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${String(v) === String(cur)}"${dis ? ' disabled' : ''}>${l}</button>`).join('')}</div>`;
+  const tkSeg = (id, items, cur, dis, dfn) => `<div class="seg" id="${id}" role="group">${items.map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${String(v) === String(cur)}"${dis || (dfn && dfn(v)) ? ' disabled' : ''}>${l}</button>`).join('')}</div>`;
+  const tkKindLbl = k => (k === 'league' ? 'دوري' : 'كأس');
+  const tkThemeLbl = v => (TK_THEMES.find(x => x[0] === v) || [0, 'حسب الفريقين'])[1];
+  function tkSummary(o, humans) {
+    const c = [tkKindLbl(o.kind), o.n + ' فرق', humans + ' لاعبين' + (o.n > humans ? ' + ' + (o.n - humans) + ' كمبيوتر' : '')];
+    if (o.kind === 'league') c.push(o.dbl ? 'ذهاب وإياب' : 'ذهاب بس');
+    else { c.push(o.fmt === 'groups' && o.n >= 8 ? 'مجموعات + إقصائي' : 'خروج مغلوب'); if (o.n >= 4 && +o.legKo === 2) c.push('الإقصائيات ذهاب وإياب'); if (+o.legFin === 2) c.push('النهائي ذهاب وإياب'); if (o.away && (+o.legKo === 2 || +o.legFin === 2)) c.push('أهداف خارج الأرض'); }
+    c.push(tkThemeLbl(o.theme)); return c;
+  }
   function tkRenderLobby() {
     if ($('#screen-tk').hidden || !TK.code || $('#tkLobby').hidden) return;
-    const o = tkOpts(), host = TK.host, seats = tkSeatList(), me = ACCT.user.uid;
-    $('#tkCode').textContent = TK.code.toUpperCase();
-    const nOpts = o.kind === 'league' ? [4, 5, 6, 8, 10, 12, 16, 20] : [8, 16];
-    let h = '<h4>نوع البطولة</h4>' + tkSeg('tkKind', [['league', 'دوري'], ['cup', 'كأس']], o.kind, !host);
-    h += '<h4>عدد الفرق (اللاعبين + كمبيوتر)</h4>' + tkSeg('tkN', nOpts.map(n => [n, n]), o.n, !host);
-    if (o.kind === 'league') h += '<h4>الدوري</h4>' + tkSeg('tkDbl', [['1', 'ذهاب وإياب'], ['0', 'ذهاب بس']], o.dbl ? '1' : '0', !host);
+    const o = tkOpts(), host = TK.host, seats = tkSeatList(), me = ACCT.user.uid, humans = Math.max(1, seats.length);
+    $('#tkCode').textContent = TK.code.toUpperCase(); TK.open = TK.open || {type: true};
+    const sec = (id, title, sub, body) => `<details class="tk-sec" data-sec="${id}"${TK.open[id] ? ' open' : ''}><summary><b>${title}</b><span>${sub}</span></summary><div class="tk-body">${body}</div></details>`;
+    let h;
+    if (!host) h = '<div class="tk-sum" aria-label="إعدادات البطولة">' + tkSummary(o, humans).map(x => `<span>${esc(x)}</span>`).join('') + '</div><p class="ol-status">المضيف هو اللي بيظبط الإعدادات.</p>';
     else {
-      h += '<h4>الشكل</h4>' + tkSeg('tkFmt', [['ko', 'خروج مغلوب'], ['groups', 'مجموعات + خروج مغلوب']], o.fmt, !host);
-      if (o.fmt === 'groups') h += '<h4>المجموعات</h4>' + tkSeg('tkLegGrp', [['1', 'ذهاب بس'], ['2', 'ذهاب وإياب']], o.legGrp, !host);
-      h += '<h4>الأدوار الإقصائية</h4>' + tkSeg('tkLegKo', [['1', 'ماتش واحد'], ['2', 'ذهاب وإياب']], o.legKo, !host) + '<h4>النهائي</h4>' + tkSeg('tkLegFin', [['1', 'ماتش واحد'], ['2', 'ذهاب وإياب']], o.legFin, !host);
-      if (+o.legKo === 2 || +o.legFin === 2) h += '<h4>قاعدة الأهداف خارج الأرض</h4>' + tkSeg('tkAway', [['0', 'مقفولة'], ['1', 'شغّالة']], o.away ? '1' : '0', !host);
+      const sizes = tkSizes(o.kind);
+      let a = '<h4>النوع</h4>' + tkSeg('tkKind', [['league', 'دوري'], ['cup', 'كأس']], o.kind, false);
+      a += '<h4>عدد الفرق</h4>' + tkSeg('tkN', sizes.map(n => [n, n]), o.n, false, v => +v < humans) + `<p class="tk-hint">${humans} لاعبين${o.n > humans ? ' + ' + (o.n - humans) + ' كمبيوتر' : ' (من غير كمبيوتر)'}</p>`;
+      if (o.kind === 'league') a += '<h4>الدوري</h4>' + tkSeg('tkDbl', [['1', 'ذهاب وإياب'], ['0', 'ذهاب بس']], o.dbl ? '1' : '0', false);
+      else a += '<h4>الشكل</h4>' + tkSeg('tkFmt', [['ko', 'خروج مغلوب'], ['groups', 'مجموعات + خروج مغلوب']], o.n >= 8 ? o.fmt : 'ko', false, v => v === 'groups' && o.n < 8);
+      h = sec('type', 'النوع والفرق', esc(tkKindLbl(o.kind) + ' · ' + o.n + ' فرق'), a);
+      if (o.kind === 'cup') {
+        let r = '';
+        if (o.fmt === 'groups' && o.n >= 8) r += '<h4>المجموعات</h4>' + tkSeg('tkLegGrp', [['1', 'ذهاب بس'], ['2', 'ذهاب وإياب']], o.legGrp, false);
+        if (o.n >= 4) r += '<h4>الأدوار الإقصائية</h4>' + tkSeg('tkLegKo', [['1', 'ماتش واحد'], ['2', 'ذهاب وإياب']], o.legKo, false);
+        r += '<h4>النهائي</h4>' + tkSeg('tkLegFin', [['1', 'ماتش واحد'], ['2', 'ذهاب وإياب']], o.legFin, false);
+        if ((o.n >= 4 && +o.legKo === 2) || +o.legFin === 2) r += '<h4>قاعدة الأهداف خارج الأرض</h4>' + tkSeg('tkAway', [['0', 'مقفولة'], ['1', 'شغّالة']], o.away ? '1' : '0', false);
+        h += sec('rules', 'القواعد', esc((o.n >= 4 ? 'إقصائيات ' + (+o.legKo === 2 ? 'ذهاب وإياب' : 'ماتش') + ' · ' : '') + 'نهائي ' + (+o.legFin === 2 ? 'ذهاب وإياب' : 'ماتش')), r);
+      }
+      h += sec('theme', 'ثيم السكور بورد', esc(tkThemeLbl(o.theme)), '<select id="tkTheme">' + TK_THEMES.map(([v, l]) => `<option value="${v}"${v === o.theme ? ' selected' : ''}>${l}</option>`).join('') + '</select>');
     }
-    h += '<h4>ثيم السكور بورد</h4><select id="tkTheme"' + (host ? '' : ' disabled') + '>' + TK_THEMES.map(([v, l]) => `<option value="${v}"${v === o.theme ? ' selected' : ''}>${l}</option>`).join('') + '</select>';
     $('#tkSettings').innerHTML = h;
-    const taken = seats.filter(s => s.c).length;
-    $('#tkSeats').innerHTML = seats.map(s => { const t = s.c && clubDef(s.c) ? teamObj(s.c) : null; return `<div class="ol-pl"><span class="ol-cr">${avHtml(cleanAv(s.a, true), 44, '')}</span><div class="ol-tx"><b>${nameHtml(s.n || 'لاعب', ulv(s.u) && ulv(s.u).vf)}${s.u === TK.meta.host ? ' <small>(المضيف)</small>' : ''}${s.u === me ? ' <small>(إنت)</small>' : ''}</b><span>${t ? esc(t.name) : 'لسه ما اختارش فريق'}</span></div><i class="ol-chip ${s.r && s.c ? 'on' : ''}">${s.r && s.c ? 'جاهز ✓' : 'مش جاهز'}</i></div>`; }).join('') + `<p class="sh-empty">${seats.length} من ${TK_MAX} لاعبين · الباقي (${Math.max(0, o.n - seats.length)}) هيتملّوا بفرق كمبيوتر</p>`;
+    $('#tkSeats').innerHTML = seats.map(s => { const t = s.c && clubDef(s.c) ? teamObj(s.c) : null; return `<div class="ol-pl"><span class="ol-cr">${avHtml(cleanAv(s.a, true), 44, '')}</span><div class="ol-tx"><b>${nameHtml(s.n || 'لاعب', ulv(s.u) && ulv(s.u).vf)}${s.u === TK.meta.host ? ' <small>(المضيف)</small>' : ''}${s.u === me ? ' <small>(إنت)</small>' : ''}</b><span>${t ? esc(t.name) : 'لسه ما اختارش فريق'}</span></div><i class="ol-chip ${s.r && s.c ? 'on' : ''}">${s.r && s.c ? 'جاهز ✓' : 'مش جاهز'}</i></div>`; }).join('') + `<p class="sh-empty">${seats.length} من ${TK_MAX} لاعبين${o.n > seats.length ? ' · و' + (o.n - seats.length) + ' كمبيوتر' : ''}</p>`;
     const mySeat = TK.seats[me] || {}, mine = mySeat.c && clubDef(mySeat.c) ? teamObj(mySeat.c) : null;
     $('#tkClubBtn').innerHTML = mine ? pickInner(mySeat.c) : '<span class="pb-name">اختار فريقك</span><span class="pb-go">‹</span>';
-    $('#tkReady').textContent = mySeat.r ? 'مش جاهز' : 'أنا جاهز'; $('#tkReady').disabled = !mySeat.c;
+    $('#tkReady').textContent = mySeat.r ? 'إلغاء جاهزيتي' : 'أنا جاهز'; $('#tkReady').disabled = !mySeat.c;
     const allReady = seats.length >= 1 && seats.every(s => s.c && s.r), enough = o.n >= seats.length;
-    $('#tkStart').hidden = !host; $('#tkStart').disabled = !(allReady && enough); $('#tkStartNote').textContent = host ? (!enough ? 'عدد الفرق أقل من عدد اللاعبين.' : !allReady ? 'لازم كل اللاعبين يختاروا فريق ويدوسوا جاهز.' : '') : 'المضيف هو اللي يبدأ البطولة.';
+    $('#tkStart').hidden = !host; $('#tkStart').disabled = !(allReady && enough); $('#tkStartNote').textContent = host ? (!enough ? 'عدد الفرق أقل من عدد اللاعبين.' : !allReady ? 'لازم كل اللاعبين يختاروا فريق ويدوسوا جاهز.' : '') : '';
   }
   async function tkSetOpt(k, v) {
-    if (!TK.host) return; const o = Object.assign({}, tkOpts()); o[k] = v;
-    if (k === 'kind') o.n = v === 'league' ? 6 : 8; if (k === 'n') o.n = +v;
-    if (k === 'dbl') o.dbl = v === '1' || v === true; if (k === 'away') o.away = v === '1';
-    ['legGrp', 'legKo', 'legFin'].forEach(x => { if (k === x) o[x] = +v; });
+    if (!TK.host) return; const o = Object.assign({}, tkOpts()), humans = Math.max(1, Object.keys(TK.seats).length);
+    if (k === 'kind') { o.kind = v; o.n = tkDefN(v, humans); o.auto = true; if (v === 'league') o.fmt = 'ko'; }
+    else if (k === 'n') { o.n = +v; o.auto = false; }
+    else if (k === 'dbl') o.dbl = (v === '1' || v === true);
+    else if (k === 'away') o.away = (v === '1' || v === true);
+    else if (k === 'legGrp' || k === 'legKo' || k === 'legFin') o[k] = +v;
+    else o[k] = v;
+    if (o.kind === 'cup' && o.fmt === 'groups' && o.n < 8) o.fmt = 'ko';
     await ACCT.fb.D.update(tkRef('meta'), {opts: o}).catch(e => tkMsg(acErr(e)));
     for (const u of Object.keys(TK.seats)) if (TK.seats[u].r) await ACCT.fb.D.update(tkRef('seats/' + u), {r: 0}).catch(() => {});
   }
   /* ---- host: build the tournament with the engine and publish it ---- */
   async function tkStart() {
     if (!TK.host) return; const o = tkOpts(), seats = tkSeatList(), ids = seats.map(s => s.c);
-    if (!seats.length || ids.some(c => !c) || new Set(ids).size !== ids.length || o.n < ids.length) return;
+    if (!seats.length || ids.some(c => !c) || new Set(ids).size !== ids.length || o.n < ids.length) return; if (o.kind === 'cup' && o.fmt === 'groups' && o.n < 8) o.fmt = 'ko';
     const meta = TK.meta; let t;
     if (o.kind === 'league') t = newCustomLeague(o.n, [], ids, !!o.dbl, false);
     else t = newTournament(o.fmt, o.n, [], ids, {grp: +o.legGrp, ko: +o.legKo, fin: +o.legFin});
@@ -7189,14 +7252,14 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
     if (hostBack) ACCT.fb.D.get(tkRef('rep')).then(s => { const v = s.val() || {}; Object.keys(v).forEach(k => tkHostApply(k, v[k])); }).catch(() => {});
     if (!$('#screen-hub').hidden) renderHub(); else if (!$('#screen-tk').hidden) tkEnterHub();
   }
-  function tkEnterHub() { document.body.classList.add('tk'); show('hub'); renderHub(); }
+  function tkEnterHub() { document.body.classList.add('tk'); show('hub'); renderHub(); tkFlush(); TK.lite = TK.lite || {}; ((T && T.online && T.online.humans) || []).forEach(h => { if (!TK.lite[h.u]) { TK.lite[h.u] = 1; userLite(h.u).then(() => { if (!$('#screen-hub').hidden && T && T.online) renderHub(); }); } }); }
   /* ---- the fixtures: a stable key so everybody talks about the same match ---- */
   function tkKey(fx) {
-    if (T.mds) for (let m = 0; m < T.mds.length; m++) { const i = (T.mds[m] || []).indexOf(fx); if (i >= 0) return 'g' + m + '.' + i; }
-    if (T.ko) for (let r = 0; r < T.ko.length; r++) { const i = T.ko[r].matches.indexOf(fx); if (i >= 0) return 'k' + r + '.' + i; }
+    if (T.mds) for (let m = 0; m < T.mds.length; m++) { const i = (T.mds[m] || []).indexOf(fx); if (i >= 0) return 'g' + m + '_' + i; }
+    if (T.ko) for (let r = 0; r < T.ko.length; r++) { const i = T.ko[r].matches.indexOf(fx); if (i >= 0) return 'k' + r + '_' + i; }
     return null;
   }
-  function tkFind(key) { const m = /^([gk])(\d+)\.(\d+)$/.exec(key || ''); if (!m || !T) return null; return m[1] === 'g' ? ((T.mds[+m[2]] || [])[+m[3]] || null) : (T.ko[+m[2]] ? T.ko[+m[2]].matches[+m[3]] || null : null); }
+  function tkFind(key) { const m = /^([gk])(\d+)_(\d+)$/.exec(key || ''); if (!m || !T) return null; return m[1] === 'g' ? ((T.mds[+m[2]] || [])[+m[3]] || null) : (T.ko[+m[2]] ? T.ko[+m[2]].matches[+m[3]] || null : null); }
   const tkHumanIds = () => ((T && T.online && T.online.humans) || []).map(h => h.id);
   function tkMyFx() {
     const id = tkMyClub(); if (!T || !T.online || !id || T.stage === 'done') return null;
@@ -7218,16 +7281,26 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
   }
   async function tkHostSim(key) { const fx = tkFind(key); if (!TK.host || !fx || fx.res) return; T.cupMode = false; simFixture(fx, koKind(fx), aggFor(fx, true)); tkHostStep(); }
   /* ---- a player: play my next match (against the computer) and report it ---- */
-  function tkReport(fx, meIsA, res) {
-    const key = tkKey(fx), payload = {u: ACCT.user.uid, d: JSON.stringify({meIsA, res}), ts: ACCT.fb.D.serverTimestamp()};
-    if (TK.host) { tkHostApply(key, payload); return; }
-    ACCT.fb.D.set(tkRef('rep/' + key), payload).catch(e => toast(acErr(e)));
+  const tkQ = () => (prefs.tkQ = Array.isArray(prefs.tkQ) ? prefs.tkQ : []);
+  const tkUnq = (code, key) => { const q = tkQ(), i = q.findIndex(x => x.c === code && x.k === key); if (i >= 0) { q.splice(i, 1); savePrefs(); } };
+  function tkSend(key, d, code) {
+    code = code || TK.code; if (!key || !code || !ACCT.fb || !ACCT.user) return;
+    if (TK.host && code === TK.code) { tkHostApply(key, {d}); return; }
+    const {D, db} = ACCT.fb;
+    return D.set(D.ref(db, 'cardgoal/tourneys/' + code + '/rep/' + key), {u: ACCT.user.uid, d, ts: D.serverTimestamp()}).then(() => tkUnq(code, key)).catch(e => {
+      if (/permission/i.test(String((e && (e.code || e.message)) || ''))) { tkUnq(code, key); return; }      /* the other player already reported this match */
+      if (!tkQ().some(x => x.c === code && x.k === key)) { tkQ().push({c: code, k: key, d}); savePrefs(); }
+      toast('النتيجة اتحفظت وهتتبعت أول ما النت يرجع');
+    });
   }
+  function tkFlush() { try { tkQ().slice().forEach(x => tkSend(x.k, x.d, x.c)); } catch (e) {} }
+  window.addEventListener('online', tkFlush);
+  function tkReport(fx, meIsA, res) { const key = tkKey(fx); if (key) tkSend(key, JSON.stringify({meIsA, res})); }
   function tkPlay() {
     const fx = tkMyFx(); if (!fx) return; const id = tkMyClub(), meIsA = fx.a === id, oppId = meIsA ? fx.b : fx.a;
     if (tkHumanIds().includes(oppId)) { tkPlayH2H(fx, meIsA, oppId); return; }
     T.view = null; const o = T.online, comp = o.theme === 'auto' ? autoComp(fx.a, fx.b) : o.theme, th = comp ? compCtx(comp) : {};
-    startMatchCtx(Object.assign({me: teamObj(id), opp: teamObj(oppId), named: true, kind: koKind(fx) ? 'ko' : 'league', agg: aggFor(fx, meIsA)}, cupInfo(fx), th, {onDone: res => { tkReport(fx, meIsA, res); tkEnterHub(); }}));
+    startMatchCtx(Object.assign({me: teamObj(id), opp: teamObj(oppId), named: true, kind: koKind(fx) ? 'ko' : 'league', agg: aggFor(fx, meIsA)}, cupInfo(fx), th, {onResult: res => tkReport(fx, meIsA, res), onDone: () => tkEnterHub()}));
   }
   /* ---- a match between two friends of the tournament: the side that owns the home team opens a room, the other joins it ---- */
   const tkComp = (a, b) => { const th = T && T.online ? T.online.theme : 'auto'; return th === 'auto' ? autoComp(a, b) : th; };
@@ -7262,33 +7335,63 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
     } catch (e) { tkH2HAbort(); toast(acErr(e)); }
   }
   function tkH2HAbort() { const st = TK.h2h; if (!st) return; st.dead = true; try { st.off && st.off(); } catch (e) {} try { clearInterval(st.watch); } catch (e) {} TK.h2h = null; $('#overlay').hidden = true; if (NET && NET.tk) leaveNet(true); }
-  function tkH2HDone(n, res) {
-    const t = n.tk; const st = TK.h2h; if (st) { st.dead = true; try { st.off && st.off(); } catch (e) {} try { clearInterval(st.watch); } catch (e) {} } TK.h2h = null;
-    const key = tkKey(t.fx), payload = {u: ACCT.user.uid, d: JSON.stringify({meIsA: t.meIsA, res}), ts: ACCT.fb.D.serverTimestamp()};
-    if (TK.host) tkHostApply(key, payload); else ACCT.fb.D.set(tkRef('rep/' + key), payload).catch(() => {});
+  function tkH2HReport(n, res) { const t = n.tk; if (t) { const key = tkKey(t.fx); if (key) tkSend(key, JSON.stringify({meIsA: t.meIsA, res})); } }
+  function tkH2HFinish(n) {
+    const st = TK.h2h; if (st) { st.dead = true; try { st.off && st.off(); } catch (e) {} try { clearInterval(st.watch); } catch (e) {} } TK.h2h = null;
     leaveNet(true); tkEnterHub();
   }
+  function tkWho(id) {
+    const h = ((T && T.online && T.online.humans) || []).find(x => x.id === id); if (!h) return {cpu: true};
+    const lite = ulv(h.u); return {u: h.u, id, name: (lite && lite.name) || h.n || 'لاعب', av: lite ? lite.av : cleanAv(h.a), vf: !!(lite && lite.vf), me: id === tkMyClub()};
+  }
+  const tkWhoChip = id => { const w = tkWho(id); return w.cpu ? 'CPU' : `<span class="tk-who">${avHtml(w.av, 22, '')}<b>${nameHtml(w.name, w.vf)}</b></span>`; };
+  const tkRoundList = () => (T.stage === 'group' ? (T.mds[T.md] || []) : (T.ko && T.ko[T.koRound] ? T.ko[T.koRound].matches : []));
   function tkHubPatch() {
     if (!T || !T.online) return; const id = tkMyClub(), fx = tkMyFx(), box = $('#hubCta'); let h = '';
     const humanIds = tkHumanIds();
-    if (T.stage === 'done') h = `<p class="sh-empty">🏆 البطولة خلصت · البطل: ${esc(teamObj(T.champion).name)}</p>`;
+    if (T.stage === 'done') h = `<p class="sh-empty">انتهت البطولة · البطل: ${esc(teamObj(T.champion).name)}</p>`;
     else if (!id) h = '<p class="sh-empty">بتتفرج على البطولة.</p>';
     else if (T.out && T.out[id]) h = '<p class="sh-empty">خرجت من البطولة. تقدر تكمّل تتفرج.</p>';
-    else if (fx) { const oppId = fx.a === id ? fx.b : fx.a, hum = humanIds.includes(oppId); h = `<button class="btn" data-tk="play" type="button"><span>العب ماتشك</span><small dir="auto">${esc(teamObj(oppId).name)} · ${hum ? 'ماتش أونلاين ضد صاحبك' : 'ضد الكمبيوتر'}</small></button>`; }
-    else h = '<p class="sh-empty">⏳ خلّصت ماتشاتك في الجولة دي. بنستنى باقي اللاعبين…</p>';
+    else if (fx) { const oppId = fx.a === id ? fx.b : fx.a, hum = humanIds.includes(oppId); h = `<button class="btn" data-tk="play" type="button"><span>العب ماتشك</span><small dir="auto">${esc(teamObj(oppId).name)} · ${hum ? 'ماتش أونلاين ضد ' + esc(tkWho(oppId).name) : 'ضد الكمبيوتر'}</small></button>`; }
+    else {
+      const wait = []; tkRoundList().forEach(f => { if (!f.res) [f.a, f.b].forEach(x => { if (humanIds.includes(x) && x !== id && !wait.includes(x)) wait.push(x); }); });
+      h = '<p class="sh-empty">خلّصت ماتشاتك في الجولة دي.' + (wait.length ? ' بنستنى: ' + wait.map(tkWhoChip).join(' · ') : ' ثواني والجولة الجاية بتبدأ…') + '</p>';
+    }
     if (TK.host && T.stage !== 'done') {
-      const pend = []; const list = T.stage === 'group' ? (T.mds[T.md] || []) : (T.ko[T.koRound] ? T.ko[T.koRound].matches : []);
-      list.forEach(f => { if (!f.res && (humanIds.includes(f.a) || humanIds.includes(f.b))) pend.push(f); });
-      if (pend.length) h += '<details class="tk-host"><summary>أدوات المضيف · ماتشات لسه ما اتلعبتش (' + pend.length + ')</summary>' + pend.map(f => `<div class="tk-pend"><span>${esc(teamObj(f.a).name)} × ${esc(teamObj(f.b).name)}</span><button class="sm ghost" type="button" data-tk="sim" data-key="${tkKey(f)}">حاكي</button></div>`).join('') + '</details>';
+      const pend = tkRoundList().filter(f => !f.res && (humanIds.includes(f.a) || humanIds.includes(f.b)));
+      if (pend.length) h += '<details class="tk-host"><summary>أدوات المضيف · ماتشات لسه ما اتلعبتش (' + pend.length + ')</summary>' + pend.map(f => `<div class="tk-pend"><span>${esc(teamObj(f.a).name)}${humanIds.includes(f.a) ? ' (' + esc(tkWho(f.a).name) + ')' : ''} × ${esc(teamObj(f.b).name)}${humanIds.includes(f.b) ? ' (' + esc(tkWho(f.b).name) + ')' : ''}</span><button class="sm ghost" type="button" data-tk="sim" data-key="${tkKey(f)}">حاكي</button></div>`).join('') + '<p class="tk-hint">"حاكي" بيحسم الماتش بنتيجة عشوائية لو اللاعب مش موجود.</p></details>';
     }
     box.innerHTML = h;
   }
+  /* every team shows who plays it, wherever it appears: an avatar on the crest and the coach's name under the club (CPU for the computer's teams) */
+  function tkDecorate() {
+    if (!T || !T.online) return; const body = $('#hubBody'), me = tkMyClub(); if (!body) return;
+    const idOf = name => { if (TK.nmFor !== T) { TK.nm = {}; TK.nmFor = T; (T.teams || []).forEach(x => { const id = typeof x === 'string' ? x : x && x.id; try { TK.nm[teamObj(id).name] = id; } catch (e) {} }); } return TK.nm[String(name || '').trim()]; };
+    const host = (crest, id, sz) => { if (!crest || crest.dataset.tk) return; crest.dataset.tk = '1'; const w = tkWho(id); let wrap = crest.parentElement; if (!wrap || !/\b(cw|rn|cc-mid|tkw)\b/.test(wrap.className)) { wrap = document.createElement('span'); crest.parentNode.insertBefore(wrap, crest); wrap.appendChild(crest); } wrap.classList.add('tkw'); if (!w.cpu) { const b = document.createElement('span'); b.className = 'cav3'; b.innerHTML = avHtml(w.av, sz || 20, ''); wrap.appendChild(b); } };
+    const tag = (box, id) => { if (!box || box.querySelector(':scope > .cnm2, :scope > .cpu')) return; const w = tkWho(id), s = document.createElement('small'); if (w.cpu) { s.className = 'cpu'; s.textContent = 'CPU'; } else { s.className = 'cnm2'; s.innerHTML = nameHtml(w.name, w.vf); } box.appendChild(s); };
+    body.querySelectorAll('.tm').forEach(tm => { const nameEl = tm.querySelector(':scope > span[dir=auto]'), cr = tm.querySelector('.crest'), id = nameEl && idOf(nameEl.textContent); if (!id || !cr) return; host(cr, id, 20); if (!tm.querySelector(':scope > .tmn')) { const wr = document.createElement('span'); wr.className = 'tmn'; nameEl.parentNode.insertBefore(wr, nameEl); wr.appendChild(nameEl); tag(wr, id); } });
+    body.querySelectorAll('.sorow').forEach(r => { const nm = r.querySelector('.nm'), cr = r.querySelector('.rn .crest'), id = nm && idOf(nm.firstChild ? nm.firstChild.textContent : nm.textContent); if (!id || !cr) return; host(cr, id, 22); tag(nm, id); r.dataset.tid = id; });
+    body.querySelectorAll('.cal-c .cc-name').forEach(n => { const id = idOf(n.textContent), cr = n.closest('.cal-c') && n.closest('.cal-c').querySelector('.cc-mid .crest'); if (id && cr) { host(cr, id, 22); tag(n, id); } });
+    body.querySelectorAll('.cal-sel, .cal-dd-l button').forEach(b => { const nm = b.querySelector('span[dir=auto]'), cr = b.querySelector('.crest'), id = nm && idOf(nm.textContent); if (id && cr) host(cr, id, 18); });
+    /* only MY matches are lit up; another player's match gets a quieter mark */
+    const humanIds = tkHumanIds();
+    body.querySelectorAll('.fx, tbody tr, .sorow').forEach(el => {
+      const ids = el.dataset.tid ? [el.dataset.tid] : [...el.querySelectorAll('.tm > .tmn > span[dir=auto], .tm > span[dir=auto]')].map(x => idOf(x.textContent)).filter(Boolean);
+      if (!ids.length) return; const mineHere = ids.includes(me);
+      if (el.classList.contains('mine') && !mineHere) el.classList.remove('mine');
+      if (mineHere) el.classList.add('mine'); else if (ids.some(x => humanIds.includes(x))) el.classList.add('hum');
+    });
+    const gl = [...body.querySelectorAll('.gl')].find(x => x.textContent.trim() === 'فرقك');
+    if (gl) { gl.textContent = 'اللاعبين'; const mine = body.querySelector('.sorow.mine'); if (mine && mine.previousElementSibling !== gl) gl.insertAdjacentElement('afterend', mine); }
+    const st = $('#hubStage'); if (st && me && !st.querySelector(':scope > .crw.tkw')) { const lab = st.querySelector('span:last-child'); st.innerHTML = '<span class="crw tkw">' + crest(teamObj(me)) + '</span>'; const w = tkWho(me); if (!w.cpu) st.firstChild.insertAdjacentHTML('beforeend', `<span class="cav3">${avHtml(w.av, 20, '')}</span>`); if (lab) st.appendChild(lab); }
+  }
   /* ---- wiring ---- */
-  { const rh0 = renderHub; renderHub = function () { rh0(); if (T && T.online) { document.body.classList.add('tk'); tkHubPatch(); } else document.body.classList.remove('tk'); }; }
+  { const rh0 = renderHub; renderHub = function () { rh0(); if (T && T.online) { document.body.classList.add('tk'); tkHubPatch(); try { tkDecorate(); } catch (e) {} } else document.body.classList.remove('tk'); }; }
   $('#hubCta').addEventListener('click', e => { const b = e.target.closest('[data-tk]'); if (!b) return; if (b.dataset.tk === 'play') tkPlay(); else if (b.dataset.tk === 'sim') tkHostSim(b.dataset.key); });
   $('#screen-tk').addEventListener('click', e => {
     const sg = e.target.closest('#tkSettings .seg button'); if (sg && !sg.disabled) { const id = sg.parentElement.id; const k = {tkKind: 'kind', tkN: 'n', tkDbl: 'dbl', tkFmt: 'fmt', tkLegGrp: 'legGrp', tkLegKo: 'legKo', tkLegFin: 'legFin', tkAway: 'away'}[id]; if (k) tkSetOpt(k, sg.dataset.v); }
   });
+  $('#tkSettings').addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.sec) { TK.open = TK.open || {}; TK.open[d.dataset.sec] = d.open; } }, true);
   $('#screen-tk').addEventListener('change', e => { if (e.target.id === 'tkTheme') tkSetOpt('theme', e.target.value); });
   $('#tkCreate').onclick = tkCreate; $('#tkJoin').onclick = () => tkJoin();
   $('#tkClubBtn').onclick = async () => { const taken = tkSeatList().filter(s => s.u !== ACCT.user.uid && s.c).map(s => s.c); const r = await pickClub({title: 'اختار فريقك', exclude: taken}); if (r && r !== 'rand') { await tkSeat({c: r, r: 0}); prefs.myClub = r; savePrefs(); } };
@@ -7398,6 +7501,37 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
     tkChatFab(); try { if (ACCT.fb) frPaint(); } catch (e) {}
   }
   try { chatSync(); } catch (e) {}
+
+
+  /* ================= a phone can keep an old copy of the page: the app looks at the live one and offers an update ================= */
+  const UPD = {last: 0, shown: ''};
+  const updNum = v => String(v || '').replace(/[^0-9.]/g, '').split('.').map(x => +x || 0);
+  const updNewer = (a, b) => { const x = updNum(a), y = updNum(b); for (let i = 0; i < 4; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
+  async function updCheck(force) {
+    try {
+      const now = Date.now(); if (!force && now - UPD.last < 4 * 60000) return; UPD.last = now; if (navigator.onLine === false || location.protocol === 'file:') return;
+      const r = await fetch(location.pathname + '?cv=' + now, {cache: 'no-store', headers: {Range: 'bytes=0-4095'}}); if (!r.ok && r.status !== 206) return;
+      const rd = r.body && r.body.getReader ? r.body.getReader() : null; let t = '';
+      if (rd) { const dec = new TextDecoder(); while (t.length < 8192) { const {done, value} = await rd.read(); if (done) break; t += dec.decode(value, {stream: true}); if (/app-version/.test(t)) break; } try { rd.cancel(); } catch (e) {} } else t = (await r.text()).slice(0, 8192);
+      const m = /name="app-version" content="([^"]+)"/.exec(t); if (!m || !updNewer(m[1], APP_VER) || UPD.shown === m[1]) return;
+      UPD.shown = m[1]; updBanner(m[1]);
+    } catch (e) {}
+  }
+  function updBanner(v) {
+    let b = document.getElementById('updBar'); if (!b) { b = document.createElement('button'); b.type = 'button'; b.id = 'updBar'; document.body.appendChild(b); }
+    b.innerHTML = '<b>فيه نسخة أحدث من اللعبة (' + esc(v) + ')</b><span>دوس هنا للتحديث</span>';
+    b.onclick = () => { location.href = location.pathname + '?v=' + encodeURIComponent(v) + '&t=' + Date.now(); };
+  }
+  setTimeout(() => updCheck(true), 2500);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) updCheck(false); });
+  setInterval(() => updCheck(false), 10 * 60000);
+
+  /* ================= the 3D pitch: let go of the picture when the match is over, and draw it again when the phone comes back from the background ================= */
+  (function () {
+    const sm = document.getElementById('screen-match'); if (!sm) return;
+    new MutationObserver(() => { if (sm.hidden) p3Free(); }).observe(sm, {attributes: true, attributeFilter: ['hidden']});
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(p3Again, 250); });
+  })();
   /* ================= tournament engine ================= */
   const FMTS = {
     league: {label: 'دوري', ns: [4, 6, 8]},
@@ -9684,12 +9818,12 @@ const CHAR_UNLOCK = {c7: 25, c8: 100};
 
   /* procedural 3D stadium: everything on the pitch lives in metres and goes through one perspective, so lines, goals and boards agree */
 function* drawPro3D(cv, o) {
-  o = Object.assign({seed: 7, gold: '#f0cd78', grass: ['#14621a', '#1b6f21'], boardH: 5.4, zoom: 1.06, shiftY: 112, theme: null,
+  o = Object.assign({seed: 7, gold: '#f0cd78', grass: ['#14621a', '#1b6f21'], boardH: 5.4, zoom: 1.12, shiftY: 112, theme: null,
     crowd: ['#0e1428', '#141c3e', '#1a2447', '#2a3a82', '#d9b23a', '#f0c84e', '#e0a830', '#3a4f9a', '#9a7a56', '#161a2c', '#c9c9d4', '#f3e0a0']}, o);
   const PORT = {RW: 941, RH: 1672, C: [[150, 392], [790, 392], [-96, 1532], [1036, 1532]], NADIR: [470, 2650], truss: 130, stH: 220, r1: 122, r2: 232, aY0: 124, aY1: 300, aisles: [118, 262, 585, 690, 842], clipTop: 118, minY: 100,
     bulbs: [[78, 36, 4, 52], [660, 36, 4, 52], [850, 30, 2, 42], [28, 22, 1, 0]], glows: [[24, 350], [920, 340], [18, 700], [926, 700]], light: [470, 470, 40, 470, 900, 980], vig: [470, 860, 520, 470, 860, 1100], zoom: 1.06, shiftY: 112};
   const LAND = {RW: 1672, RH: 941, C: [[420, 300], [1252, 300], [-190, 884], [1862, 884]], NADIR: [836, 1560], truss: 84, stH: 170, r1: 78, r2: 150, aY0: 80, aY1: 190, aisles: [200, 470, 780, 1080, 1360, 1520], clipTop: 74, minY: 60,
-    bulbs: [[130, 28, 6, 60], [880, 24, 6, 60], [1480, 28, 3, 52]], glows: [[40, 250], [1632, 250], [30, 560], [1642, 560]], light: [836, 300, 40, 836, 560, 760], vig: [836, 470, 520, 836, 470, 1000], zoom: 1, shiftY: 36};
+    bulbs: [[130, 28, 6, 60], [880, 24, 6, 60], [1480, 28, 3, 52]], glows: [[40, 250], [1632, 250], [30, 560], [1642, 560]], light: [836, 300, 40, 836, 560, 760], vig: [836, 470, 520, 836, 470, 1000], zoom: 1.13, shiftY: 36};
   const R = o.land ? LAND : PORT; if (o.land) { o.zoom = R.zoom; o.shiftY = R.shiftY; }
   const RW = R.RW, RH = R.RH, W = cv.width, H = cv.height, ctx = cv.getContext('2d');
   let sd = o.seed; const rnd = () => { sd = (sd * 16807) % 2147483647; return (sd - 1) / 2147483646; };
@@ -9909,11 +10043,14 @@ function* drawPro3D(cv, o) {
     /* only if drawing the boards is itself far too slow (not because the window was busy) does the movement stop */
     if (!still) { const ms = performance.now() - tt0; P3.cost = P3.cost == null ? ms : P3.cost * .85 + ms * .15; P3.slow = P3.cost > 60 ? (P3.slow || 0) + 1 : 0; if (P3.slow > 40) P3.autoStill = true; }
   }
+  const p3Cap = () => { const m = navigator.deviceMemory || 8; return m <= 2 ? 640 : m <= 3 ? 720 : m <= 4 ? 840 : 1000; };
+  function p3Free() { try { if (P3.timer) { clearInterval(P3.timer); P3.timer = 0; } P3.cache.clear(); P3.cur = null; ['s3dBase', 's3dTop', 's3dAdsL', 's3dAdsF', 's3dAdsR'].forEach(id => { const c = document.getElementById(id); if (c) { c.width = 1; c.height = 1; } }); } catch (e) {} }
+  function p3Again() { try { if (document.body.classList.contains('pro3d') && !$('#screen-match').hidden) { P3.cache.clear(); P3.cur = null; p3Refresh(); } } catch (e) {} }
   function p3Canvases() {
     const st = $('#stadium'); if (!st) return null;
     let wrap = document.getElementById('s3dWrap'); if (!wrap) { wrap = document.createElement('div'); wrap.id = 's3dWrap'; st.insertBefore(wrap, st.firstChild); }
     let out = {wrap};
-    ['s3dBase', 's3dAdsL', 's3dAdsF', 's3dAdsR', 's3dTop'].forEach(id => { let c = document.getElementById(id); if (!c) { c = document.createElement('canvas'); c.id = id; if (id.startsWith('s3dAds')) c.className = 's3dAds'; wrap.appendChild(c); } out[id] = c; });
+    ['s3dBase', 's3dAdsL', 's3dAdsF', 's3dAdsR', 's3dTop'].forEach(id => { let c = document.getElementById(id); if (!c) { c = document.createElement('canvas'); c.id = id; if (id.startsWith('s3dAds')) c.className = 's3dAds'; c.addEventListener('contextlost', e => e.preventDefault()); c.addEventListener('contextrestored', () => setTimeout(p3Again, 60)); wrap.appendChild(c); } out[id] = c; });
     return out;
   }
   function p3Refresh() { try { return p3RefreshInner().catch(e => { window.__p3err = e; }); } catch (e) { window.__p3err = e; } }
@@ -9921,7 +10058,7 @@ function* drawPro3D(cv, o) {
     if (!document.body.classList.contains('pro3d') || !M || $('#screen-match').hidden) return;
     const st = $('#stadium'), SW = st.clientWidth, SH = st.clientHeight; if (!SW || !SH) return;
     const land = SW / SH >= 1.15, dpr = Math.min(window.devicePixelRatio || 1, 2.4);
-    const W0 = land ? Math.max(900, Math.min(1700, Math.round(Math.min(SW, SH * 1.85) * dpr))) : Math.max(640, Math.min(1000, Math.round(dpr * 420))), H0 = land ? Math.round(W0 * 941 / 1672) : Math.round(W0 / .597);
+    const W0 = land ? Math.max(900, Math.min(Math.round(1700 * p3Cap() / 1000), Math.round(Math.min(SW, SH * 1.85) * dpr))) : Math.max(640, Math.min(p3Cap(), Math.round(dpr * 420))), H0 = land ? Math.round(W0 * 941 / 1672) : Math.round(W0 / .597);
     const th = p3Theme(), look = p3Look(), key = [land ? 'L' : 'P', W0, th.key, look.pat, look.tone[0]].join('|'), my = ++P3.tok;
     const cvs = p3Canvases(); if (!cvs) return;
     if (!P3.cur || P3.cur.key !== key) {
@@ -9934,7 +10071,7 @@ function* drawPro3D(cv, o) {
         const gen = drawPro3D(base, {theme: th, pattern: look.pat, grass: look.tone, soft: P3_SOFT[look.pat], dpr: 1, topCv: top, q: P3.q, land}); let stp; while (!(stp = gen.next()).done) { await new Promise(res => requestAnimationFrame(() => setTimeout(res, 0))); if (my !== P3.tok) return; } const r = stp.value;
         const logoT = logoImg ? p3Tint(logoImg, th.logoColor || null) : null;
         ent = {key, base, top, map: r, geo: r.geo, tape: p3Tape(th, r.geo, logoT), W0, H0, land}; P3.lastMs = Math.round(performance.now() - t0); P3.builds++; if (P3.lastMs > 1500) P3.q = .6;
-        P3.cache.set(key, ent); if (P3.cache.size > 2) P3.cache.delete(P3.cache.keys().next().value);
+        P3.cache.set(key, ent); if (P3.cache.size > (p3Cap() < 1000 ? 1 : 2)) P3.cache.delete(P3.cache.keys().next().value);
       }
       [['s3dBase', ent.base], ['s3dTop', ent.top]].forEach(([id, src]) => { const c = cvs[id]; c.width = src.width; c.height = src.height; c.getContext('2d').drawImage(src, 0, 0); });
       P3.cur = Object.assign({}, ent); P3.cur.groups = null;
@@ -9945,8 +10082,9 @@ function* drawPro3D(cv, o) {
   /* only positions change when the window changes: the picture itself is drawn once, at a fixed size, and scaled by the browser */
   function p3Place(cvs, W0, H0, A, land) {
     const st = $('#stadium'), W = st.clientWidth, H = st.clientHeight; if (!W || !H) return;
-    const colW = Math.min(W, Math.round(H * (land ? 1.85 : .66))), colX = Math.round((W - colW) / 2), s = Math.max(colW / W0, H / H0), xo = (colW - W0 * s) / 2, yo = H - H0 * s;
+    const base = Math.min(W, Math.round(H * (land ? 1.85 : .66))), fx = Math.min(1.32, W / base), colW = Math.round(base * fx), colX = Math.round((W - colW) / 2), s = Math.max(base / W0, H / H0), xo = (base - W0 * s) / 2, yo = H - H0 * s;
     Object.assign(cvs.wrap.style, {left: colX + 'px', width: colW + 'px', height: H + 'px'});
+    ['s3dBase', 's3dTop'].forEach(id => { const c = cvs[id]; if (c) Object.assign(c.style, {objectFit: 'fill', left: (xo * fx) + 'px', top: yo + 'px', width: (W0 * s * fx) + 'px', height: (H0 * s) + 'px'}); });
     if (!A) return;
     if (!A.groups) {
       const gm = A.geo, n = gm.base.length, ap = (window.devicePixelRatio || 1) >= 2 ? .75 : 1, spans = [[0, gm.iL, 's3dAdsL'], [gm.iL - 1, gm.iF + 1, 's3dAdsF'], [gm.iF, n - 1, 's3dAdsR']];
@@ -9957,21 +10095,24 @@ function* drawPro3D(cv, o) {
         return {cv, x0, y0, x1, y1, s: ap, i0, i1};
       });
     }
-    A.groups.forEach(G => { const c = G.cv; c.style.left = (xo + G.x0 * s) + 'px'; c.style.top = (yo + G.y0 * s) + 'px'; c.style.width = ((G.x1 - G.x0) * s) + 'px'; c.style.height = ((G.y1 - G.y0) * s) + 'px'; });
-    const fresh = !A.drawn; A.place = {colX, colW, s, xo, yo}; p3Layout(); if (fresh) { A.drawn = true; p3AdsFrame(true); }
+    A.groups.forEach(G => { const c = G.cv; c.style.left = ((xo + G.x0 * s) * fx) + 'px'; c.style.top = (yo + G.y0 * s) + 'px'; c.style.width = ((G.x1 - G.x0) * s * fx) + 'px'; c.style.height = ((G.y1 - G.y0) * s) + 'px'; });
+    const fresh = !A.drawn; A.place = {colX, colW, s, xo, yo, fx}; p3Layout(); if (fresh) { A.drawn = true; p3AdsFrame(true); }
   }
   /* the hands, the deck and the capture piles sit where the 3D pitch says they should; card sizes are never touched */
   function p3Layout() {
     const A = P3.cur; if (!A || !A.place) return;
-    const st = $('#stadium'), pitch = $('#pitch'), stR = st.getBoundingClientRect(), {colX, colW, s, xo, yo} = A.place, mm = A.map.pt, m = (X, Y) => { const p = mm(X, Y); return [colX + xo + p[0] * s, yo + p[1] * s]; };
+    const st = $('#stadium'), pitch = $('#pitch'), stR = st.getBoundingClientRect(), {colX, colW, s, xo, yo, fx} = A.place, mm = A.map.pt, m = (X, Y) => { const p = mm(X, Y); return [colX + (xo + p[0] * s) * (fx || 1), yo + p[1] * s]; };
     const oh = $('#ohand'), hd = $('#hand'), ctr = pitch.querySelector('.center'); if (!oh || !hd || !ctr) return;
-    const yOpp0 = m(34, 99.2)[1] + 17, yMe = m(34, 8.2)[1] - 18, yGoal = m(34, 105)[1];
+    const yOpp0 = m(34, 99.2)[1] + 17, yGoal = m(34, 105)[1], yNear = m(34, 0)[1];
     for (let pass = 0; pass < 2; pass++) {
       const ohR = oh.getBoundingClientRect(), card = hd.querySelector('.card'), cR = card ? card.getBoundingClientRect() : null;
-      let pt = parseFloat(pitch.style.getPropertyValue('--p3t')) || 26, pb = parseFloat(pitch.style.getPropertyValue('--p3b')) || 26;
+      const pt0 = parseFloat(pitch.style.getPropertyValue('--p3t')), pb0 = parseFloat(pitch.style.getPropertyValue('--p3b'));
+      let pt = Number.isFinite(pt0) ? pt0 : 26, pb = Number.isFinite(pb0) ? pb0 : 26;
       const yOpp = Math.max(yOpp0, yGoal + 10 + ohR.height / 2);
       pt = Math.max(0, pt + yOpp - ((ohR.top + ohR.bottom) / 2 - stR.top));
-      if (cR) pb = Math.max(0, pb - (yMe - (cR.top + cR.height / 2 - stR.top)));
+      { const cds = [...hd.querySelectorAll('.card')], hR = hd.getBoundingClientRect(), bot = cds.length ? Math.max(...cds.map(c => c.getBoundingClientRect().bottom)) : hR.bottom + 10, dy = yNear - (bot - stR.top); let nb = pb - dy, mb = parseFloat(hd.style.marginBottom) || 0;
+        if (nb < 0) { mb += nb; nb = 0; } else if (mb < 0) { const g = Math.min(-mb, nb); mb += g; nb -= g; }
+        pb = nb; hd.style.marginBottom = mb.toFixed(1) + 'px'; }
       pitch.style.setProperty('--p3t', pt.toFixed(1) + 'px'); pitch.style.setProperty('--p3b', pb.toFixed(1) + 'px');
     }
     /* on a short window the middle strip can get squeezed: make room for the floor cards by pulling the two hands apart (never by changing card sizes) */
