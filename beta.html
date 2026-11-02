@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.9.0-beta">
-<meta charset="utf-8">
+<head><meta name="app-version" content="1.9.2-beta">
+<meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
 <style>
@@ -1871,6 +1871,9 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
 
 /* messages tab */
 #screen-msgs .sh-row{position:relative}#screen-msgs .sh-row small{display:block;max-width:60vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ms-t{color:var(--smu);font:700 11.5px Cairo,sans-serif;margin-inline-start:auto}.ud2{width:10px;height:10px;border-radius:50%;background:var(--slive,#ff4d4d);flex:none}#screen-msgs .sh-row.unread b{color:var(--sac)}
+
+/* install bar on the home screen */
+.hm-inst{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin:8px 0 2px;padding:11px 14px;border-radius:16px;background:linear-gradient(135deg,rgba(198,244,50,.16),rgba(198,244,50,.05));border:1px dashed rgba(198,244,50,.55);color:#dff58a;font:800 14px Cairo,sans-serif;cursor:pointer;text-align:start}.hm-inst[hidden]{display:none}.hm-inst i{font-style:normal;font-size:22px;line-height:1;opacity:.75;padding:0 6px}
 </style>
 </head>
 <body>
@@ -1889,6 +1892,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
       <p class="credit" dir="ltr">Produced by: Atef Games ©</p>
     </div>
     <div class="sh-me" id="homeMe" hidden></div>
+    <button class="hm-inst" id="instBar" type="button" hidden><span>📲 ثبّت اللعبة كتطبيق على موبايلك</span><i id="instX" role="button" aria-label="إخفاء">×</i></button>
     <div class="seg" id="modeSeg" role="group" aria-label="المود">
       <button type="button" data-mode="normal">مود عادي</button>
       <button type="button" data-mode="clubs">مود الماتشات ⚽</button>
@@ -6349,7 +6353,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.9.0-beta';
+  const APP_VER = '1.9.2-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -7559,6 +7563,26 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const sm = document.getElementById('screen-match'); if (!sm) return;
     new MutationObserver(() => { if (sm.hidden) p3Free(); }).observe(sm, {attributes: true, attributeFilter: ['hidden']});
     document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(p3Again, 250); });
+  })();
+
+  /* ================= install the game as an app (Android Chrome, Samsung Internet, iPhone) and keep a copy for when there is no internet ================= */
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
+  const INST = {ev: null};
+  const instStandalone = () => { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } };
+  const instMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+  const instIOS = () => /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+  function instPaint() { const b = document.getElementById('instBar'); if (b) b.hidden = !(instMobile() && !instStandalone() && !prefs.instNo); }
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); INST.ev = e; instPaint(); });
+  window.addEventListener('appinstalled', () => { INST.ev = null; prefs.instNo = 1; savePrefs(); instPaint(); try { toast('اللعبة اتثبّتت ✔'); } catch (e) {} });
+  async function instGo() {
+    if (INST.ev) { const ev = INST.ev; INST.ev = null; try { await ev.prompt(); await ev.userChoice; } catch (e) {} instPaint(); return; }
+    const how = instIOS() ? 'من زرار المشاركة (المربع اللي فيه سهم) اختار "إضافة إلى الشاشة الرئيسية" (Add to Home Screen).' : 'من قايمة المتصفح (النقط التلاتة ⋮ فوق) اختار "تثبيت التطبيق" (Install app)، ولو مش ظاهرة اختار "إضافة إلى الشاشة الرئيسية".';
+    await panel('<h2>ثبّت اللعبة كتطبيق</h2><p>' + how + '</p><p>هتلاقيها بأيقونتها على الشاشة، وبتفتح من غير شريط المتصفح.</p>', [{label: 'تمام'}]);
+  }
+  (function () {
+    const b = document.getElementById('instBar'); if (!b) return;
+    b.onclick = instGo; const x = document.getElementById('instX'); if (x) x.onclick = e => { e.stopPropagation(); prefs.instNo = 1; savePrefs(); instPaint(); };
+    instPaint();
   })();
   /* ================= tournament engine ================= */
   const FMTS = {
