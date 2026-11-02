@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.11.0-beta">
+<head><meta name="app-version" content="1.13.0-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -1900,6 +1900,18 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
 #fsAsk{position:fixed;z-index:60;left:12px;right:12px;bottom:calc(86px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:10px;background:#121926;border:1px solid #2f4a98;border-radius:18px;padding:11px 12px 11px 14px;box-shadow:0 12px 36px rgba(0,0,0,.55);animation:sheetUp .25s ease-out;font-family:Cairo,sans-serif;color:#eef2f8}
 #fsAsk>div{flex:1;min-width:0}#fsAsk b{display:block;font:900 15px Cairo,sans-serif}#fsAsk small{display:block;color:#9fabc0;font:700 12px Cairo,sans-serif;margin-top:1px}
 #fsAsk .y{background:#c6f432;color:#10150a;border:0;border-radius:13px;padding:9px 14px;font:900 14px Cairo,sans-serif;cursor:pointer;white-space:nowrap}#fsAsk .n{background:none;border:0;color:#8a95a8;font-size:18px;cursor:pointer;padding:4px 8px}
+
+/* a match that is on right now, seen from the hub */
+.fx .sc.live{background:rgba(229,72,77,.12);border:1px solid rgba(229,72,77,.45);border-radius:12px}.fx .sc.live small{display:block;white-space:nowrap}.fx .sc.live b{color:#ffd35c}.fx .sc.live small{color:#ff8a8f;font-weight:800;animation:livep 1.4s ease-in-out infinite}
+.fx .sc.live.gl{animation:glow 1.2s ease-out}
+@keyframes livep{50%{opacity:.45}}@keyframes glow{0%{box-shadow:0 0 0 0 rgba(255,211,92,.9)}100%{box-shadow:0 0 0 16px rgba(255,211,92,0)}}
+
+.lvbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}.lvi{display:inline-flex;align-items:center;gap:6px;background:rgba(229,72,77,.12);border:1px solid rgba(229,72,77,.5);border-radius:14px;padding:5px 12px;font:800 13.5px Cairo,sans-serif;color:#ffd9da}.lvi b{color:#ffd35c;font-weight:900}.lvi small{color:#ff8a8f;font-weight:800;animation:livep 1.4s ease-in-out infinite}
+
+/* viewers */
+#specChip{position:absolute;z-index:46;inset-inline-start:10px;bottom:62px;background:rgba(8,12,24,.82);border:1px solid rgba(255,255,255,.22);color:#eef2f8;border-radius:14px;padding:3px 11px;font:800 13px Cairo,sans-serif;direction:ltr}
+.lvi{cursor:pointer}.lvi .eye{font-style:normal;background:rgba(198,244,50,.16);border:1px solid rgba(198,244,50,.5);color:#dff58a;border-radius:10px;padding:0 8px;font-size:12px}.fx .sc.live{cursor:pointer}
+#rxBar .rx-r{display:flex;gap:4px}
 </style>
 </head>
 <body>
@@ -5506,7 +5518,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   const mkCard = (r, s) => ({id: ++uid, r, s, v: val(r), red: s === '♥' || s === '♦', komi: r === '7' && s === '♦', rot: Math.random() * 14 - 7});
   function newDeck() {
     const d = []; for (const s of SUITS) for (const r of RANKS_ALL) d.push(mkCard(r, s));
-    if (M && M.online) { shuffle(d, mulberry(M.seed + seg * 7919)); d.forEach((c, i) => { c.id = (seg + 1) * 100 + i; }); return d; }
+    if (M && (M.online || M.replay || M.bseed)) { shuffle(d, mulberry(M.seed + seg * 7919)); d.forEach((c, i) => { c.id = (seg + 1) * 100 + i; }); return d; }
     return shuffle(d);
   }
   const RANKS_ALL = RK;
@@ -5826,7 +5838,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     let assist = prev && prev.cap ? playerName(who, prev.card) : null;
     if (assist && assist === name) assist = null;
     const minute = minuteNow();
-    scores[who]++; events.push({who, minute, name, komi, assist}); try { matchChatSys(who, name, assist, minute); } catch (e) {}
+    scores[who]++; events.push({who, minute, name, komi, assist}); try { matchChatSys(who, name, assist, minute); } catch (e) {} try { liveEmit('g', who, name, minute); } catch (e) {}
     renderScore(who); renderScorers();
     sfx.cheer(); setTimeout(() => sfx.whistle(), 150);
     const fx = $('#goalfx');
@@ -5863,8 +5875,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
         btn.onclick = () => { ac(); if (b.keep) { b.keep(); return; } ov.hidden = true; res(b.value); };
         box.appendChild(btn);
       });
-      ov.hidden = false;
-      const first = box.querySelector('.btn'); if (first) first.focus();
+      ov.hidden = false; const first = box.querySelector('.btn'); if (first) first.focus(); if (M && M.replay && buttons[0] && buttons[0].value !== 'done') { const pid = ov._pid = (ov._pid || 0) + 1; setTimeout(() => { if (!ov.hidden && ov._pid === pid && first && first.isConnected) first.click(); }, RP.backlog() > 3 ? 250 : 3200); }
     });
   }
   const rawNm = w => (M.named || M.auto ? M[w].name : (w === 'me' ? 'أنت' : 'الخصم'));
@@ -5893,7 +5904,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   /* ================= match flow ================= */
   function friendlyCtx(me, opp, named, auto) { return {me, opp, named, auto: !!auto, kind: 'friendly', homeName: me && me.name, onDone: null}; }
   async function startMatchCtx(ctx) {
-    M = ctx; const my = ++tok;
+    try { bcClose(); if (SPEC && !ctx.replay) specClose(); } catch (e) {} M = ctx; const my = ++tok;
     scores = {me: 0, opp: 0}; half = 1; golden = false; xt = 0; penOn = false; penPick = null; penRem = null; halfStarter = M.flip ? 'opp' : 'me'; events = []; pst = {me: {}, opp: {}}; piles = {me: 0, opp: 0}; capTotal = {me: 0, opp: 0}; mst = {me: {sweeps: 0}, opp: {sweeps: 0}}; speed = 1;
     seg = 0; myMoves = []; remoteLists = {}; rcount = 0; waiting = false;
     deck = []; floor = []; hands = {me: [], opp: []}; selected = null; _ended = false; busy = true; turn = 'me';
@@ -6150,8 +6161,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
       else opTurn();
     }, 1100);
   }
-  async function aiTurn(who = 'opp') {
-    const my = tok;
+  async function aiTurn(who = 'opp') { const my = tok; if (M && M.replay) { busy = true; renderAll(); setMsg(M[who].name + ' بيفكر…'); const rc = await replayNext(who); if (my !== tok) return; await playCard(who, rc || aiChoose(who)); return; }
     busy = true; renderAll(); setMsg((M.auto ? M[who].name : 'الخصم') + ' بيفكر…');
     await wait(900 + Math.random() * 700);
     if (my !== tok) return;
@@ -6159,8 +6169,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     await playCard(who, aiChoose(who));
   }
   const sub = (who, a, b) => (M.auto ? M[who].name + ' ' + b : (who === 'me' ? a : 'الخصم ' + b));
-  async function playCard(who, card) {
-    const my = tok;
+  async function playCard(who, card) { const my = tok; try { bcLog(card.id); } catch (e) {}
     busy = true; selected = null; clearTargets();
     hands[who] = hands[who].filter(c => c.id !== card.id);
     renderHands();
@@ -6337,6 +6346,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   /* ================= extra time in two halves of 15 minutes, and the penalty shootout played with cards ================= */
   const etModeOf = () => (M && M.online ? (M.et === 'golden' ? 'golden' : 'full') : (prefs.et === 'golden' ? 'golden' : 'full'));
   async function askExtra() {
+    if (M.replay) { const m = await replayMode(); await panel(`<div class="big-emoji">⚡</div><h2>تعادل!</h2>${scoreline()}<p>${m === 'full' ? 'وقت إضافي كامل: شوطين 15 دقيقة بصفارة بينهم، وكل الأهداف بتتحسب.' : 'الهدف الذهبي: أول بصرة تكسب الماتش.'}</p>`, [{label: 'يلا'}]); return m; }
     if (M.online || M.auto) {   /* online both players must run the same thing: the room owner's choice; a watched match uses the setting */
       const mode = etModeOf();
       await panel(`<div class="big-emoji">⚡</div><h2>تعادل!</h2>${scoreline()}<p>${mode === 'full' ? 'وقت إضافي كامل: شوطين 15 دقيقة بصفارة بينهم، وكل الأهداف بتتحسب.' : 'الهدف الذهبي: أول بصرة تكسب الماتش.'}</p>`, [{label: 'يلا'}]);
@@ -6387,6 +6397,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   function penPickCard(who, role) {
     return new Promise(resolve => {
       const my = tok;
+      if (M.replay) { replayNext(who).then(c => resolve(c || hands[who][0])); return; }
       if (who === 'me' && !M.auto) {
         busy = false; selected = null; penPick = {who: 'me', resolve}; renderAll();
         setMsg(role === 'keeper' ? 'إنت الحارس 🧤 نزّل كارت (دوس على الكارت مرتين)' : 'إنت بتسدد 🎯 اختار كارت يعمل بصرة على كارت الحارس');
@@ -6423,13 +6434,13 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     for (let i = 0; i < 4; i++) { const a = deck.pop(), b = deck.pop(), f = M.flip; a.dealt = true; b.dealt = true; hands.me.push(f ? b : a); hands.opp.push(f ? a : b); }
     sfx.deal(); turn = keeper; renderAll();
     setMsg(penLine(pen, seq)); await wait(900); if (my !== tok) return null;
-    const kc = await penPickCard(keeper, 'keeper'); if (my !== tok) return null;
+    const kc = await penPickCard(keeper, 'keeper'); if (my !== tok) return null; try { bcLog(kc.id); } catch (x) {}
     busy = true; penPick = null; penRem = null; waiting = false;
     hands[keeper] = hands[keeper].filter(c => c.id !== kc.id); kc.fresh = keeper === botWho() ? 'me' : 'opp'; kc.by = keeper; floor.push(kc);
     selected = null; renderAll(); sfx.card();
     setMsg(`${nm(keeper)} (الحارس) نزل ${cardName(kc)} 🧤`); await wait(800); if (my !== tok) return null;
     turn = kicker; renderAll();
-    const sc = await penPickCard(kicker, 'kicker'); if (my !== tok) return null;
+    const sc = await penPickCard(kicker, 'kicker'); if (my !== tok) return null; try { bcLog(sc.id); } catch (x) {}
     busy = true; penPick = null; penRem = null; waiting = false;
     hands[kicker] = hands[kicker].filter(c => c.id !== sc.id);
     const cap = computeCapture(floor, sc), ok = !!cap.goal;
@@ -6442,7 +6453,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   }
   async function shootout() {
     const my = tok, pen = {me: 0, opp: 0}, t = {me: 0, opp: 0}, seq = {me: [], opp: []};
-    const prn = M.online ? mulberry(M.seed + 777) : Math.random, hostFirst = prn() < .5;
+    const prn = (M.online || M.replay || M.bseed) ? mulberry(M.seed + 777) : Math.random, hostFirst = prn() < .5;
     const first = hostFirst ? (M.flip ? 'opp' : 'me') : (M.flip ? 'me' : 'opp');
     penOn = true; _ended = false; penPick = null; penRem = null;
     setMsg('ضربات الجزاء 🎯');
@@ -6469,9 +6480,9 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     if (scores.me + (M.agg ? M.agg.me : 0) === scores.opp + (M.agg ? M.agg.opp : 0)) {
       if (M.kind !== 'league' && !golden && !xt) {
         setMsg('تعادل! وقت إضافي');
-        const mode = await askExtra();
+        const mode = await askExtra(); try { bcLog(mode === 'full' ? 'F' : 'G'); } catch (e) {}
         if (my !== tok) return;
-        const hs = M.online ? mulberry(M.seed + 4242)() < .5 : Math.random() < .5;
+        const hs = (M.online || M.replay || M.bseed) ? mulberry(M.seed + 4242)() < .5 : Math.random() < .5;
         if (mode === 'full') xt = 1; else golden = true;
         halfStarter = hs ? (M.flip ? 'opp' : 'me') : (M.flip ? 'me' : 'opp'); xtFirst = halfStarter; sfx.whistle(); startHalf(); return;
       }
@@ -6485,7 +6496,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     const res = {me: scores.me, opp: scores.opp, pen, events: events.slice(), stats: {pm: pmx}};
     const winSide = res.me !== res.opp ? (res.me > res.opp ? 'me' : 'opp') : (pen ? (pen.me > pen.opp ? 'me' : 'opp') : null);
     const win = winSide === null ? null : winSide === 'me';
-    try { acctRecord(win, scores.me, scores.opp); } catch (e) {}
+    try { if (!M.replay) acctRecord(win, scores.me, scores.opp); } catch (e) {}
     setMsg(M.auto ? (winSide ? 'انتهى الماتش — ' + M[winSide].name + ' كسب' : 'انتهى الماتش بالتعادل') : (win === null ? 'انتهى الماتش بالتعادل' : win ? 'انتهى الماتش — كسبت! 🏆' : 'انتهى الماتش — الخصم كسب'));
     if (win && !M.auto) { confetti(140); sfx.roar(); }
     const head = M.auto ? (winSide ? ['🏁', nm(winSide) + ' كسب الماتش'] : ['🤝', 'تعادل']) : (win === null ? ['🤝', 'تعادل'] : win ? ['🏆', 'مبروك! كسبت الماتش'] : ['😅', 'الخصم كسبها المرة دي']);
@@ -6522,7 +6533,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.11.0-beta';
+  const APP_VER = '1.13.0-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -6591,11 +6602,11 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
         if (!old || expired) throw new Error('noroom');
         if (old.v !== APP_VER) { const e = new Error('ver'); e.theirs = old.v; throw e; }
         const ps = (await D.get(R('players'))).val() || {};
-        if (Object.keys(ps).filter(k => k !== pid).length >= 2) throw new Error('full');
+        if (o.spec) { if (Object.keys(ps).filter(k => ps[k] && ps[k].role === 's' && fb.now() - (ps[k].hb || ps[k].ts || 0) < STALE).length >= 10) throw new Error('specfull'); } else if (Object.keys(ps).filter(k => k !== pid && !(ps[k] && ps[k].role === 's')).length >= 2) throw new Error('full');
       }
       const mine = R('players/' + pid), P = {}, subs = []; let alive = true;
-      const presence = () => D.set(mine, {ts: D.serverTimestamp(), hb: D.serverTimestamp(), role: o.create ? 'h' : 'g'}).then(() => D.onDisconnect(mine).remove()).catch(() => {});
-      await D.set(mine, {ts: D.serverTimestamp(), hb: D.serverTimestamp(), role: o.create ? 'h' : 'g'});
+      const who0 = () => Object.assign({ts: D.serverTimestamp(), hb: D.serverTimestamp(), role: o.spec ? 's' : (o.create ? 'h' : 'g')}, o.spec ? {n: String(o.name || '').slice(0, 16)} : {}); const presence = () => D.set(mine, who0()).then(() => D.onDisconnect(mine).remove()).catch(() => {});
+      await D.set(mine, who0());
       D.onDisconnect(mine).remove();
       /* when the connection comes back after a drop, announce ourselves again */
       let first = true;
@@ -6603,15 +6614,15 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
       const hbT = setInterval(() => { if (alive) D.update(mine, {hb: D.serverTimestamp()}).catch(() => {}); }, 8000);
       const peerCbs = [];
       const live = k => k === pid || (P[k] && fb.now() - (P[k].hb || P[k].ts || 0) < STALE);
-      const fire = ch => peerCbs.forEach(f => { try { f(ch); } catch (e) {} });
-      subs.push(D.onChildAdded(R('players'), s => { P[s.key] = s.val() || {}; if (s.key !== pid) fire({joined: [s.key], left: []}); }));
+      const isSp = k => !!(P[k] && P[k].role === 's'); const specCbs = []; const fire = ch => peerCbs.forEach(f => { try { f(ch); } catch (e) {} }); const fireS = ch => specCbs.forEach(f => { try { f(ch); } catch (e) {} });
+      subs.push(D.onChildAdded(R('players'), s => { P[s.key] = s.val() || {}; if (s.key === pid) return; if (isSp(s.key)) fireS({joined: [{pid: s.key, n: P[s.key].n || ''}], left: []}); else fire({joined: [s.key], left: []}); }));
       subs.push(D.onChildChanged(R('players'), s => { P[s.key] = s.val() || {}; }));
-      subs.push(D.onChildRemoved(R('players'), s => { delete P[s.key]; if (s.key !== pid) fire({joined: [], left: [s.key]}); }));
-      const staleT = setInterval(() => { Object.keys(P).forEach(k => { if (k !== pid && !live(k)) { delete P[k]; fire({joined: [], left: [k]}); } }); }, 5000);
+      subs.push(D.onChildRemoved(R('players'), s => { const was = P[s.key]; delete P[s.key]; if (s.key === pid) return; if (was && was.role === 's') fireS({joined: [], left: [{pid: s.key, n: was.n || ''}]}); else fire({joined: [], left: [s.key]}); }));
+      const staleT = setInterval(() => { Object.keys(P).forEach(k => { if (k !== pid && !live(k)) { const was = P[k]; delete P[k]; if (was && was.role === 's') fireS({joined: [], left: [{pid: k, n: was.n || ''}]}); else fire({joined: [], left: [k]}); } }); }, 5000);
       const last = {};
       return {
         meta: old && !expired && !o.create ? old : null, pid,
-        peers: () => Object.keys(P).filter(live),
+        peers: () => Object.keys(P).filter(live).filter(k => !isSp(k)), spectators: () => Object.keys(P).filter(k => live(k) && isSp(k)).map(k => ({pid: k, n: P[k].n || ''})), onSpec(fn) { specCbs.push(fn); return () => { const i = specCbs.indexOf(fn); if (i >= 0) specCbs.splice(i, 1); }; },
         onPeers(fn) { peerCbs.push(fn); return () => { const i = peerCbs.indexOf(fn); if (i >= 0) peerCbs.splice(i, 1); }; },
         on(topic, fn) {
           const q = R('slots/' + topic), seen = {};
@@ -6784,7 +6795,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   function startOnline(n, rt, comp, otherName) {
     try { acctSt('match'); } catch (e) {}
     n.mid = n.seed; n.inMatch = true; n.over = false; $('#olLobby').hidden = true;
-    if (!n.rxSub) { n.rxSub = true; netSub('rx', d => rxShow(d)); } rxBar(true);
+    if (!n.rxSub) { n.rxSub = true; netSub('rx', d => rxShow(d)); } rxBar(true); setTimeout(() => { try { liveEmit('t'); } catch (e) {} }, 1200);
     if (!n.mvSub) { n.mvSub = true; netSub('mv', onRemoteMv); netSub('bye', d => { if (n.inMatch && (!d || !d.mid || d.mid === n.mid)) onBye(d); }); }
     n.timers.push(setInterval(() => { if (n.inMatch && myMoves.length) emitMv(); }, 2500));
     n.tmo = 0; n.tm = null; n.last = 0;
@@ -6797,7 +6808,8 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     }));
     const kits = onlineKits(n.my.club, olKitFor(n.my.club), cleanTeam(rt), n.role);
     kits.me.coachName = coachOf(n); kits.opp.coachName = String(otherName || '').slice(0, 16); kits.opp.coachAv = n.other && n.other.av || null; kits.opp.coachLv = n.other && n.other.lv || ''; kits.opp.coachVf = !!(n.other && n.other.vf);
-    startMatchCtx(Object.assign({me: kits.me, opp: kits.opp, homeName: n.role === 'h' ? kits.me.name : kits.opp.name, named: true, kind: n.tk ? (koKind(n.tk.fx) ? 'ko' : 'league') : 'friendly', agg: n.tk ? aggFor(n.tk.fx, n.tk.meIsA) : undefined, online: true, et: n.et === 'golden' ? 'golden' : 'full', flip: n.role === 'g', seed: n.seed, onResult: n.tk ? res => tkH2HReport(n, res) : null, onDone: n.tk ? () => tkH2HFinish(n) : null}, compCtx(comp)));
+    startMatchCtx(Object.assign({me: kits.me, opp: kits.opp, homeName: n.role === 'h' ? kits.me.name : kits.opp.name, named: true, kind: n.tk ? (koKind(n.tk.fx) ? 'ko' : 'league') : 'friendly', agg: n.tk ? aggFor(n.tk.fx, n.tk.meIsA) : undefined, online: true, comp: comp || '', et: n.et === 'golden' ? 'golden' : 'full', flip: n.role === 'g', seed: n.seed, onResult: n.tk ? res => tkH2HReport(n, res) : null, onDone: n.tk ? () => tkH2HFinish(n) : null}, compCtx(comp)));
+    try { bcStartOnline(n); } catch (e) {}
     coachStrip();
     setTimeout(() => { const el = $('#tnOpp'); if (el && !$('#netDot')) { const d = document.createElement('i'); d.className = 'netdot'; d.id = 'netDot'; (el.querySelector('.cnm') || el).appendChild(d); } }, 200);
   }
@@ -7355,6 +7367,8 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     offs.push(D.onValue(tkRef('seats'), s => { TK.seats = s.val() || {}; Object.keys(TK.seats).forEach(u => userLite(u).then(() => tkRenderLobby())); tkAutoSize(); tkRenderLobby(); }));
     offs.push(D.onValue(tkRef('state'), s => { const v = s.val(); if (v && v.d && v.v > TK.ver) tkApplyState(v); }));
     offs.push(D.onChildAdded(tkRef('rep'), s => { if (TK.host && T && T.online) tkHostApply(s.key, s.val()); }));
+    TK.live = {}; TK.liveSubs = {}; TK.liveSeen = {}; offs.push(D.onValue(tkRef('mr'), s => tkLiveSync(s.val() || {})));
+    { const gc = setInterval(tkLiveGC, 8000); offs.push(() => clearInterval(gc)); }
     tkChatInit(); prefs.tkCode = TK.code; savePrefs();
   }
   function tkAutoSize() { if (!TK.host || !TK.meta) return; const o = tkOpts(); if (o.auto === false) return; const want = tkDefN(o.kind, Math.max(1, Object.keys(TK.seats).length)); if (want !== o.n) ACCT.fb.D.update(tkRef('meta'), {opts: Object.assign({}, o, {n: want})}).catch(() => {}); }
@@ -7457,7 +7471,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     if (hostBack) ACCT.fb.D.get(tkRef('rep')).then(s => { const v = s.val() || {}; Object.keys(v).forEach(k => tkHostApply(k, v[k])); }).catch(() => {});
     if (!$('#screen-hub').hidden) renderHub(); else if (!$('#screen-tk').hidden) tkEnterHub();
   }
-  function tkEnterHub() { document.body.classList.add('tk'); show('hub'); renderHub(); tkFlush(); TK.lite = TK.lite || {}; ((T && T.online && T.online.humans) || []).forEach(h => { if (!TK.lite[h.u]) { TK.lite[h.u] = 1; userLite(h.u).then(() => { if (!$('#screen-hub').hidden && T && T.online) renderHub(); }); } }); }
+  function tkEnterHub() { try { bcClose(); } catch (e) {} document.body.classList.add('tk'); show('hub'); renderHub(); tkFlush(); TK.lite = TK.lite || {}; ((T && T.online && T.online.humans) || []).forEach(h => { if (!TK.lite[h.u]) { TK.lite[h.u] = 1; userLite(h.u).then(() => { if (!$('#screen-hub').hidden && T && T.online) renderHub(); }); } }); }
   /* ---- the fixtures: a stable key so everybody talks about the same match ---- */
   function tkKey(fx) {
     if (T.mds) for (let m = 0; m < T.mds.length; m++) { const i = (T.mds[m] || []).indexOf(fx); if (i >= 0) return 'g' + m + '_' + i; }
@@ -7505,7 +7519,8 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const fx = tkMyFx(); if (!fx) return; const id = tkMyClub(), meIsA = fx.a === id, oppId = meIsA ? fx.b : fx.a;
     if (tkHumanIds().includes(oppId)) { tkPlayH2H(fx, meIsA, oppId); return; }
     T.view = null; const o = T.online, comp = o.theme === 'auto' ? autoComp(fx.a, fx.b) : o.theme, th = comp ? compCtx(comp) : {};
-    startMatchCtx(Object.assign({me: teamObj(id), opp: teamObj(oppId), named: true, kind: koKind(fx) ? 'ko' : 'league', agg: aggFor(fx, meIsA)}, cupInfo(fx), th, {onResult: res => tkReport(fx, meIsA, res), onDone: () => tkEnterHub()}));
+    startMatchCtx(Object.assign({me: teamObj(id), opp: teamObj(oppId), named: true, kind: koKind(fx) ? 'ko' : 'league', agg: aggFor(fx, meIsA)}, cupInfo(fx), th, {bseed: true, seed: Math.floor(Math.random() * 1e9) + 1, comp: comp || '', onResult: res => tkReport(fx, meIsA, res), onDone: () => tkEnterHub()}));
+    bcOpenCpu(fx, meIsA);
   }
   /* ---- a match between two friends of the tournament: the side that owns the home team opens a room, the other joins it ---- */
   const tkComp = (a, b) => { const th = T && T.online ? T.online.theme : 'auto'; return th === 'auto' ? autoComp(a, b) : th; };
@@ -7606,6 +7621,228 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   $('#tkCopy').onclick = async () => { try { await navigator.clipboard.writeText(TK.code.toUpperCase()); toast('اتنسخ ✔'); } catch (e) { toast(TK.code.toUpperCase()); } };
   $('#tkResume').onclick = () => { if (prefs.tkCode) tkJoin(prefs.tkCode); };
   function tkOpen() { if (!ACCT.profile) { toast('لازم تسجّل دخول الأول'); return; } $('#tkResume').hidden = !prefs.tkCode; $('#tkResume').textContent = 'كمّل بطولتك (' + String(prefs.tkCode || '').toUpperCase() + ')'; tkMsg(''); show('tk'); $('#tkEntry').hidden = false; $('#tkLobby').hidden = true; $('#tkWait').hidden = true; }
+
+  /* ================= live score of the other friends' matches, outside the match ================= */
+  /* the two players of a match send a tiny "score" line into their room (a goal, and a heartbeat with the minute);
+     everybody in the tournament listens to it, so the hub shows the score and the minute and a goal makes a sound */
+  function liveEmit(kind, who, name, minute) {
+    const room = bcRoom(); if (!room || !M || !M.bkey) return;
+    const mm = M, key = M.bkey, mine = M.bmeIsA !== false, a = mine ? scores.me : scores.opp, b = mine ? scores.opp : scores.me;
+    mm.liveQ = (mm.liveQ || 0) + 1;
+    const d = {k: key, q: mm.liveQ, a, b, m: Math.max(1, minuteNow()), ph: _ended ? 'ft' : penOn ? 'pk' : xt ? 'et' : 'live'};
+    if (kind === 'g') { d.n = String(name || '').slice(0, 24); d.w = ((who === 'me') === mine) ? 'a' : 'b'; d.gm = minute; }
+    room.emit('sc', d).catch(() => {});
+    if (!mm.liveT) { mm.liveT = setInterval(() => { if (M !== mm || mm.liveOver) { clearInterval(mm.liveT); return; } liveEmit('t'); }, 12000); }
+  }
+  const liveInner = lv => `<b>${lv.a}</b><i>-</i><b>${lv.b}</b><small>🔴 ${lv.ph === 'pk' ? 'ركلات' : lv.ph === 'ft' ? 'نهاية' : lv.m + '’'}</small>`;
+  function tkLiveCell(fx, dflt) {
+    try { if (!(T && T.online) || fx.res) return dflt; const k = tkKey(fx), lv = k && TK.live && TK.live[k]; if (!lv) return dflt; return '<div class="sc res live" data-lvk="' + k + '" data-spec="' + k + '" title="شاهد الماتش">' + liveInner(lv) + '</div>'; } catch (e) { return dflt; }
+  }
+  function tkLiveSync(mr) {
+    const {D, db} = ACCT.fb;
+    Object.keys(mr).forEach(key => {
+      const room = mr[key] && mr[key].room; if (!room || (TK.liveSubs[key] && TK.liveSubs[key].room === room)) return;
+      if (TK.liveSubs[key] && TK.liveSubs[key].off) { try { TK.liveSubs[key].off(); } catch (e) {} }
+      const off = D.onValue(D.ref(db, 'cardgoal/rooms/' + room + '/slots/sc'), s => tkLiveIn(key, s.val()));
+      TK.liveSubs[key] = {room, off}; TK.offs.push(off);
+    });
+  }
+  function tkLiveIn(key, v) {
+    if (!T || !T.online) return;
+    let best = null;
+    Object.keys(v || {}).forEach(pid => { const e = v[pid]; if (!e || typeof e.d !== 'string') return; let d; try { d = JSON.parse(e.d); } catch (x) { return; } if (d && d.k === key && (!best || (e.ts || 0) >= best.ts)) best = {ts: e.ts || 0, d}; });
+    const fx = tkFind(key);
+    if (!best || !fx || fx.res || ACCT.fb.now() - best.ts > 45000 || best.d.ph === 'ft') { if (TK.live[key]) { delete TK.live[key]; tkLiveRefresh(key, true); } return; }
+    const d = best.d, lv = {a: +d.a || 0, b: +d.b || 0, m: +d.m || 1, ph: d.ph || 'live', n: d.n || '', w: d.w || '', gm: d.gm, ts: best.ts};
+    const tot = lv.a + lv.b, prev = TK.liveSeen[key]; TK.liveSeen[key] = tot; const was = !!TK.live[key]; TK.live[key] = lv;
+    if (prev != null && tot > prev) tkLiveGoal(key, fx, lv);
+    tkLiveRefresh(key, !was);
+  }
+  function tkLiveGoal(key, fx, lv) {
+    const mineNow = NET && NET.tk && tkKey(NET.tk.fx) === key;
+    if (mineNow || M) return;      /* in a match of my own the sounds are already there */
+    try { sfx.cheer(); setTimeout(() => sfx.whistle(), 150); } catch (e) {}
+    try { toast('⚽ جووول! ' + teamObj(fx.a).name + ' ' + lv.a + ' - ' + lv.b + ' ' + teamObj(fx.b).name + (lv.n ? ' · ' + lv.n + (lv.gm ? ' ' + lv.gm + '’' : '') : '')); } catch (e) {}
+    const row = document.querySelector('[data-lvk="' + key + '"]'); if (row) { row.classList.remove('gl'); void row.offsetWidth; row.classList.add('gl'); }
+  }
+  function tkLiveBar() {
+    try {
+      if (!(T && T.online) || !TK.live) return ''; const ks = Object.keys(TK.live).filter(k => tkFind(k) && !tkFind(k).res); if (!ks.length) return '';
+      return '<div class="lvbar" role="status">' + ks.map(k => { const fx = tkFind(k), lv = TK.live[k]; return '<span class="lvi" data-lvb="' + k + '" data-spec="' + k + '" title="شاهد الماتش">🔴 ' + esc(teamObj(fx.a).name) + ' <b>' + lv.a + ' - ' + lv.b + '</b> ' + esc(teamObj(fx.b).name) + ' <small>' + (lv.ph === 'pk' ? 'ركلات' : lv.m + '’') + '</small> <em class="eye">👁 شاهد</em></span>'; }).join('') + '</div>';
+    } catch (e) { return ''; }
+  }
+  function tkLiveRefresh(key, rebuild) {
+    const el = document.querySelector('[data-lvk="' + key + '"]'), lv = TK.live[key], bar = document.querySelector('[data-lvb="' + key + '"]');
+    if (bar && lv && !rebuild) { const fx = tkFind(key); bar.innerHTML = '🔴 ' + esc(teamObj(fx.a).name) + ' <b>' + lv.a + ' - ' + lv.b + '</b> ' + esc(teamObj(fx.b).name) + ' <small>' + (lv.ph === 'pk' ? 'ركلات' : lv.m + '’') + '</small>'; }
+    if (el && lv) { el.innerHTML = liveInner(lv); if (!rebuild) return; }
+    if ($('#screen-hub') && !$('#screen-hub').hidden && (rebuild || el || bar)) { if (!rebuild && (bar && !el) ) return; try { renderHub(); } catch (e) {} }
+  }
+  function tkLiveGC() {
+    if (!TK.live) return; const now = ACCT.fb.now(); let ch = false;
+    Object.keys(TK.live).forEach(k => { if (now - TK.live[k].ts > 45000) { delete TK.live[k]; ch = true; } });
+    if (ch && $('#screen-hub') && !$('#screen-hub').hidden) { try { renderHub(); } catch (e) {} }
+  }
+
+  /* ================= watching a friend's match live ================= */
+  /* A match is made of a seed (the deck order) and the cards played, in order. The two players write both into the room:
+     'hd' = who plays, the seed, the competition; 'pl' = every card played so far (the log).
+     A viewer builds the same match from them and lets the engine play it, taking each card from the log. */
+  const RP = {list: [], i: 0, backlog() { return this.list.length - this.i; }};
+  let BC = null, SPEC = null;
+  const bcRoom = () => (M && M.online && NET && NET.room && NET.inMatch ? NET.room : (BC && M && M.bkey === BC.key ? BC.room : null));
+  const bcCode = () => { const c = 'abcdefghijklmnopqrstuvwxyz0123456789'; let s = ''; for (let i = 0; i < 4; i++) s += c[Math.floor(Math.random() * c.length)]; return s; };
+
+  function bcLog(x) {
+    if (!M || M.replay || !M.plog) return;
+    M.plog.push(x);
+    const room = bcRoom(); if (!room) return;
+    room.emit('pl', {k: M.bkey || '', n: M.plog.length, l: M.plog.join(',')}).catch(() => {});
+  }
+  function bcHeader() {
+    const room = bcRoom(); if (!room || !M) return;
+    const meIsA = M.bmeIsA !== false, ag = M.agg ? {a: meIsA ? M.agg.me : M.agg.opp, b: meIsA ? M.agg.opp : M.agg.me} : null;
+    const hs = (meIsA === !M.flip) ? 'a' : 'b';
+    room.emit('hd', {k: M.bkey || '', seed: M.seed || 1, a: meIsA ? M.me.id : M.opp.id, b: meIsA ? M.opp.id : M.me.id, hs, kind: M.kind || 'friendly', ag, et: M.et || '', th: M.comp || '',
+      ca: String((meIsA ? M.me : M.opp).coachName || ''), cb: String((meIsA ? M.opp : M.me).coachName || ''), v: APP_VER}).catch(() => {});
+  }
+  /* a match between two friends: the room is already there */
+  function bcStartOnline(n) {
+    if (!M || !M.online) return;
+    M.bkey = n.tk ? n.tk.key : ''; M.bmeIsA = n.tk ? !!n.tk.meIsA : !M.flip; M.plog = [];
+    bcHeader(); try { n.offs.push(specWatch(n.room)); } catch (e) {}
+  }
+  /* a friend against the computer: nobody else is in the match, so a room is opened just to carry it */
+  async function bcOpenCpu(fx, meIsA) {
+    try {
+      const key = tkKey(fx); if (!key || !ACCT.fb || !ACCT.user || !M) return;
+      M.bkey = key; M.bmeIsA = meIsA; M.plog = []; const mm = M;
+      let room = null, code = '';
+      for (let i = 0; i < 6 && !room; i++) { code = bcCode(); try { room = await svc().join('basra-' + code, {create: true}); } catch (e) { if (!/taken/.test(String(e && e.message))) throw e; } }
+      if (!room) return;
+      if (M !== mm) { room.leave(); return; }
+      BC = {room, code, key, offs: []};
+      await ACCT.fb.D.set(tkRef('mr/' + key), {room: code, u: ACCT.user.uid, ts: ACCT.fb.D.serverTimestamp()});
+      bcHeader(); if (M.plog.length) room.emit('pl', {k: key, n: M.plog.length, l: M.plog.join(',')}).catch(() => {});
+      BC.offs.push(specWatch(room)); BC.offs.push(room.on('rx', ev => rxShow(ev.data)));
+      try { liveEmit('t'); } catch (e) {}
+    } catch (e) {}
+  }
+  function bcClose() {
+    if (!BC) return; const b = BC; BC = null;
+    (b.offs || []).forEach(f => { try { f(); } catch (e) {} }); try { b.room.leave(); } catch (e) {}
+    specChip(0);
+  }
+
+  /* who is watching: a counter next to the reaction buttons, and a line in the match chat when somebody comes in */
+  function specChip(n) {
+    const scr = $('#screen-match'); let c = $('#specChip');
+    if (!n || !scr) { if (c) c.remove(); return; }
+    if (!c) { c = document.createElement('div'); c.id = 'specChip'; scr.appendChild(c); }
+    c.textContent = '👀 ' + n;
+  }
+  function specSay(t) {
+    try { if (NET && NET.room && M && M.online) { mcEnsure(); if (NET.mchat) { NET.mchat.sys(t); if ($('#mchat') && $('#mchat').hidden) toast(t); } } else toast(t); } catch (e) {}
+  }
+  function specWatch(room) {
+    if (!room || !room.onSpec) return () => {};
+    const off = room.onSpec(ch => {
+      ch.joined.forEach(s => specSay((s.n || 'حد') + ' دخل يشاهد 👀'));
+      ch.left.forEach(s => specSay((s.n || 'حد') + ' خرج من المشاهدة'));
+      specChip(room.spectators().length);
+    });
+    specChip(room.spectators().length); return off;
+  }
+
+  /* ---- the viewer ---- */
+  async function replayNext(who) {
+    const my = tok;
+    for (;;) {
+      if (my !== tok || !M || !M.replay) return null;
+      if (RP.i < RP.list.length) {
+        const id = RP.list[RP.i];
+        if (typeof id === 'number') {
+          RP.i++; speed = RP.backlog() > 3 ? 8 : 1; await wait(RP.backlog() > 3 ? 120 : 900);
+          if (my !== tok) return null;
+          return hands.me.concat(hands.opp).find(c => c.id === id) || null;
+        }
+      }
+      await new Promise(r => setTimeout(r, 250));
+    }
+  }
+  async function replayMode() {
+    const my = tok;
+    for (;;) {
+      if (my !== tok || !M || !M.replay) return 'full';
+      const x = RP.list[RP.i];
+      if (x === 'F' || x === 'G') { RP.i++; return x === 'F' ? 'full' : 'golden'; }
+      await new Promise(r => setTimeout(r, 250));
+    }
+  }
+  function specBar() {
+    const old = $('#rxBar'); if (old) old.remove();
+    const b = document.createElement('div'); b.id = 'rxBar';
+    b.innerHTML = '<button type="button" class="rx-t" aria-label="تفاعل">😀</button><div class="rx-r">' + RX.map(e => `<button type="button" data-e="${e}">${e}</button>`).join('') + '</div>';
+    $('#screen-match').appendChild(b);
+    let last = 0;
+    b.onclick = e => {
+      const x = e.target.closest('[data-e]'); if (!x || !SPEC) return;
+      const now = Date.now(); if (now - last < 900) return; last = now;
+      rxShow({e: x.dataset.e}); SPEC.r.emit('rx', {e: x.dataset.e, t: now}).catch(() => {});
+    };
+  }
+  function specClose(silent) {
+    const sp = SPEC; if (!sp) return; SPEC = null;
+    clearInterval(sp.wd); (sp.offs || []).forEach(f => { try { f(); } catch (e) {} }); try { sp.r.leave(); } catch (e) {}
+    RP.list = []; RP.i = 0; specChip(0); const b = $('#rxBar'); if (b) b.remove();
+  }
+  function specExit() { specClose(); try { tkEnterHub(); } catch (e) { show('home'); } }
+  async function specJoin(code, key) {
+    if (SPEC) return;
+    try {
+      const nm = (ACCT.profile && ACCT.profile.name) || 'مشاهد';
+      const r = await svc().join('basra-' + code, {spec: true, name: nm});
+      const sp = {r, key: key || '', offs: [], started: false, lastN: -1, lastT: Date.now()}; SPEC = sp;
+      RP.list = []; RP.i = 0;
+      const startFrom = hd => {
+        if (sp.started || SPEC !== sp || !hd || (sp.key && hd.k && hd.k !== sp.key)) return; sp.started = true;
+        const kits = onlineKits(hd.a, 'home', teamObj(hd.b), 'h'); kits.me.coachName = hd.ca || ''; kits.opp.coachName = hd.cb || '';
+        let th = {}; try { th = hd.th ? compCtx(hd.th) : {}; } catch (e) {}
+        M = null;
+        startMatchCtx(Object.assign({me: kits.me, opp: kits.opp, homeName: kits.me.name, named: true, kind: hd.kind || 'friendly', agg: hd.ag ? {me: hd.ag.a, opp: hd.ag.b} : undefined, auto: true, replay: true, seed: hd.seed || 1, flip: hd.hs === 'b', et: hd.et || '', onResult: null, onDone: () => specExit()}, th));
+        specBar(); specChip(r.spectators().length);
+      };
+      sp.offs.push(r.on('hd', ev => startFrom(ev.data)));
+      sp.offs.push(r.on('pl', ev => {
+        const d = ev.data; if (!d || (sp.key && d.k && d.k !== sp.key) || !(d.n > sp.lastN)) return; sp.lastN = d.n; sp.lastT = Date.now();
+        const arr = String(d.l || '').split(',').filter(Boolean).map(x => (/^\d+$/.test(x) ? +x : x)); if (arr.length >= RP.list.length) RP.list = arr;
+      }));
+      sp.offs.push(r.on('rx', ev => rxShow(ev.data)));
+      sp.offs.push(r.onSpec(ch => { ch.joined.forEach(s => { if (s.pid !== r.pid) toast((s.n || 'حد') + ' دخل يشاهد 👀'); }); specChip(r.spectators().length); }));
+      sp.wd = setInterval(() => {
+        if (SPEC !== sp) { clearInterval(sp.wd); return; }
+        if (sp.started && (!M || !M.replay || $('#screen-match').hidden)) { specClose(); return; }
+        if (r.peers().length < 1 && Date.now() - sp.lastT > 25000 && RP.backlog() <= 0 && !_ended) { toast('الماتش اتقطع أو خلص'); specClose(); try { tkEnterHub(); } catch (e) {} }
+        if (!sp.started && Date.now() - sp.lastT > 15000) { toast('مفيش ماتش شغّال هنا'); specClose(); }
+        if (sp.started) { if (sp.si !== RP.i) { sp.si = RP.i; sp.st = Date.now(); } else if (RP.backlog() > 0 && sp.st && Date.now() - sp.st > 40000 && !(typeof _ended !== 'undefined' && _ended)) { toast('المشاهدة وقفت. ارجع وادخل تاني.'); specClose(); try { tkEnterHub(); } catch (e) { show('home'); } } }
+      }, 3000);
+    } catch (e) {
+      SPEC = null; toast(/noroom/.test(String(e && e.message)) ? 'الماتش ده خلص أو مش شغّال دلوقتي.' : /specfull/.test(String(e && e.message)) ? 'الماتش ده عليه 10 مشاهدين، جرّب بعد شوية.' : olErr(e));
+    }
+  }
+  function tkSpectate(key) {
+    const sub = TK.liveSubs && TK.liveSubs[key]; if (!sub || !sub.room) { toast('الماتش ده مش شغّال دلوقتي.'); return; }
+    specJoin(sub.room, key);
+  }
+  /* tapping a live match in the hub opens it */
+  (function wireHub() {
+    const hb = $('#hubBody'); if (!hb) return;
+    hb.addEventListener('click', e => {
+      const sp = e.target.closest('[data-spec]'); if (sp) { e.preventDefault(); e.stopPropagation(); tkSpectate(sp.dataset.spec); return; }
+      const w = e.target.closest('[data-w]'); if (!w || !T || !T.online) return;
+      const p = String(w.dataset.w).split(':'); const key = (p[0] || '') + (p[1] || '') + '_' + (p[2] || '');
+      if (TK.live && TK.live[key]) { e.preventDefault(); e.stopPropagation(); tkSpectate(key); }
+    }, true);
+  })();
 
 
   /* ================= chat: in a room, in a tournament, and between friends ================= */
@@ -9012,7 +9249,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const lgRow = ctx && ctx.k === 'g' && T.lg, ia = lgRow && isMine(fx.a) && !isMine(fx.b) ? HA.h : '', ib = lgRow && isMine(fx.b) && !isMine(fx.a) ? HA.a : '';
     const center = r
       ? `<div class="sc res${r.pa != null ? ' pen' : ''}${win ? ' dec' : ''}"><b class="${win === 'a' ? 'w' : ''}">${r.ga}</b><i>-</i><b class="${win === 'b' ? 'w' : ''}">${r.gb}</b>${r.pk ? '<small>ركلات ترجيح</small>' : r.pa != null ? `<small>(${r.pa}-${r.pb})</small>` : ''}${fx.agg ? `<small>مجموع <bdi dir="ltr">${r.ga + fx.agg.a}-${r.gb + fx.agg.b}</bdi></small>` : ''}</div>`
-      : '<div class="sc"><em>vs</em></div>';
+      : tkLiveCell(fx, '<div class="sc"><em>vs</em></div>');
     const tms = !T.tb && fx.t != null && ctx && ctx.k === 'g' ? `<small class="ktm">${hhmm(fx.t)}</small>` : '';
     const myT = ctx && ctx.cur && ctx.k === 'g' ? Math.min(...(T.mds[ctx.r] || []).filter(f => !f.res && (isMine(f.a) || isMine(f.b))).map(f => f.t != null ? f.t : 9999)) : null;
     const later = !T.tb && !r && myT != null && myT < 9999 && !mine && fx.t != null && fx.t >= myT;
@@ -9427,7 +9664,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     $('#hubTitle').innerHTML = T.tb ? esc(T.title || 'بطولة المدربين') : (T.lg === 'eng' ? '<i class="lgmark lion"></i>' : T.lg === 'esp' ? '<i class="lgmark ll"></i> ' : T.lg === 'ita' ? SA_MK : T.lg === 'ger' ? BL_MK : T.wc ? '<i class="wcmark"></i> ' : '') + esc(T.wc ? 'كاس العالم 2026 · 48 منتخب' : T.lg ? lgOf(T.lg).name + ' 26/27' : T.ucl ? 'دوري أبطال أوروبا 26/27 · ' + T.n + ' فرق' : FMTS[T.fmt].label + ' · ' + T.n + ' فرق');
     $('#hubStage').innerHTML = T.tb ? `<span>${stageLabel()}</span>` : (T.mine.length ? T.mine.map(id => crest(teamObj(id))).join('') : '<span>👁️</span>') + `<span>${stageLabel()}</span>`;
     $$('#hubTabs button').forEach(b => { b.hidden = (b.dataset.tab === 'table' && T.fmt === 'ko') || (b.dataset.tab === 'calendar' && (!T.lg || T.tb)); b.setAttribute('aria-pressed', b.dataset.tab === T.tab); if (b.dataset.tab === T.tab && b.scrollIntoView) b.scrollIntoView({block: 'nearest', inline: 'center'}); });
-    $('#hubBody').innerHTML = champHtml() + (T.tab === 'overview' ? overviewHtml() : T.tab === 'matches' ? matchesHtml() : T.tab === 'calendar' ? calendarHtml() : T.tab === 'table' ? tableHtml() : statsTabHtml());
+    $('#hubBody').innerHTML = tkLiveBar() + champHtml() + (T.tab === 'overview' ? overviewHtml() : T.tab === 'matches' ? matchesHtml() : T.tab === 'calendar' ? calendarHtml() : T.tab === 'table' ? tableHtml() : statsTabHtml());
     if (T.tab === 'calendar') requestAnimationFrame(() => { const n = document.querySelector('.cal-c.next'); if (n) n.scrollIntoView({block: 'center'}); });
     let cta = '';
     if (T.tb) {
