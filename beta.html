@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.13.0-beta">
+<head><meta name="app-version" content="1.14.0-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -1912,6 +1912,31 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
 #specChip{position:absolute;z-index:46;inset-inline-start:10px;bottom:62px;background:rgba(8,12,24,.82);border:1px solid rgba(255,255,255,.22);color:#eef2f8;border-radius:14px;padding:3px 11px;font:800 13px Cairo,sans-serif;direction:ltr}
 .lvi{cursor:pointer}.lvi .eye{font-style:normal;background:rgba(198,244,50,.16);border:1px solid rgba(198,244,50,.5);color:#dff58a;border-radius:10px;padding:0 8px;font-size:12px}.fx .sc.live{cursor:pointer}
 #rxBar .rx-r{display:flex;gap:4px}
+
+/* a computer match told from its fixed scenario */
+.cpul{position:fixed;inset:0;z-index:120;background:radial-gradient(circle at 50% 20%,#16224a 0,#080d1c 70%);display:grid;place-items:center;padding:16px;font-family:Cairo,sans-serif;color:#eef2f8}
+.cpl-in{width:100%;max-width:520px;display:flex;flex-direction:column;gap:14px}
+.cpl-top{display:flex;justify-content:space-between;align-items:center;font:900 15px Cairo,sans-serif;color:#ff8a8f}
+.cpl-sb{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#0b1226;border:1px solid #1c2a52;border-radius:24px;padding:16px 10px}
+.cpl-t{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}.cpl-t b{font:800 14px Cairo,sans-serif}
+.cpl-sc{text-align:center}.cpl-sc span{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:2px 10px}.cpl-sc b{font:900 40px Cairo,sans-serif;color:#ffd35c}.cpl-sc i{font-style:normal;font-size:26px;opacity:.6}.cpl-sc small{display:block;font:800 14px Cairo,sans-serif;color:#ff8a8f}.cpl-sc span.gl{animation:glow 1.2s ease-out}
+.cpl-bar{height:6px;background:#16213f;border-radius:4px;overflow:hidden}.cpl-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#c6f432,#ffd35c)}
+.cpl-ev{background:#0b1226;border:1px solid #1c2a52;border-radius:20px;padding:10px 14px;height:240px;overflow-y:auto}.cpl-ev p{margin:6px 0;font:700 14.5px/1.6 Cairo,sans-serif}.cpl-m{color:#9fb0d0;text-align:center}.cpl-g b{color:#ffd35c}.cpl-g em{font-style:normal;color:#8fa0c8;font-size:12.5px}.cpl-g small{color:#9fb0d0}
+.cpl-btns{display:flex;justify-content:center}
+
+/* username */
+.un-row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin:-2px 0 6px}
+.un-chip{background:rgba(198,244,50,.1);border:1px solid rgba(198,244,50,.4);color:#e2f89a;border-radius:14px;padding:3px 12px;font:800 15px Cairo,sans-serif;cursor:pointer;direction:ltr}.un-chip i{font-style:normal;font-size:12px;opacity:.7;margin-inline-start:6px;background:rgba(255,255,255,.1);border-radius:8px;padding:0 7px}
+.un-ed{background:none;border:0;color:#8fa0c8;text-decoration:underline;font:700 12.5px Cairo,sans-serif;cursor:pointer}
+.unscr{position:fixed;inset:0;z-index:140;background:rgba(5,7,13,.94);backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;font-family:Cairo,sans-serif;color:#eef2f8}.unscr[hidden]{display:none}
+.un-in{position:relative;width:100%;max-width:420px;background:#0e1424;border:1px solid #1f2a4d;border-radius:28px;padding:26px 22px 22px;display:flex;flex-direction:column;gap:12px;text-align:center}
+.un-x{position:absolute;top:12px;left:12px}.un-ico{width:64px;height:64px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:rgba(198,244,50,.12);border:2px solid #c6f432;color:#c6f432;font:900 32px Cairo,sans-serif}
+.unscr h2{font:900 22px Cairo,sans-serif}.un-p{color:#a6b2c8;font:600 14px/1.8 Cairo,sans-serif}.un-p b{color:#ffd35c}
+.un-f{display:flex;align-items:center;background:#070b14;border:1.5px solid #26335a;border-radius:16px;padding:0 14px;gap:4px}.un-f:focus-within{border-color:#c6f432}.un-f span{font:900 20px Cairo,sans-serif;color:#c6f432}
+.un-f input{flex:1;background:none;border:0;outline:0;color:#fff;font:800 20px Cairo,sans-serif;padding:13px 0;text-align:left;direction:ltr;min-width:0}
+.un-st{min-height:22px;font:700 13.5px Cairo,sans-serif;color:#8fa0c8}.un-st.good{color:#7ee787}.un-st.bad{color:#ff8a8f}
+.un-sug{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}.un-sug small{width:100%;color:#7C88A3;font:700 12px Cairo,sans-serif}.un-s{background:#121b34;border:1px solid #2a3a6e;color:#dbe6ff;border-radius:14px;padding:6px 12px;font:800 14px Cairo,sans-serif;direction:ltr;cursor:pointer}.un-s:hover{border-color:#c6f432}
+body.un-open{overflow:hidden}
 </style>
 </head>
 <body>
@@ -2130,7 +2155,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   <div class="wrap">
     <div class="topbar"><button class="ib back" type="button" id="pfBack" aria-label="رجوع" hidden>→</button><h2 id="pfTitle">حسابي</h2><button class="ib gear" type="button" data-settings aria-label="الإعدادات" title="الإعدادات"><i class="ha ha-gear"></i></button></div>
     <div id="pfView">
-      <section class="sh-pcard"><div class="pv-av" id="pvAv"></div><button class="sh-chip" type="button" id="pfEditBtn">غيّر شخصيتك ✎</button><h2 id="pvName"></h2><p id="pvSub"></p><div class="pv-lvl" id="pvLvl"></div></section>
+      <section class="sh-pcard"><div class="pv-av" id="pvAv"></div><button class="sh-chip" type="button" id="pfEditBtn">غيّر شخصيتك ✎</button><h2 id="pvName"></h2><div class="un-row"><button type="button" class="un-chip" id="pvUn" dir="ltr" hidden></button><button type="button" class="un-ed" id="pvUnEdit" hidden>غيّر (مرة واحدة)</button></div><p id="pvSub"></p><div class="pv-lvl" id="pvLvl"></div></section>
       <div class="pf-stats" id="pfStats"></div>
       <div id="pvClub"></div>
       <section class="sh-card" id="pvOwnerCard" hidden></section>
@@ -2164,7 +2189,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
     <div class="seg" id="frTabs" role="group" aria-label="الأصدقاء"><button type="button" data-t="mine">أصدقائي</button><button type="button" data-t="reqs">الطلبات <em id="frReqN"></em></button></div>
     <div id="frMine"><div id="frList" class="sh-list"></div><p class="sh-empty" id="frEmpty" hidden>لسه معندكش أصدقاء. ضيف صاحبك بالكود اللي تحت.</p></div>
     <div id="frReqs" hidden><div id="frReqList" class="sh-list"></div><p class="sh-empty" id="frReqEmpty" hidden>مفيش طلبات.</p></div>
-    <section class="sh-card"><h4>ضيف صاحب بالكود</h4><div class="fr-add"><input id="frCode" type="text" maxlength="6" dir="ltr" autocomplete="off" placeholder="ABC123" aria-label="كود الصاحب"><button class="btn" id="frAdd" type="button">ضيف</button></div><p class="ol-status" id="frMsg" aria-live="polite"></p><div class="fr-me"><div><small>كودك</small><b id="frMyCode" dir="ltr">------</b></div><button class="sh-chip" type="button" id="frCopy">نسخ</button><button class="sh-chip" type="button" id="frShare">شارك</button></div></section>
+    <section class="sh-card"><h4>ضيف صاحب بيوزرنيمه</h4><div class="fr-add"><input id="frCode" type="text" maxlength="16" dir="ltr" autocomplete="off" autocapitalize="none" placeholder="@username" aria-label="اليوزرنيم أو الكود"><button class="btn" id="frAdd" type="button">ضيف</button></div><p class="ol-status" id="frMsg" aria-live="polite"></p><div class="fr-me"><div><small id="frMyL">اليوزرنيم بتاعك</small><b id="frMyCode" dir="ltr">------</b></div><button class="sh-chip" type="button" id="frCopy">نسخ</button><button class="sh-chip" type="button" id="frShare">شارك</button></div></section>
   </div>
 </section>
 <section class="screen shell tabbed" id="screen-msgs" hidden>
@@ -2205,6 +2230,19 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
 </section>
 <button type="button" class="chatfab" id="tkChatFab" aria-label="شات البطولة" hidden>💬<i id="tkChatDot" hidden></i></button>
 <div class="chatsheet" id="chatSheet" hidden><div class="cs-in"><div class="cs-top"><b>شات البطولة</b><button type="button" class="ib" id="chatSheetX" aria-label="قفل">✕</button></div><div id="tkChat2"></div></div></div>
+
+<div class="unscr" id="unScr" hidden role="dialog" aria-modal="true" aria-labelledby="unT">
+  <div class="un-in">
+    <button type="button" class="ib un-x" id="unX" aria-label="قفل" hidden>✕</button>
+    <div class="un-ico">@</div>
+    <h2 id="unT">اختار اليوزرنيم بتاعك</h2>
+    <p class="un-p">ده اسمك الخاص بالإنجليزي. <b>مش بيظهر لأي حد في اللعبة</b>، وإنت اللي بتديه لصاحبك علشان يضيفك.<br><span id="unRule">تقدر تغيّره مرة واحدة بس في أول 7 أيام.</span></p>
+    <label class="un-f" dir="ltr"><span>@</span><input id="unIn" type="text" maxlength="15" autocomplete="off" autocapitalize="none" spellcheck="false" inputmode="latin" placeholder="username" aria-label="اليوزرنيم"></label>
+    <p class="un-st" id="unSt" aria-live="polite">3 لـ 15 حرف: إنجليزي وأرقام و_ وأول حرف لازم يكون حرف.</p>
+    <div class="un-sug" id="unSug"></div>
+    <button class="btn" id="unOk" type="button" disabled>تأكيد</button>
+  </div>
+</div>
 <!-- ============ MATCH ============ -->
 <div class="app" id="screen-match" hidden>
   <header class="board" aria-label="النتيجة">
@@ -6533,7 +6571,7 @@ body:not(.inmatch){background:var(--sbg)!important;color:var(--stx)}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.13.0-beta';
+  const APP_VER = '1.14.0-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -6960,7 +6998,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   const avHtml = (av, sz, lvl) => { sz = sz || 40; return `<span class="av" style="width:${sz}px;height:${Math.round(sz * (lvl ? 124 : 116) / 112)}px">${avSvg(av, lvl, sz)}</span>`; };
   const myAge = () => (ACCT.profile ? ageDays(ACCT.profile.created) : 0);
   const myLvl = () => (ACCT.profile && ACCT.profile.created ? lvlOf(myAge()) : '');
-  const normProfile = p => { p = p || {}; return {name: String(p.name || '').slice(0, 16), av: cleanAv(p.av, true), vf: p.vf === true, club: p.club && clubDef(String(p.club)) ? String(p.club) : '', fc: /^[A-Z0-9]{6}$/.test(p.fc || '') ? p.fc : '', created: +p.createdAt || +p.created || 0}; };
+  const normProfile = p => { p = p || {}; return {name: String(p.name || '').slice(0, 16), av: cleanAv(p.av, true), vf: p.vf === true, club: p.club && clubDef(String(p.club)) ? String(p.club) : '', fc: /^[A-Z0-9]{6}$/.test(p.fc || '') ? p.fc : '', un: /^[a-z][a-z0-9_]{2,14}$/.test(p.un || '') ? p.un : '', unAt: +p.unAt || 0, unCh: !!p.unCh, created: +p.createdAt || +p.created || 0}; };
   const UL = {};
   function userLite(uid) { if (!uid || !ACCT.fb) return Promise.resolve(null); if (UL[uid]) return UL[uid].p; const rec = UL[uid] = {v: null}; const {D, db} = ACCT.fb; rec.p = D.get(D.ref(db, 'cardgoal/users/' + uid)).then(s => { const v = s.val(); rec.v = v ? {name: String(v.name || '').slice(0, 16), av: cleanAv(v.av, true), vf: v.vf === true, created: +v.createdAt || 0} : null; return rec.v; }).catch(() => { delete UL[uid]; return null; }); return rec.p; }
   const ulv = uid => (UL[uid] && UL[uid].v) || null;
@@ -7056,6 +7094,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function guestToLogin() { ACCT.guest = false; document.body.classList.remove('guest'); document.body.classList.add('gated'); if (ACCT.fb) showAuth(); else { show('auth'); auSet('محتاج إنترنت علشان تسجّل دخولك.', true); } }
   function acctDone() {
     ACCT.guest = false; document.body.classList.remove('guest'); document.body.classList.remove('gated'); show('home'); renderHome(); renderMeChip(); try { friendsInit(); } catch (e) {}
+    try { unGate(); } catch (e) {}
     if (!ACCT.dl) { ACCT.dl = true; deepLink(); }
   }
   const devType = () => { const u = navigator.userAgent || ''; return /iPhone|iPad|iPod/i.test(u) ? 'ios' : /Android/i.test(u) ? 'android' : /Windows|Macintosh|Linux|CrOS/i.test(u) ? 'desktop' : 'other'; };
@@ -7098,7 +7137,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const tb = $('#tabbar'); if (tb && typeof shellSync === 'function' && !$('#screen-profile').hidden) tb.hidden = pfEdit;
     if (!pfEdit && p) {
       const nx = NEXT_LV(w), cur = p.created ? lvlOf(w) : '';
-      $('#pvAv').innerHTML = avHtml(p.av, 132, cur); $('#pvName').innerHTML = nameHtml(p.name, p.vf) + (p.vf ? ' <span class="otag">المؤسس · Owner</span>' : ''); ownerCard(); $('#pvSub').textContent = (p.club ? 'مشجع ' + teamObj(p.club).name + ' · ' : '') + (cur ? 'التاج ال' + CROWNS[cur][2] : 'لسه من غير تاج');
+      $('#pvAv').innerHTML = avHtml(p.av, 132, cur); $('#pvName').innerHTML = nameHtml(p.name, p.vf) + (p.vf ? ' <span class="otag">المؤسس · Owner</span>' : ''); ownerCard(); try { unPaint(); } catch (e) {} $('#pvSub').textContent = (p.club ? 'مشجع ' + teamObj(p.club).name + ' · ' : '') + (cur ? 'التاج ال' + CROWNS[cur][2] : 'لسه من غير تاج');
       $('#pvLvl').innerHTML = nx ? `<div class="pbar"><i style="width:${Math.min(100, Math.round(w / nx.n * 100))}%"></i></div><small>${nx.n - w} يوم لحد التاج ال${CROWNS[nx.k][2]}</small>` : '<small>وصلت لأعلى تاج 👑</small>';
       $('#pfStats').innerHTML = [['يوم معانا', w], ['أصدقاء', (typeof FR !== 'undefined' && FR.ids) ? FR.ids.length : 0]].map(x => `<div><b>${x[1]}</b><span>${x[0]}</span></div>`).join('');
       $('#pvClub').innerHTML = p.club ? `<a class="sh-row">${crest(teamObj(p.club))}<div><b>${esc(teamObj(p.club).name)}</b><small>فريقك المفضل</small></div></a>` : '';
@@ -7164,6 +7203,93 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   $('#pfClubClear').onclick = () => { PED.club = ''; $('#pfClub').innerHTML = '<span class="pb-name">بدون</span><span class="pb-go">‹</span>'; };
   $('#pfSave').onclick = pfSave; $('#pfLogout').onclick = acctLogout; $('#pfLogout2').onclick = acctLogout; $('#pfDelete').onclick = acctDelete;
   $('#pfResend').onclick = async () => { try { await ACCT.fb.Au.sendEmailVerification(ACCT.user); toast('بعتنا رسالة التأكيد ✔'); } catch (e) { toast(acErr(e)); } };
+
+  /* ================= username: a private name in English; nobody sees it in the game, the player gives it to a friend who searches with it ================= */
+  const UN_RE = /^[a-z][a-z0-9_]{2,14}$/, UN_WIN = 7 * 86400000;
+  const UN_RES = /^(admin|owner|cardgoal|cardgoooooooal|support|mod|moderator|staff|official|system|root|atef|atefgames|help|team|bot)$/;
+  const unOk = v => UN_RE.test(v) && (isOwner() || !UN_RES.test(v));
+  const unCanChange = () => { const p = ACCT.profile; return !!(p && p.un && !p.unCh && p.unAt && ACCT.fb && ACCT.fb.now() - p.unAt < UN_WIN); };
+  let UN = null;
+
+  /* every player must have one: the old ones are asked the first time they open the game, the new ones right after they create the account */
+  function unGate() {
+    if (!GATE || !ACCT.fb || !ACCT.user || ACCT.offline || ACCT.guest) return;
+    if (ACCT.profile && !ACCT.profile.un) unOpen(true);
+  }
+  function unPaint() {
+    const p = ACCT.profile, b = $('#pvUn'), e = $('#pvUnEdit'); if (!b || !e) return;
+    b.hidden = !(p && p.un); b.innerHTML = p && p.un ? '@' + esc(p.un) + ' <i>نسخ</i>' : ''; e.hidden = !unCanChange();
+  }
+  async function unCopy() {
+    const p = ACCT.profile; if (!p || !p.un) return; const t = '@' + p.un;
+    try { await navigator.clipboard.writeText(t); toast('اتنسخ ✔'); } catch (e) { toast(t); }
+  }
+  function unSet(msg, kind) { const s = $('#unSt'); s.innerHTML = msg; s.className = 'un-st ' + (kind || ''); }
+  async function unFree(v) {
+    const {D, db} = ACCT.fb; const s = await D.get(D.ref(db, 'cardgoal/usernames/' + v)); return !s.exists();
+  }
+  async function unSuggest() {
+    const p = ACCT.profile || {}, W = ['striker', 'keeper', 'captain', 'legend', 'goal', 'champ', 'basra', 'ace', 'king', 'pro', 'star', 'boss', 'magic', 'flash'];
+    const club = p.club && /^[a-z0-9]+$/.test(String(p.club)) ? String(p.club).slice(0, 8) : '';
+    const r = n => Math.floor(10 + Math.random() * n), pick = () => W[Math.floor(Math.random() * W.length)];
+    const c = [];
+    if (club) { c.push(club + '_fan' + r(90)); c.push(club + '_' + pick()); c.push(pick() + '_' + club); }
+    for (let i = 0; i < 9; i++) { const k = i % 3; c.push(k === 0 ? pick() + r(900) : k === 1 ? 'the_' + pick() + r(90) : pick() + '_' + pick()); }
+    const uniq = [...new Set(c)].filter(x => unOk(x)).slice(0, 12);
+    const ok = (await Promise.all(uniq.map(x => unFree(x).then(f => f ? x : '').catch(() => '')))).filter(Boolean);
+    return ok.slice(0, 4);
+  }
+  function unOpen(forced) {
+    const sc = $('#unScr'); if (!sc || !ACCT.fb || !ACCT.user) return;
+    UN = {forced: !!forced, ok: '', seq: 0, t: 0, saving: false};
+    const has = !!(ACCT.profile && ACCT.profile.un);
+    $('#unT').textContent = has ? 'غيّر اليوزرنيم' : 'اختار اليوزرنيم بتاعك';
+    $('#unRule').textContent = has ? 'ده تغيير واحد بس، وبعدها اليوزرنيم بيثبت.' : 'تقدر تغيّره مرة واحدة بس في أول 7 أيام.';
+    $('#unX').hidden = !!forced; $('#unIn').value = ''; $('#unOk').disabled = true; $('#unSug').innerHTML = '';
+    unSet('3 لـ 15 حرف: إنجليزي وأرقام و_ وأول حرف لازم يكون حرف.'); sc.hidden = false; document.body.classList.add('un-open');
+    setTimeout(() => { try { $('#unIn').focus(); } catch (e) {} }, 100);
+    unSuggest().then(list => {
+      if (!UN || $('#unScr').hidden) return;
+      $('#unSug').innerHTML = list.length ? '<small>مقترحات متاحة:</small>' + list.map(x => `<button type="button" class="un-s" data-u="${x}">@${x}</button>`).join('') : '';
+      $$('#unSug .un-s').forEach(b => { b.onclick = () => { $('#unIn').value = b.dataset.u; unCheck(); }; });
+    }).catch(() => {});
+  }
+  function unClose() { const sc = $('#unScr'); if (sc) sc.hidden = true; document.body.classList.remove('un-open'); UN = null; }
+  function unCheck() {
+    if (!UN) return; const inp = $('#unIn'); let v = inp.value.toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 15); if (inp.value !== v) inp.value = v;
+    UN.ok = ''; $('#unOk').disabled = true; clearTimeout(UN.t); const seq = ++UN.seq;
+    if (!v) { unSet('3 لـ 15 حرف: إنجليزي وأرقام و_ وأول حرف لازم يكون حرف.'); return; }
+    if (!/^[a-z]/.test(v)) { unSet('لازم يبدأ بحرف إنجليزي.', 'bad'); return; }
+    if (v.length < 3) { unSet('3 حروف على الأقل.', 'bad'); return; }
+    if (!unOk(v)) { unSet('الاسم ده محجوز للنظام، جرّب غيره.', 'bad'); return; }
+    if (ACCT.profile && ACCT.profile.un === v) { unSet('ده اسمك الحالي.', 'bad'); return; }
+    unSet('بندوّر…');
+    UN.t = setTimeout(async () => {
+      try { const f = await unFree(v); if (!UN || seq !== UN.seq) return; if (f) { UN.ok = v; $('#unOk').disabled = false; unSet('متاح ✔  <bdi dir="ltr">@' + v + '</bdi>', 'good'); } else unSet('اتاخد 😕 جرّب غيره.', 'bad'); }
+      catch (e) { if (UN && seq === UN.seq) unSet('محتاج إنترنت.', 'bad'); }
+    }, 320);
+  }
+  async function unSave() {
+    if (!UN || !UN.ok || UN.saving) return; const v = UN.ok; UN.saving = true; $('#unOk').disabled = true; unSet('بنحجز…');
+    const {D, db} = ACCT.fb, uid = ACCT.user.uid, p = ACCT.profile, upd = {}, had = !!p.un;
+    upd['usernames/' + v] = uid; upd['users/' + uid + '/un'] = v;
+    if (had) { upd['usernames/' + p.un] = null; upd['users/' + uid + '/unCh'] = 1; } else upd['users/' + uid + '/unAt'] = D.serverTimestamp();
+    try {
+      await D.update(D.ref(db, 'cardgoal'), upd);
+      p.un = v; if (!p.unAt) p.unAt = ACCT.fb.now(); if (had) p.unCh = true; cacheProfile();
+      unClose(); toast('اتحجز ✔'); try { unPaint(); frPaint(); } catch (e) {}
+    } catch (e) {
+      if (UN) {
+        UN.saving = false;
+        if (/permission/i.test(String((e && (e.code || e.message)) || ''))) { unSet('التحديث ده لسه ما اتفعّلش عند صاحب اللعبة. تقدر تكمّل دلوقتي وهنسألك تاني بعدين.', 'bad'); $('#unX').hidden = false; $('#unOk').disabled = false; }
+        else { unSet('اتحجز في اللحظة دي أو فيه مشكلة. جرّب اسم تاني.', 'bad'); unCheck(); }
+      }
+    }
+  }
+  $('#unIn').addEventListener('input', unCheck);
+  $('#unIn').addEventListener('keydown', e => { if (e.key === 'Enter') unSave(); });
+  $('#unOk').onclick = unSave; $('#unX').onclick = unClose;
+  $('#pvUn').onclick = unCopy; $('#pvUnEdit').onclick = () => unOpen(false);
 
 
   /* ================= app shell: tab bar, look (dark / light), play hub, friends, ranking, invites ================= */
@@ -7237,7 +7363,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const rq = Object.keys(FR.reqs); $('#frReqList').innerHTML = rq.map(id => `<a class="sh-row" data-id="${id}">${frAv(id, 46)}<div><b>${esc(FR.reqs[id].n || frName(id))}</b><small>عايز يضيفك</small></div><button class="sm" data-rq="ok">قبول</button><button class="sm ghost" data-rq="no">رفض</button></a>`).join(''); $('#frReqEmpty').hidden = !!rq.length;
     $$('#frReqList [data-rq]').forEach(b => { b.onclick = () => { const id = b.closest('[data-id]').dataset.id; friendReq(id, b.dataset.rq === 'ok'); }; });
     $$('#frTabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === FR.tab)); $('#frMine').hidden = FR.tab !== 'mine'; $('#frReqs').hidden = FR.tab !== 'reqs';
-    $('#frMyCode').textContent = (ACCT.profile && ACCT.profile.fc) || '------';
+    { const pp = ACCT.profile || {}; $('#frMyCode').textContent = pp.un ? '@' + pp.un : (pp.fc || '------'); $('#frMyL').textContent = pp.un ? 'اليوزرنيم بتاعك' : 'كودك'; }
     plFriends(); if (!$('#screen-home').hidden) homeShell(); if (!$('#screen-msgs').hidden) msgsPaint();
   }
   function friendsInit() {
@@ -7253,12 +7379,16 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function friendsOpen() { frPaint(); acctEnsureCode().then(frPaint); }
   $$('#frTabs button').forEach(b => { b.onclick = () => { FR.tab = b.dataset.t; frPaint(); }; });
   async function friendAdd() {
-    const code = $('#frCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, ''), msg = t => { $('#frMsg').textContent = t; };
-    if (code.length !== 6) { msg('الكود 6 حروف وأرقام.'); return; } if (!ACCT.fb) { msg('محتاج إنترنت.'); return; }
+    const raw = $('#frCode').value.trim(), msg = t => { $('#frMsg').textContent = t; };
+    const un = raw.replace(/^@/, '').toLowerCase().replace(/[^a-z0-9_]/g, ''), code = raw.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (!un && !code) { msg('اكتب اليوزرنيم بتاع صاحبك (زي @ahmed).'); return; } if (!ACCT.fb) { msg('محتاج إنترنت.'); return; }
     const {D, db} = ACCT.fb, me = ACCT.user.uid; msg('بندوّر…');
     try {
-      const s = await D.get(D.ref(db, 'cardgoal/codes/' + code)); if (!s.exists()) { msg('مفيش لاعب بالكود ده.'); return; }
-      const id = s.val(); if (id === me) { msg('ده كودك إنت 🙂'); return; } if (FR.ids.includes(id)) { msg('هو صاحبك بالفعل.'); return; }
+      let id = '';
+      if (un.length >= 3 && /^[a-z]/.test(un)) { const s = await D.get(D.ref(db, 'cardgoal/usernames/' + un)); if (s.exists()) id = s.val(); }
+      if (!id && !/^@/.test(raw) && code.length === 6) { const s = await D.get(D.ref(db, 'cardgoal/codes/' + code)); if (s.exists()) id = s.val(); }
+      if (!id) { msg('مفيش لاعب بالاسم ده. اتأكد من اليوزرنيم.'); return; }
+      if (id === me) { msg('ده اليوزرنيم بتاعك إنت 🙂'); return; } if (FR.ids.includes(id)) { msg('هو صاحبك بالفعل.'); return; }
       await D.set(D.ref(db, 'cardgoal/friends/' + me + '/' + id), D.serverTimestamp()); await D.set(D.ref(db, 'cardgoal/requests/' + id + '/' + me), {n: ACCT.profile.name, t: D.serverTimestamp()});
       $('#frCode').value = ''; msg('اتبعت الطلب ✔'); frUserLoad(id);
     } catch (e) { msg(acErr(e)); }
@@ -7266,8 +7396,8 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   $('#frAdd').onclick = friendAdd; $('#frCode').addEventListener('keydown', e => { if (e.key === 'Enter') friendAdd(); });
   async function friendReq(id, ok) { const {D, db} = ACCT.fb, me = ACCT.user.uid; try { if (ok) await D.set(D.ref(db, 'cardgoal/friends/' + me + '/' + id), D.serverTimestamp()); await D.remove(D.ref(db, 'cardgoal/requests/' + me + '/' + id)); } catch (e) { toast(acErr(e)); } }
   async function friendDel(id) { const {D, db} = ACCT.fb, me = ACCT.user.uid; const v = await panel('<h2>شيل ' + esc(frName(id)) + ' من الأصدقاء؟</h2>', [{label: 'شيل', value: 'y'}, {label: 'إلغاء', ghost: true, value: 'n'}]); if (v !== 'y') return; try { await D.remove(D.ref(db, 'cardgoal/friends/' + me + '/' + id)); FR.subd && delete FR.subd[id]; } catch (e) { toast(acErr(e)); } }
-  $('#frCopy').onclick = async () => { const c = ACCT.profile && ACCT.profile.fc; if (!c) return; try { await navigator.clipboard.writeText(c); toast('اتنسخ ✔'); } catch (e) { toast(c); } };
-  $('#frShare').onclick = async () => { const c = ACCT.profile && ACCT.profile.fc; if (!c) return; const t = 'ضيفني في كاردجوول! كودي: ' + c + ' ' + location.origin + location.pathname; try { if (navigator.share) await navigator.share({text: t}); else { await navigator.clipboard.writeText(t); toast('اتنسخ ✔'); } } catch (e) {} };
+  $('#frCopy').onclick = async () => { const c = ACCT.profile && (ACCT.profile.un ? '@' + ACCT.profile.un : ACCT.profile.fc); if (!c) return; try { await navigator.clipboard.writeText(c); toast('اتنسخ ✔'); } catch (e) { toast(c); } };
+  $('#frShare').onclick = async () => { const c = ACCT.profile && (ACCT.profile.un ? '@' + ACCT.profile.un : ACCT.profile.fc); if (!c) return; const t = 'ضيفني في كاردجوول! ' + (ACCT.profile.un ? 'اليوزرنيم: ' : 'كودي: ') + c + ' ' + location.origin + location.pathname; try { if (navigator.share) await navigator.share({text: t}); else { await navigator.clipboard.writeText(t); toast('اتنسخ ✔'); } } catch (e) {} };
   async function friendInvite(id) {
     if (!ACCT.fb || ACCT.offline) { toast('محتاج إنترنت'); return; }
     try {
@@ -7683,6 +7813,69 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     if (ch && $('#screen-hub') && !$('#screen-hub').hidden) { try { renderHub(); } catch (e) {} }
   }
 
+  /* ================= a match between computer teams in a friends tournament: the same result and the same story for everybody, every time ================= */
+  function tkSeedOf(fx) { const k = tkKey(fx); return k && TK.code ? hashStr(TK.code + ':' + k) + 1 : 0; }
+  function tkSim(fx, ko, agg, tally) {
+    const seed = tkSeedOf(fx); if (!seed) return null;
+    const keep = Math.random; Math.random = mulberry(seed);
+    try {
+      const lvd = lvDiff(fx.a, fx.b), ga = lvd ? tiltGoals(.125 * lvd) : simGoals(), gb = lvd ? tiltGoals(-.125 * lvd) : simGoals(), res = {ga, gb, pa: null, pb: null};
+      let et = null;
+      if (ko && (agg ? ga + agg.a === gb + agg.b : ga === gb)) {
+        if (Math.random() < .55) { if (Math.random() < .5) { res.ga++; et = 'a'; } else { res.gb++; et = 'b'; } }
+        else { const aw = Math.random() < .5, hi = 4 + rnd(2), lo = Math.max(2, hi - 1 - rnd(2)); res.pa = aw ? hi : lo; res.pb = aw ? lo : hi; }
+      }
+      const tmp = {a: fx.a, b: fx.b, res}; res.rep = makeRep(tmp, ga, gb, et, !!tally);
+      return res;
+    } finally { Math.random = keep; }
+  }
+  function tkSeededSim(fx, ko, agg, tally) { const res = tkSim(fx, ko, agg, tally); if (!res) return false; fx.res = res; return true; }
+  /* the same match as a preview: it changes nothing in the tournament */
+  function tkScenario(fx) {
+    const ko = koKind(fx), agg = aggFor(fx, true);
+    return tkSim(fx, ko, agg, false);
+  }
+  const cpuCrest = id => { try { return crest(teamObj(id)); } catch (e) { return ''; } };
+  function tkWatchCpu(fx) {
+    const res = fx.res || tkScenario(fx); if (!res) return;
+    const evs = (res.rep && res.rep.ev ? res.rep.ev : []).slice().sort((x, y) => x.m - y.m);
+    const hasEt = evs.some(e => e.m > 90) , hasPen = res.pa != null;
+    const old = $('#cpuLive'); if (old) old.remove();
+    const el = document.createElement('div'); el.id = 'cpuLive'; el.className = 'cpul';
+    el.innerHTML = `<div class="cpl-in"><div class="cpl-top"><button type="button" class="ib" id="cplX" aria-label="قفل">✕</button><span id="cplPhase">🔴 لايف</span><span></span></div>
+      <div class="cpl-sb"><div class="cpl-t">${cpuCrest(fx.a)}<b>${esc(teamObj(fx.a).name)}</b></div><div class="cpl-sc"><span><b id="cplA">0</b><i>-</i><b id="cplB">0</b></span><small id="cplMin">0’</small></div><div class="cpl-t">${cpuCrest(fx.b)}<b>${esc(teamObj(fx.b).name)}</b></div></div>
+      <div class="cpl-bar"><i id="cplBar"></i></div><div class="cpl-ev" id="cplEv"><p class="cpl-m">صافرة البداية ⏱️</p></div>
+      <div class="cpl-btns"><button type="button" class="btn ghost" id="cplSkip">تخطّي للنهاية ⏭</button></div></div>`;
+    document.body.appendChild(el);
+    const totalMin = hasEt ? 105 : 90, realMs = (hasEt ? 78 : 60) * 1000, st = {a: 0, b: 0, i: 0, done: false}, t0 = Date.now();
+    const fin = () => {
+      if (st.done) return; st.done = true; clearInterval(tm);
+      while (st.i < evs.length) addEv(evs[st.i++], true);
+      $('#cplMin').textContent = hasEt ? '120’' : '90’'; $('#cplBar').style.width = '100%'; $('#cplPhase').textContent = '🏁 نهاية الماتش';
+      const L = [`<p class="cpl-m">انتهى الماتش: ${esc(teamObj(fx.a).name)} ${res.ga} - ${res.gb} ${esc(teamObj(fx.b).name)}</p>`];
+      if (hasPen) L.push(`<p class="cpl-m">ركلات الترجيح: ${res.pa} - ${res.pb}</p>`);
+      $('#cplEv').insertAdjacentHTML('beforeend', L.join('')); $('#cplEv').scrollTop = 1e6; $('#cplSkip').textContent = 'قفل';
+      try { sfx.whistle(true); } catch (e) {}
+    };
+    function addEv(e, quiet) {
+      if (e.s === 'a') st.a++; else st.b++;
+      $('#cplA').textContent = st.a; $('#cplB').textContent = st.b;
+      const who = e.s === 'a' ? fx.a : fx.b;
+      $('#cplEv').insertAdjacentHTML('beforeend', `<p class="cpl-g ${e.s}">⚽ <b>${e.m}’</b> ${esc(e.n || 'جول')}${e.a ? ` <small>(${esc(e.a)})</small>` : ''} <em>${esc(teamObj(who).name)}</em></p>`); $('#cplEv').scrollTop = 1e6;
+      if (!quiet) { try { sfx.cheer(); setTimeout(() => sfx.whistle(), 150); } catch (x) {} const sc = $('#cplA').parentNode; sc.classList.remove('gl'); void sc.offsetWidth; sc.classList.add('gl'); }
+    }
+    const tm = setInterval(() => {
+      if (!document.body.contains(el)) { clearInterval(tm); return; }
+      const m = Math.min(totalMin, (Date.now() - t0) / realMs * totalMin);
+      $('#cplMin').textContent = Math.max(1, Math.floor(m)) + '’'; $('#cplBar').style.width = (m / totalMin * 100) + '%';
+      if (m >= 45 && m < 46) $('#cplPhase').textContent = '⏸ بين الشوطين'; else if (m >= 46 && m < 90) $('#cplPhase').textContent = '🔴 لايف'; else if (m >= 90 && hasEt) $('#cplPhase').textContent = '⚡ وقت إضافي';
+      while (st.i < evs.length && evs[st.i].m <= m) addEv(evs[st.i++], false);
+      if (m >= totalMin) fin();
+    }, 120);
+    $('#cplSkip').onclick = () => { if (st.done) { clearInterval(tm); el.remove(); } else fin(); };
+    $('#cplX').onclick = () => { clearInterval(tm); el.remove(); };
+  }
+
   /* ================= watching a friend's match live ================= */
   /* A match is made of a seed (the deck order) and the cards played, in order. The two players write both into the room:
      'hd' = who plays, the seed, the competition; 'pl' = every card played so far (the log).
@@ -7840,7 +8033,11 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       const sp = e.target.closest('[data-spec]'); if (sp) { e.preventDefault(); e.stopPropagation(); tkSpectate(sp.dataset.spec); return; }
       const w = e.target.closest('[data-w]'); if (!w || !T || !T.online) return;
       const p = String(w.dataset.w).split(':'); const key = (p[0] || '') + (p[1] || '') + '_' + (p[2] || '');
-      if (TK.live && TK.live[key]) { e.preventDefault(); e.stopPropagation(); tkSpectate(key); }
+      if (TK.live && TK.live[key]) { e.preventDefault(); e.stopPropagation(); tkSpectate(key); return; }
+      const fx = tkFind(key); if (!fx || fx.res) return;
+      e.preventDefault(); e.stopPropagation();
+      const hum = tkHumanIds(); if (hum.includes(fx.a) || hum.includes(fx.b)) { toast('اللاعب لسه ما بدأش الماتش. هيظهر هنا لايف لما يبدأ.'); return; }
+      tkWatchCpu(fx);
     }, true);
   })();
 
@@ -8457,6 +8654,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     return out;
   }
   function simFixture(fx, ko, agg) {
+    if (T && T.online && typeof tkSeededSim === 'function' && tkSeededSim(fx, ko, agg, true)) return;
     const lvd = lvDiff(fx.a, fx.b), ga = lvd ? tiltGoals(.125 * lvd) : simGoals(), gb = lvd ? tiltGoals(-.125 * lvd) : simGoals(), res = {ga, gb, pa: null, pb: null};
     let et = null;
     if (ko && (agg ? ga + agg.a === gb + agg.b : ga === gb)) {
