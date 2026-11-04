@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.15.0-beta">
+<head><meta name="app-version" content="1.15.1-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -1942,6 +1942,18 @@ body.un-open{overflow:hidden}
 #pzBar{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%);z-index:70;background:rgba(5,7,13,.92);border:1.5px solid #ffd35c;border-radius:20px;padding:10px 22px 12px;text-align:center;font-family:Cairo,sans-serif;color:#ffd35c;box-shadow:0 12px 34px rgba(0,0,0,.6);white-space:nowrap;max-width:92vw}
 #pzBar b{display:block;font:900 20px Cairo,sans-serif}#pzBar small{display:block;font:700 13px Cairo,sans-serif;color:#cdd7ee;margin-top:2px}
 #pzBar button{margin-top:8px;background:#c6f432;color:#10150a;border:0;border-radius:13px;padding:7px 26px;font:900 17px Cairo,sans-serif;cursor:pointer}
+
+/* the room lobby and the tournament lobby: nothing may be wider than the card (it used to push half of the screen off to the left on phones) */
+.ol-card{grid-template-columns:minmax(0,1fr)}
+.ol-card>*{min-width:0;max-width:100%}
+.ol-card .ol-link,.ol-card .code{overflow-wrap:anywhere;word-break:break-all;max-width:100%}
+.ol-card .code{font-size:clamp(34px,13vw,64px)}
+.ol-players,.ol-pl{min-width:0;max-width:100%}
+.ol-pl .ol-tx b,.ol-pl .ol-tx span{overflow:hidden;text-overflow:ellipsis}
+.ol-pl .ol-tx b{white-space:nowrap}
+.ol-chips{flex-wrap:wrap}
+.ol-card .row{max-width:100%}.ol-card .row .btn{flex:1 1 140px;min-width:0}
+.ol-card .btn,.ol-card select,.ol-card input{max-width:100%}
 </style>
 </head>
 <body>
@@ -5700,14 +5712,14 @@ body.un-open{overflow:hidden}
     const h = $('#hand'); h.innerHTML = '';
     const bw = botWho(), n = hands[bw].length, mid = (n - 1) / 2;
     hands[bw].forEach((c, i) => {
-      const el = cardEl(c, 'button', bw); el.type = 'button';
+      const el = (M && M.replay) ? Object.assign(document.createElement('div'), {className: 'card back'}) : cardEl(c, 'button', bw); if (!(M && M.replay)) el.type = 'button';
       el.style.setProperty('--rot', ((i - mid) * (document.body.classList.contains('pro3d') ? 6 : 4)) + 'deg');
       el.style.setProperty('--ty', (Math.abs(i - mid) * 5) + 'px');
       if (c.dealt) { el.classList.add('dealt'); el.style.setProperty('--i', i); c.dealt = false; }
       if (selected === c.id) el.classList.add('sel');
-      el.setAttribute('aria-label', cardName(c) + (playerName(bw, c) ? ' · ' + playerName(bw, c) : ''));
+      if (!(M && M.replay)) el.setAttribute('aria-label', cardName(c) + (playerName(bw, c) ? ' · ' + playerName(bw, c) : ''));
       el.addEventListener('mouseleave', clearPreview);
-      el.addEventListener('click', () => onHandClick(c));
+      if (!(M && M.replay)) el.addEventListener('click', () => onHandClick(c));
       h.appendChild(el);
     });
     h.classList.toggle('disabled', !((turn === 'me' && !busy && !M.auto) || (penPick && penPick.who === 'me')));
@@ -6577,7 +6589,7 @@ body.un-open{overflow:hidden}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.15.0-beta';
+  const APP_VER = '1.15.1-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
