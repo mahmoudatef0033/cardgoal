@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.15.1-beta">
+<head><meta name="app-version" content="1.15.2-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -1954,6 +1954,12 @@ body.un-open{overflow:hidden}
 .ol-chips{flex-wrap:wrap}
 .ol-card .row{max-width:100%}.ol-card .row .btn{flex:1 1 140px;min-width:0}
 .ol-card .btn,.ol-card select,.ol-card input{max-width:100%}
+
+/* the number of teams, in plain view under the players */
+.tk-cnt{background:linear-gradient(160deg,#101a33,#0b1226);border:1.5px solid rgba(198,244,50,.45);border-radius:20px;padding:14px 14px 12px;margin:12px 0}
+.tk-cnt-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}.tk-cnt-h b{font:900 18px Cairo,sans-serif;color:#fff}.tk-cnt-h span{font:700 12.5px Cairo,sans-serif;color:#9fb0d0}
+.tk-cnt .seg{display:flex;flex-wrap:wrap;gap:6px}.tk-cnt .seg button{flex:1 1 48px;min-height:46px;font:800 19px Cairo,sans-serif}
+.tk-cnt .tk-hint{margin:10px 0 0;font:700 14px Cairo,sans-serif;color:#cfd7e6;text-align:center}.tk-cnt .tk-hint b{color:#c6f432;font-weight:900}
 </style>
 </head>
 <body>
@@ -2226,6 +2232,7 @@ body.un-open{overflow:hidden}
     <div id="tkLobby" hidden>
       <section class="sh-card tk-code"><small>كود البطولة</small><b id="tkCode">----</b><div class="acts"><button class="sh-chip" type="button" id="tkCopy">نسخ</button></div></section>
       <h4>اللاعبين</h4><div class="sh-list" id="tkSeats"></div>
+      <div id="tkTeams"></div>
       <button type="button" class="pickbtn" id="tkClubBtn"></button>
       <div class="tk-actions"><button class="btn ghost" id="tkReady" type="button">أنا جاهز</button></div>
       <h4>إعدادات البطولة</h4><div id="tkSettings"></div>
@@ -6589,7 +6596,7 @@ body.un-open{overflow:hidden}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.15.1-beta';
+  const APP_VER = '1.15.2-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -7535,12 +7542,14 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const o = tkOpts(), host = TK.host, seats = tkSeatList(), me = ACCT.user.uid, humans = Math.max(1, seats.length);
     $('#tkCode').textContent = TK.code.toUpperCase(); TK.open = TK.open || {type: true};
     const sec = (id, title, sub, body) => `<details class="tk-sec" data-sec="${id}"${TK.open[id] ? ' open' : ''}><summary><b>${title}</b><span>${sub}</span></summary><div class="tk-body">${body}</div></details>`;
-    let h;
+    let h, cnt = '';
+    const cpuN = Math.max(0, o.n - humans), mix = `<b>${humans}</b> لاعبين` + (cpuN ? ` + <b>${cpuN}</b> كمبيوتر` : ' (من غير كمبيوتر)');
+    if (!host) { cnt = `<div class="tk-cnt"><div class="tk-cnt-h"><b>عدد الفرق</b><span>${esc(tkKindLbl(o.kind))}</span></div><p class="tk-hint"><b>${o.n}</b> فرق: ${mix}</p></div>`; }
     if (!host) h = '<div class="tk-sum" aria-label="إعدادات البطولة">' + tkSummary(o, humans).map(x => `<span>${esc(x)}</span>`).join('') + '</div><p class="ol-status">المضيف هو اللي بيظبط الإعدادات.</p>';
     else {
       const sizes = tkSizes(o.kind);
       let a = '<h4>النوع</h4>' + tkSeg('tkKind', [['league', 'دوري'], ['cup', 'كأس']], o.kind, false);
-      a += '<h4>عدد الفرق</h4>' + tkSeg('tkN', sizes.map(n => [n, n]), o.n, false, v => +v < humans) + `<p class="tk-hint">${humans} لاعبين${o.n > humans ? ' + ' + (o.n - humans) + ' كمبيوتر' : ' (من غير كمبيوتر)'}</p>`;
+      cnt = `<div class="tk-cnt"><div class="tk-cnt-h"><b>عدد الفرق</b><span>إنت اللي بتختار، والباقي كمبيوتر</span></div>${tkSeg('tkNum', sizes.map(n => [n, n]), o.n, false, v => +v < humans)}<p class="tk-hint">${mix} = <b>${o.n}</b> فرق</p></div>`;
       if (o.kind === 'league') a += '<h4>الدوري</h4>' + tkSeg('tkDbl', [['1', 'ذهاب وإياب'], ['0', 'ذهاب بس']], o.dbl ? '1' : '0', false);
       else a += '<h4>الشكل</h4>' + tkSeg('tkFmt', [['ko', 'خروج مغلوب'], ['groups', 'مجموعات + خروج مغلوب']], o.n >= 8 ? o.fmt : 'ko', false, v => v === 'groups' && o.n < 8);
       h = sec('type', 'النوع والفرق', esc(tkKindLbl(o.kind) + ' · ' + o.n + ' فرق'), a);
@@ -7554,7 +7563,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       }
       h += sec('theme', 'ثيم السكور بورد', esc(tkThemeLbl(o.theme)), '<select id="tkTheme">' + TK_THEMES.map(([v, l]) => `<option value="${v}"${v === o.theme ? ' selected' : ''}>${l}</option>`).join('') + '</select>');
     }
-    $('#tkSettings').innerHTML = h;
+    $('#tkSettings').innerHTML = h; $('#tkTeams').innerHTML = cnt;
     $('#tkSeats').innerHTML = seats.map(s => { const t = s.c && clubDef(s.c) ? teamObj(s.c) : null; return `<div class="ol-pl"><span class="ol-cr">${avHtml(cleanAv(s.a, true), 44, '')}</span><div class="ol-tx"><b>${nameHtml(s.n || 'لاعب', ulv(s.u) && ulv(s.u).vf)}${s.u === TK.meta.host ? ' <small>(المضيف)</small>' : ''}${s.u === me ? ' <small>(إنت)</small>' : ''}</b><span>${t ? esc(t.name) : 'لسه ما اختارش فريق'}</span></div><i class="ol-chip ${s.r && s.c ? 'on' : ''}">${s.r && s.c ? 'جاهز ✓' : 'مش جاهز'}</i></div>`; }).join('') + `<p class="sh-empty">${seats.length} من ${TK_MAX} لاعبين${o.n > seats.length ? ' · و' + (o.n - seats.length) + ' كمبيوتر' : ''}</p>`;
     const mySeat = TK.seats[me] || {}, mine = mySeat.c && clubDef(mySeat.c) ? teamObj(mySeat.c) : null;
     $('#tkClubBtn').innerHTML = mine ? pickInner(mySeat.c) : '<span class="pb-name">اختار فريقك</span><span class="pb-go">‹</span>';
@@ -7757,7 +7766,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   { const rh0 = renderHub; renderHub = function () { rh0(); if (T && T.online) { document.body.classList.add('tk'); tkHubPatch(); try { tkDecorate(); } catch (e) {} } else document.body.classList.remove('tk'); }; }
   $('#hubCta').addEventListener('click', e => { const b = e.target.closest('[data-tk]'); if (!b) return; if (b.dataset.tk === 'play') tkPlay(); else if (b.dataset.tk === 'sim') tkHostSim(b.dataset.key); });
   $('#screen-tk').addEventListener('click', e => {
-    const sg = e.target.closest('#tkSettings .seg button'); if (sg && !sg.disabled) { const id = sg.parentElement.id; const k = {tkKind: 'kind', tkN: 'n', tkDbl: 'dbl', tkFmt: 'fmt', tkLegGrp: 'legGrp', tkLegKo: 'legKo', tkLegFin: 'legFin', tkAway: 'away'}[id]; if (k) tkSetOpt(k, sg.dataset.v); }
+    const sg = e.target.closest('#tkSettings .seg button, #tkTeams .seg button'); if (sg && !sg.disabled) { const id = sg.parentElement.id; const k = {tkKind: 'kind', tkNum: 'n', tkDbl: 'dbl', tkFmt: 'fmt', tkLegGrp: 'legGrp', tkLegKo: 'legKo', tkLegFin: 'legFin', tkAway: 'away'}[id]; if (k) tkSetOpt(k, sg.dataset.v); }
   });
   $('#tkSettings').addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.sec) { TK.open = TK.open || {}; TK.open[d.dataset.sec] = d.open; } }, true);
   $('#screen-tk').addEventListener('change', e => { if (e.target.id === 'tkTheme') tkSetOpt('theme', e.target.value); });
