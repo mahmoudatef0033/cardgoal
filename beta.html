@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.17.0-beta">
+<head><meta name="app-version" content="1.17.1-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -1964,6 +1964,12 @@ body.un-open{overflow:hidden}
 /* the Champions League inside the league: the switch bar and the calendar tile */
 .hub-comp{display:flex;margin:0 0 10px}.hub-comp button{flex:1}
 .cal-c.ucl{background:linear-gradient(160deg,#102552,#0b1630);border-color:rgba(77,140,255,.55)}.cal-c.ucl .cc-top{color:#9cc2ff}.cal-c.ucl.note{opacity:.8}
+
+/* the news card: line icons in the league colours, and a swipe that lets the page still scroll up and down */
+.nw .nwb{touch-action:pan-y}
+.nw .nzic{width:92px;height:92px;margin:12px auto 6px;border-radius:50%;display:grid;place-items:center;color:var(--a);border:1.5px solid rgba(var(--r),.55);background:radial-gradient(circle at 50% 38%,rgba(var(--r),.22),rgba(var(--r),.05) 70%);box-shadow:0 0 28px rgba(var(--r),.28),inset 0 0 18px rgba(var(--r),.12)}
+.nw .nwh span svg,.nw .nzchips i svg,.nw .nzg2 svg,.nw .nzduo svg{display:inline-block;vertical-align:-2px}
+.nw .nzfire,.nw .nzgk .gl2{color:var(--a);display:grid;place-items:center}
 </style>
 </head>
 <body>
@@ -6603,7 +6609,7 @@ body.un-open{overflow:hidden}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.17.0-beta';
+  const APP_VER = '1.17.1-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -9700,6 +9706,33 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   /* ================= news: a short carousel on the overview, built from the matches that were played and the ones that are coming ================= */
   const NEWS_GEN = {lg1: '#06102a', lg2: '#0c1b48', lga: '#ffd166', lgr: '255,209,102', lgt: '#241a00'};
   const ordEn = k => k + (k % 100 >= 11 && k % 100 <= 13 ? 'th' : ({1: 'st', 2: 'nd', 3: 'rd'})[k % 10] || 'th');
+  /* ---- news: every kind of headline has several wordings; NSEED (round + kind) picks one, so a round always reads the same but the weeks differ ---- */
+  let NSEED = 0;
+  const nsPick = list => list[Math.abs(NSEED) % list.length];
+  const NZ_ICO = {
+    net: '<path d="M3 19V8l2-2h14l2 2v11"/><path d="M8 6v13M12 6v13M16 6v13M3 11h18M3 15h18" stroke-width="1" opacity=".55"/><circle cx="12" cy="15" r="2.4" fill="currentColor" stroke="none"/>',
+    whistle: '<circle cx="9" cy="14.5" r="5"/><path d="M13.2 11L21 8.5v4.2l-4.6 1.4"/><circle cx="9" cy="14.5" r="1.1" fill="currentColor" stroke="none"/><path d="M3.5 7l2 1.6M5.5 3.8l1.6 2.2"/>',
+    board: '<path d="M8 4h8l1 2h2a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h2l1-2z"/><path d="M12 10v5M12 17.6h.01"/>',
+    snow: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M9.6 4.8L12 7l2.4-2.2M9.6 19.2L12 17l2.4 2.2" stroke-width="1.5"/>',
+    castle: '<path d="M4 20V8h3v2.2h2V8h2v2.2h2V8h2v2.2h2V8h3v12H4z"/><path d="M10 20v-3.6a2 2 0 0 1 4 0V20"/>',
+    plane: '<path d="M21 3L3 11l7 3 3 7 8-18z"/><path d="M10 14l11-11" stroke-width="1.4"/>',
+    uturn: '<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/>',
+    cup: '<path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M8 21h8M10 17h4"/>',
+    watch: '<circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l3 2M9.5 3h5M12 3v3"/>',
+    paper: '<path d="M5 4h11v16H5zM16 8h3v10a2 2 0 0 1-2 2"/><path d="M8 8h5M8 11h5M8 14h3"/>',
+    star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z"/>',
+    shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5L15.5 9"/>',
+    ball: '<circle cx="12" cy="12" r="9"/><path d="M12 8.5l3 2.2-1.1 3.6h-3.8L9 10.7z"/><path d="M12 8.5V3.2M15 10.7l5.2-1.7M13.9 14.3l3 4.3M10.1 14.3l-3 4.3M9 10.7L3.8 9" stroke-width="1.4"/>',
+    climb: '<path d="M4 20h16M6 16l4-5 3 3 5-7M14 7h4v4"/>',
+    fall: '<path d="M4 20h16M6 8l4 5 3-3 5 7M14 17h4v-4"/>',
+    swords: '<path d="M5 5l14 14M19 5L5 19M4 8l4-4M20 8l-4-4M4 16l4 4M20 16l-4 4"/>',
+    hat: '<circle cx="7" cy="16.5" r="3.2"/><circle cx="17" cy="16.5" r="3.2"/><circle cx="12" cy="7.5" r="3.2"/>',
+    glove: '<path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V12M16 11a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-1.5A5.5 5.5 0 0 1 6 15.5V12a1.5 1.5 0 0 1 3 0"/>',
+    news: '<path d="M5 4h11v16H5zM16 8h3v10a2 2 0 0 1-2 2"/><path d="M8 8h5M8 11h5M8 14h3"/>'
+  };
+  const nzSvg = (k, sz) => `<svg viewBox="0 0 24 24" width="${sz || 46}" height="${sz || 46}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${NZ_ICO[k] || NZ_ICO.ball}</svg>`;
+  const nzIcon = k => `<div class="nzic">${nzSvg(k)}</div>`;
+  const NZ_BALL = nzSvg('ball', 12), NZ_AST = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19L19 5M19 5h-8M19 5v8"/></svg>';
   const NS = {
     ar: {
       g: n => (n === 0 ? 'من دون أهداف' : n === 1 ? 'هدفًا واحدًا' : n === 2 ? 'هدفين' : n <= 10 ? n + ' أهداف' : n + ' هدفًا'),
@@ -9708,19 +9741,19 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       tag: {res: 'نتيجة الجولة', ups: 'مفاجأة الجولة', rout: 'اكتساح', thr: 'ماتش ممتع', hat: 'هاتريك', star: 'نجم الجولة', totr: 'تشكيلة الجولة', lead: 'المتصدر', boot: 'سباق الهدافين', run: 'سلسلة انتصارات', today: 'قمة اليوم', ahead: 'قمة منتظرة', cups: 'مفاجأة الكأس', cupr: 'نتيجة الكأس'},
       round: n => 'الجولة ' + n,
       title: (lg, ucl, wc) => (lg ? 'أخبار ' + lg : ucl ? 'أخبار دوري الأبطال' : wc ? 'أخبار كاس العالم' : 'أخبار البطولة'),
-      drawHome: (A, B) => `${A} يسقط في ملعبه في فخ التعادل مع ${B}`, drawAway: (A, B) => `${B} يخطف تعادلًا ثمينًا من ملعب ${A}`, drawEven: (A, B, x, y) => `${A} × ${B}: تعادل ${x}-${y}`,
-      upset: (W, L, x, y) => `مفاجأة: ${W} يهزم ${L} ${x}-${y}`, rout: (W, L, x, y) => `${W} يكتسح ${L} بنتيجة ${x}-${y}`, wild: (A, B, x, y) => `مباراة مجنونة: ${A} ${x}-${y} ${B}`, win: (W, L, x, y) => `${W} يفوز على ${L} ${x}-${y}`,
+      drawHome: (A, B) => nsPick([`${A} يسقط في ملعبه في فخ التعادل مع ${B}`, `تعادل مخيّب لجماهير ${A} أمام ${B} على أرضه`, `${B} يخرج بنقطة ثمينة من ملعب ${A}`, `${A} يفرّط في نقطتين أمام ${B} على ملعبه`]), drawAway: (A, B) => nsPick([`${B} يخطف تعادلًا ثمينًا من ملعب ${A}`, `${B} يعود بنقطة من ${A} بعد مباراة صعبة`, `التعادل يحسمها بين ${A} و ${B}: نقطة لكل فريق`, `${A} لا يقدر على ${B} في ملعبه: تعادل`]), drawEven: (A, B, x, y) => nsPick([`${A} × ${B}: تعادل ${x}-${y}`, `نقطة لكل فريق: ${A} ${x}-${y} ${B}`, `${A} و ${B} يتقاسمان النقاط ${x}-${y}`]),
+      upset: (W, L, x, y) => nsPick([`مفاجأة: ${W} يهزم ${L} ${x}-${y}`, `زلزال في الدوري: ${W} يطيح بـ${L} ${x}-${y}`, `${L} يتعثر أمام ${W}: ${x}-${y} وصدمة للجماهير`, `${W} يقلب التوقعات ويكسب ${L} ${x}-${y}`]), rout: (W, L, x, y, st) => nsPick([st ? `فضيحة على ملعب ${st}: ${W} يكتسح ${L} ${x}-${y}` : `فضيحة: ${W} يكتسح ${L} ${x}-${y}`, `ليلة سوداء لجماهير ${L}: ${W} يلعب بهم كما يشاء ${x}-${y}`, `${L} ينهار أمام ${W}: ${x}-${y} بلا رحمة`, `درس كروي: ${W} يسحق ${L} ${x}-${y}`, `${W} يكتسح ${L} بنتيجة ${x}-${y}`]), wild: (A, B, x, y) => nsPick([`مباراة مجنونة: ${A} ${x}-${y} ${B}`, `سباق أهداف: ${A} ${x}-${y} ${B}`, `${x + y} أهداف في مباراة لا تُنسى: ${A} ${x}-${y} ${B}`]), win: (W, L, x, y) => nsPick([`${W} يفوز على ${L} ${x}-${y}`, `${W} يتغلب على ${L} بنتيجة ${x}-${y}`, `انتصار ${x}-${y} لـ${W} أمام ${L}`, `${W} يعبر ${L} ${x}-${y}`, `${W} يحسمها أمام ${L} ${x}-${y}`]),
       shown: tot => (tot === 0 ? 'مباراة من دون أهداف' : 'مباراة شهدت ' + NS.ar.g(tot)),
       star: m => (m.g ? ` وتألق ${m.n} الذي سجل ${NS.ar.g(m.g)}${m.a ? ' وصنع ' + NS.ar.a(m.a) : ''}` : m.a ? ` وتألق ${m.n} الذي صنع ${NS.ar.a(m.a)}` : ` وتألق ${m.n} بتقييم ${m.r.toFixed(1)}`),
       tail: (nm, k, pt) => ` ويحتل ${nm} المركز ${k} برصيد ${NS.ar.pts(pt)}`,
       hat: (n, g, club, won) => `${n} يسجل ${g >= 4 ? NS.ar.g(g) : 'هاتريك'} ${won ? 'ويقود ' + club + ' للفوز' : 'رغم التعادل مع الخصم'}`, hatP: (x, y, rnd, club) => `النتيجة ${x}-${y} في الجولة ${rnd} لصالح ${club}`,
-      ten: n => `${n} ينشر سحره`, shine: n => `${n} يتألق`, starP: (r, rnd, club, g, a) => `تقييم ${r.toFixed(1)} في الجولة ${rnd} مع ${club}` + ((g || a) ? ' بعد أن ' + [g ? 'سجل ' + NS.ar.g(g) : '', a ? 'وصنع ' + NS.ar.a(a) : ''].filter(Boolean).join(' ') : ''),
+      ten: n => nsPick([`${n} ينشر سحره`, `${n} يعزف منفردًا`, `ليلة ${n}: أداء لا يُنسى`]), shine: n => nsPick([`${n} يتألق`, `${n} نجم الجولة بلا منازع`, `${n} يقود فريقه بأداء كبير`]), starP: (r, rnd, club, g, a) => `تقييم ${r.toFixed(1)} في الجولة ${rnd} مع ${club}` + ((g || a) ? ' بعد أن ' + [g ? 'سجل ' + NS.ar.g(g) : '', a ? 'وصنع ' + NS.ar.a(a) : ''].filter(Boolean).join(' ') : ''),
       totrH: n => `أفضل 11 لاعب في الجولة ${n}`, totrP: 'حارس و3 مدافعين و4 لاعبي وسط و3 مهاجمين بأعلى تقييم',
       leadH: (nm, lg, pt) => `${nm} يتصدر ${lg} برصيد ${NS.ar.pts(pt)}`, leadP: (gap, nm) => (gap > 0 ? `بفارق ${NS.ar.pts(gap)} عن ${nm}` : `ويتساوى مع ${nm} في النقاط ويتفوق بفارق الأهداف`),
       bootH: (n, g) => `${n} يتصدر قائمة الهدافين بـ${g} ${g <= 10 ? 'أهداف' : 'هدفًا'}`, bootP: (club, n2, g2) => `يلعب لـ${club}${n2 ? ' ويليه ' + n2 + ' بـ' + g2 : ''}`,
-      runH: nm => `${nm} يواصل انتصاراته`, runP: n => `الفوز رقم ${n} على التوالي`,
-      cupUps: (lbl, W, L) => `مفاجأة في ${lbl}: ${W} يطيح بـ${L}`, cupWin: (lbl, W, L) => `${W} يتأهل على حساب ${L} في ${lbl}`, cupP: (x, y, pa, pb) => `النتيجة ${x}-${y}${pa != null ? ` (${pa}-${pb} بركلات الترجيح)` : ''}`,
-      nextH: (today, A, B) => `قمة ${today ? 'اليوم' : 'منتظرة'}: ${A} ضد ${B}`, nextP: (ka, kb, lbl, t) => [ka && kb ? `المركز ${ka} ضد المركز ${kb}` : lbl, t && !(T && T.tb) ? `الساعة ${t}` : ''].filter(Boolean).join(' · '),
+      runH: nm => nsPick([`${nm} يواصل انتصاراته`, `جماهير ${nm} تحتفل: الفريق لا يتوقف`, `${nm} في أحسن حالاته: انتصار جديد`, `${nm} ماكينة انتصارات لا تتوقف`]), runP: n => `الفوز رقم ${n} على التوالي`,
+      cupUps: (lbl, W, L) => nsPick([`مفاجأة في ${lbl}: ${W} يطيح بـ${L}`, `الصغير يهزم الكبير: ${W} يودّع ${L} من ${lbl}`, `زلزال في ${lbl}: خروج ${L} على يد ${W}`]), cupWin: (lbl, W, L) => nsPick([`${W} يتأهل على حساب ${L} في ${lbl}`, `${W} يعبر ${L} ويواصل مشوار ${lbl}`, `${L} يودّع ${lbl} أمام ${W}`]), cupP: (x, y, pa, pb) => `النتيجة ${x}-${y}${pa != null ? ` (${pa}-${pb} بركلات الترجيح)` : ''}`,
+      nextH: (today, A, B) => nsPick([`قمة ${today ? 'اليوم' : 'منتظرة'}: ${A} ضد ${B}`, `${A} و ${B}: موعد ${today ? 'اليوم' : 'مع مباراة كبيرة'}`, `كل العيون على ${A} × ${B}`]), nextP: (ka, kb, lbl, t) => [ka && kb ? `المركز ${ka} ضد المركز ${kb}` : lbl, t && !(T && T.tb) ? `الساعة ${t}` : ''].filter(Boolean).join(' · '),
       prev: 'السابق', next: 'التالي'
     },
     en: {
@@ -9729,8 +9762,8 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       tag: {res: 'ROUND RESULT', ups: 'UPSET', rout: 'ROUT', thr: 'THRILLER', hat: 'HAT-TRICK', star: 'STAR OF THE ROUND', totr: 'TEAM OF THE ROUND', lead: 'LEADERS', boot: 'GOLDEN BOOT RACE', run: 'WINNING RUN', today: 'BIG MATCH TODAY', ahead: 'BIG MATCH AHEAD', cups: 'CUP UPSET', cupr: 'CUP RESULT'},
       round: n => 'Round ' + n,
       title: (lg, ucl, wc) => (lg ? lg + ' news' : ucl ? 'Champions League news' : wc ? 'World Cup news' : 'Tournament news'),
-      drawHome: (A, B) => `${A} stumble at home, held to a draw by ${B}`, drawAway: (A, B) => `${B} snatch a valuable draw at ${A}`, drawEven: (A, B, x, y) => `${A} ${x}-${y} ${B}: honours even`,
-      upset: (W, L, x, y) => `Upset: ${W} beat ${L} ${x}-${y}`, rout: (W, L, x, y) => `${W} thrash ${L} ${x}-${y}`, wild: (A, B, x, y) => `Wild match: ${A} ${x}-${y} ${B}`, win: (W, L, x, y) => `${W} beat ${L} ${x}-${y}`,
+      drawHome: (A, B) => nsPick([`${A} stumble at home, held to a draw by ${B}`, `A frustrating home draw for ${A} against ${B}`, `${B} leave ${A} with a precious point`, `${A} let two points slip at home to ${B}`]), drawAway: (A, B) => nsPick([`${B} snatch a valuable draw at ${A}`, `${B} take a point from ${A} after a tough game`, `Honours even between ${A} and ${B}`]), drawEven: (A, B, x, y) => nsPick([`${A} ${x}-${y} ${B}: honours even`, `A point each: ${A} ${x}-${y} ${B}`, `${A} and ${B} share the spoils ${x}-${y}`]),
+      upset: (W, L, x, y) => nsPick([`Upset: ${W} beat ${L} ${x}-${y}`, `Shock result: ${W} stun ${L} ${x}-${y}`, `${L} stumble against ${W}: ${x}-${y}`, `${W} defy the odds to beat ${L} ${x}-${y}`]), rout: (W, L, x, y, st) => nsPick([st ? `Scandal at ${st}: ${W} demolish ${L} ${x}-${y}` : `Scandal: ${W} demolish ${L} ${x}-${y}`, `A night to forget for ${L}: ${W} run riot ${x}-${y}`, `${L} collapse against ${W}: ${x}-${y}`, `Football lesson: ${W} crush ${L} ${x}-${y}`, `${W} thrash ${L} ${x}-${y}`]), wild: (A, B, x, y) => nsPick([`Wild match: ${A} ${x}-${y} ${B}`, `Goal fest: ${A} ${x}-${y} ${B}`, `${x + y} goals in a match to remember: ${A} ${x}-${y} ${B}`]), win: (W, L, x, y) => nsPick([`${W} beat ${L} ${x}-${y}`, `${W} see off ${L} ${x}-${y}`, `${x}-${y} win for ${W} over ${L}`, `${W} get the better of ${L} ${x}-${y}`]),
       shown: tot => (tot === 0 ? 'A goalless match' : 'A match with ' + NS.en.g(tot)),
       star: m => (m.g ? `, and a standout display from ${m.n}, who scored ${NS.en.g(m.g)}${m.a ? ' and set up ' + NS.en.a(m.a) : ''}` : m.a ? `, and a standout display from ${m.n}, who set up ${NS.en.a(m.a)}` : `, and a standout display from ${m.n}, rated ${m.r.toFixed(1)}`),
       tail: (nm, k, pt) => `, leaving ${nm} ${ordEn(k)} with ${NS.en.pts(pt)}`,
@@ -9777,7 +9810,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       rows.map((r, i) => `<div class="nzmr ${zc(r.k)} ${r.k === 1 ? 'lead' : ''} ${isMine(r.id) ? 'me' : ''} ${cutAt != null && i === cutAt ? 'cut' : ''}"><span>${r.k}</span>${nzCr(r.id, 7)}<b class="nzn">${esc(teamObj(r.id).name)}</b><span>${r.p}</span><span>${r.gf - r.ga > 0 ? '+' : ''}${r.gf - r.ga}</span><span class="pt">${r.pts}</span></div>`).join('') + '</div>';
   };
   const nzRes = (f, x, named) => {
-    const ev = (x.rep && x.rep.ev) || [], col = sd => ev.filter(e => e.s === sd && e.n).map(e => `<span>⚽ ${esc(e.n)}<i>${e.m}’</i></span>`).join('');
+    const ev = (x.rep && x.rep.ev) || [], col = sd => ev.filter(e => e.s === sd && e.n).map(e => `<span>${NZ_BALL} ${esc(e.n)}<i>${e.m}’</i></span>`).join('');
     return `<div class="nzrs"><div class="t">${nzCr(f.a, 10)}${esc(teamObj(f.a).name)}</div><div class="sc">${x.ga}-${x.gb}</div><div class="t">${nzCr(f.b, 10)}${esc(teamObj(f.b).name)}</div></div>` + (named && ev.length ? `<div class="nzg2"><div>${col('a')}</div><div class="b">${col('b')}</div></div>` : '');
   };
   const nzPlayer = (big, small, name, id, pos, chips) => `<div class="nzpc"><div class="big">${big}<small>${small}</small></div><div class="who"><b dir="ltr">${esc(name)}</b><span>${nzCr(id, 6)} ${esc(teamObj(id).name)}${pos ? ' · ' + pos : ''}</span>${chips ? `<div class="nzchips">${chips}</div>` : ''}</div></div>`;
@@ -9786,6 +9819,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const tail = id => { const k = rk(id); return k ? S.tail(nm(id), k.k, k.pts) : ''; };
     const add = (pri, o) => items.push(Object.assign({pri}, o));
     const nRounds = (T.mds || []).length, rnd = rd + 1;
+    NSEED = rd * 7 + 1;
     if (rd >= 0) {
       const fxs = T.mds[rd].filter(f => f.res), full = T.mds[rd].every(f => f.res);
       /* the match of the round */
@@ -9802,29 +9836,29 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
         const w = r.ga > r.gb ? f.a : r.gb > r.ga ? f.b : null, l = w === f.a ? f.b : f.a, gw = Math.max(r.ga, r.gb), gl = Math.min(r.ga, r.gb); let tag = S.tag.res, h, subj = f.a;
         if (!w) { h = fav === 'a' ? S.drawHome(A, B) : fav === 'b' ? S.drawAway(A, B) : S.drawEven(A, B, r.ga, r.gb); subj = fav === 'b' ? f.b : f.a; }
         else if ((fav === 'a' && w === f.b) || (fav === 'b' && w === f.a)) { tag = S.tag.ups; h = S.upset(nm(w), nm(l), gw, gl); subj = w; }
-        else if (gw - gl >= 4) { tag = S.tag.rout; h = S.rout(nm(w), nm(l), gw, gl); subj = w; }
+        else if (gw - gl >= 4) { tag = S.tag.rout; h = S.rout(nm(w), nm(l), gw, gl, (STADIUMS[f.a] || [''])[0]); subj = w; }
         else if (tot >= 5) { tag = S.tag.thr; h = S.wild(A, B, r.ga, r.gb); subj = w || f.a; }
         else { h = S.win(nm(w), nm(l), gw, gl); subj = w; }
         let det = S.shown(tot); const m = r.rep && r.rep.motm; if (named && m && m.n) det += S.star(m); det += tail(subj);
         add(1, {tag, h, p: det, body: nzRes(f, r, named)});
       }
       /* derbies that were played this round */
-      fxs.forEach(f => { const dv = derbyOf(f.a, f.b); if (!dv) return; add(0, {tag: L2('ديربي', 'DERBY'), h: `${L2(dv[2], dv[3])}: ${nm(f.a)} ${f.res.ga}-${f.res.gb} ${nm(f.b)}`, p: tail(f.res.ga >= f.res.gb ? f.a : f.b), body: `<div class="nzfire">🔥</div>` + nzRes(f, f.res, named)}); });
+      fxs.forEach(f => { const dv = derbyOf(f.a, f.b); if (!dv) return; add(0, {tag: L2('ديربي', 'DERBY'), h: `${L2(dv[2], dv[3])}: ${nm(f.a)} ${f.res.ga}-${f.res.gb} ${nm(f.b)}`, p: tail(f.res.ga >= f.res.gb ? f.a : f.b), body: `<div class="nzfire">${nzSvg('swords', 30)}</div>` + nzRes(f, f.res, named)}); });
       if (named) {
         const all = G.rats.filter(r => r.ri === rd);
         /* a ten out of ten */
         const top = all.slice().sort((x, y) => y.r - x.r || y.g - x.g || y.a - x.a)[0];
-        if (top && top.r >= 9.5) add(2, {tag: S.tag.star, h: top.r >= 10 ? L2(`${top.n} ينثر سحره`, `${top.n} works his magic`) : S.shine(top.n), p: S.starP(top.r, rnd, nm(top.id), top.g, top.a), body: nzPlayer(top.r.toFixed(1), L2('التقييم', 'RATING'), top.n, top.id, top.p, `<i class="hot">⚽ ${top.g}</i><i>🅰️ ${top.a}</i>`)});
+        if (top && top.r >= 9.5) add(2, {tag: S.tag.star, h: top.r >= 10 ? L2(`${top.n} ينثر سحره`, `${top.n} works his magic`) : S.shine(top.n), p: S.starP(top.r, rnd, nm(top.id), top.g, top.a), body: nzPlayer(top.r.toFixed(1), L2('التقييم', 'RATING'), top.n, top.id, top.p, `<i class="hot">${NZ_BALL} ${top.g}</i><i>${NZ_AST} ${top.a}</i>`)});
         /* hat-tricks */
         const hats = []; fxs.forEach(f => { const rep = f.res.rep; if (!rep || !rep.ev) return; ['a', 'b'].forEach(sd => { const c = {}; rep.ev.filter(e => e.s === sd && e.n).forEach(e => { c[e.n] = (c[e.n] || 0) + 1; }); Object.entries(c).forEach(([n, g]) => { if (g >= 3) hats.push({n, g, id: sd === 'a' ? f.a : f.b, f}); }); }); });
         hats.sort((x, y) => y.g - x.g).slice(0, 2).forEach(x => { const r = x.f.res, sc = x.id === x.f.a ? [r.ga, r.gb] : [r.gb, r.ga]; add(2, {tag: S.tag.hat, h: S.hat(x.n, x.g, nm(x.id), sc[0] > sc[1]), p: S.hatP(sc[0], sc[1], rnd, nm(x.id)), body: nzPlayer(x.g, L2('أهداف', 'GOALS'), x.n, x.id, '', `<i class="hot">${sc[0]}-${sc[1]}</i>`)}); });
         /* the goalkeeper: a clean sheet */
         const csN = {}; G.rats.filter(g => g.p === 'GK' && g.conc === 0).forEach(g => { const k = g.n + '|' + g.id; csN[k] = (csN[k] || 0) + 1; });
         const gk = all.filter(g => g.p === 'GK' && g.conc === 0).sort((x, y) => y.r - x.r)[0];
-        if (gk) { const c = csN[gk.n + '|' + gk.id]; add(4, {tag: L2('شباك نظيفة', 'CLEAN SHEET'), h: L2(`${gk.n} يحافظ على نظافة شباكه`, `${gk.n} keeps a clean sheet`), p: L2(`الشباك النظيفة رقم ${c} هذا الموسم مع ${nm(gk.id)}`, `Clean sheet number ${c} of the season for ${nm(gk.id)}`), body: `<div class="nzgk"><div class="gl2">🧤</div><div class="who"><b dir="ltr">${esc(gk.n)}</b><span>${nzCr(gk.id, 6)} ${esc(nm(gk.id))}</span><div class="nzchips"><i class="hot">${L2('تقييم', 'Rating')} ${gk.r.toFixed(1)}</i></div></div><div class="cs">${c}<small>${L2('شباك نظيفة', 'CLEAN SHEETS')}</small></div></div>`}); }
+        if (gk) { const c = csN[gk.n + '|' + gk.id]; add(4, {tag: L2('شباك نظيفة', 'CLEAN SHEET'), h: L2(`${gk.n} يحافظ على نظافة شباكه`, `${gk.n} keeps a clean sheet`), p: L2(`الشباك النظيفة رقم ${c} هذا الموسم مع ${nm(gk.id)}`, `Clean sheet number ${c} of the season for ${nm(gk.id)}`), body: `<div class="nzgk"><div class="gl2">${nzSvg('glove', 34)}</div><div class="who"><b dir="ltr">${esc(gk.n)}</b><span>${nzCr(gk.id, 6)} ${esc(nm(gk.id))}</span><div class="nzchips"><i class="hot">${L2('تقييم', 'Rating')} ${gk.r.toFixed(1)}</i></div></div><div class="cs">${c}<small>${L2('شباك نظيفة', 'CLEAN SHEETS')}</small></div></div>`}); }
         /* the deadliest duo, if it struck again this round */
         const dp = Object.entries(G.pair).sort((a, b) => b[1] - a[1]); const dTop = dp.find(([k, n]) => { if (n < 3) return false; const [pr, id] = k.split('|'), [a, s] = pr.split('>'); return G.evs.some(e => e.ri === rd && e.id === id && e.a === a && e.n === s); });
-        if (dTop) { const [pr, id] = dTop[0].split('|'), [a, s] = pr.split('>'); add(5, {tag: L2('ثنائي مرعب', 'DYNAMIC DUO'), h: L2(`${a} و ${s}: ثنائي لا يرحم`, `${a} and ${s}: a deadly duo`), p: L2(`${dTop[1]} أهداف جاءت بتمريرات ${a} وتسجيل ${s} مع ${nm(id)}`, `${dTop[1]} goals set up by ${a} and scored by ${s} at ${nm(id)}`), body: `<div class="nzduo"><div class="p">${nzCr(id, 9)}<span dir="ltr">${esc(a)}</span><small>${L2('صانع الألعاب', 'Creator')}</small></div><div class="lk">${dTop[1]}<small>🅰️ ← ⚽</small></div><div class="p">${nzCr(id, 9)}<span dir="ltr">${esc(s)}</span><small>${L2('الهداف', 'Finisher')}</small></div></div>`}); }
+        if (dTop) { const [pr, id] = dTop[0].split('|'), [a, s] = pr.split('>'); add(5, {tag: L2('ثنائي مرعب', 'DYNAMIC DUO'), h: L2(`${a} و ${s}: ثنائي لا يرحم`, `${a} and ${s}: a deadly duo`), p: L2(`${dTop[1]} أهداف جاءت بتمريرات ${a} وتسجيل ${s} مع ${nm(id)}`, `${dTop[1]} goals set up by ${a} and scored by ${s} at ${nm(id)}`), body: `<div class="nzduo"><div class="p">${nzCr(id, 9)}<span dir="ltr">${esc(a)}</span><small>${L2('صانع الألعاب', 'Creator')}</small></div><div class="lk">${dTop[1]}<small>${NZ_AST} ← ${NZ_BALL}</small></div><div class="p">${nzCr(id, 9)}<span dir="ltr">${esc(s)}</span><small>${L2('الهداف', 'Finisher')}</small></div></div>`}); }
         /* scoring in match after match */
         const byP = {}; G.evs.forEach(e => { if (e.n) { const k = e.n + '|' + e.id; (byP[k] = byP[k] || new Set()).add(e.ri); } });
         let sb = null; Object.entries(byP).forEach(([k, set]) => { if (!set.has(rd)) return; const [n, id] = k.split('|'); let run = 0; for (let r = rd; r >= 0; r--) { const m = G.matches.find(m => m.ri === r && (m.f.a === id || m.f.b === id)); if (!m) break; if (set.has(r)) run++; else break; } if (run >= 3 && (!sb || run > sb.run)) sb = {n, id, run}; });
@@ -9849,7 +9883,51 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
         const last = ev[ev.length - 1], dif = Math.abs(f.res.ga - f.res.gb); if (last.m >= 88 && last.n && (dif === 1 || dif === 0)) { const wn = dif === 1 ? ((last.s === 'a') === wA) : true; if (wn && (!lw || last.m > lw.last.m)) lw = {f, last, id: last.s === 'a' ? f.a : f.b, draw: dif === 0}; }
       });
       if (cb) add(3, {tag: L2('عودة مثيرة', 'COMEBACK'), h: L2(`${nm(cb.w)} يقلب الطاولة بعد التأخر ${cb.down === 2 ? 'بهدفين' : cb.down + ' أهداف'}`, `${nm(cb.w)} come back from ${cb.down} goals down`), p: `${nm(cb.f.a)} ${cb.f.res.ga}-${cb.f.res.gb} ${nm(cb.f.b)}`, body: `<div class="nztl">${cb.tl.map((t, i) => `<b class="${i === cb.tl.length - 1 ? 'w' : ''}">${t[0]}-${t[1]}</b><span>${t[2]}’</span>`).join('')}</div>`});
-      if (lw && named) add(3, {tag: L2('هدف قاتل', 'LATE DRAMA'), h: lw.draw ? L2(`${lw.last.n} ينقذ ${nm(lw.id)} في الدقيقة ${lw.last.m}`, `${lw.last.n} rescues a point for ${nm(lw.id)} in minute ${lw.last.m}`) : L2(`${lw.last.n} يخطف الفوز في الدقيقة ${lw.last.m}`, `${lw.last.n} wins it in minute ${lw.last.m}`), p: `${nm(lw.f.a)} ${lw.f.res.ga}-${lw.f.res.gb} ${nm(lw.f.b)}`, body: nzRes(lw.f, lw.f.res, false) + `<div class="nzchips" style="justify-content:center"><i class="hot">⚽ ${esc(lw.last.n)} ${lw.last.m}’</i></div>`});
+      if (lw && named) add(3, {tag: L2('هدف قاتل', 'LATE DRAMA'), h: lw.draw ? L2(`${lw.last.n} ينقذ ${nm(lw.id)} في الدقيقة ${lw.last.m}`, `${lw.last.n} rescues a point for ${nm(lw.id)} in minute ${lw.last.m}`) : L2(`${lw.last.n} يخطف الفوز في الدقيقة ${lw.last.m}`, `${lw.last.n} wins it in minute ${lw.last.m}`), p: `${nm(lw.f.a)} ${lw.f.res.ga}-${lw.f.res.gb} ${nm(lw.f.b)}`, body: nzRes(lw.f, lw.f.res, false) + `<div class="nzchips" style="justify-content:center"><i class="hot">${NZ_BALL} ${esc(lw.last.n)} ${lw.last.m}’</i></div>`});
+      /* ---- more kinds of news, all worked out from the results so far ---- */
+      try {
+        const stn = id => (STADIUMS[id] && STADIUMS[id][0]) || '', V = (a, e) => nsPick(LANG === 'en' ? e : a), sd = k => { NSEED = rd * 7 + k; }, seq = {};
+        (T.teams || []).forEach(id => { seq[id] = []; });
+        T.mds.slice(0, rd + 1).forEach((md, ri) => md.forEach(f => { const r = f.res; if (!r || (f.g || 0) !== 0 || !seq[f.a] || !seq[f.b]) return; seq[f.a].push({ri, home: true, r: r.ga > r.gb ? 'W' : r.ga < r.gb ? 'L' : 'D', gf: r.ga, ga: r.gb}); seq[f.b].push({ri, home: false, r: r.gb > r.ga ? 'W' : r.gb < r.ga ? 'L' : 'D', gf: r.gb, ga: r.ga}); }));
+        const played = id => { const q = seq[id]; return !!(q && q.length && q[q.length - 1].ri === rd); };
+        const streak = (id, pred) => { const q = seq[id] || []; let n = 0; for (let i = q.length - 1; i >= 0 && pred(q[i]); i--) n++; return n; };
+        /* the fans and the coach: a bad run */
+        let pr = null; const nT = (T.teams || []).length;
+        (T.teams || []).forEach(id => { if (!played(id)) return; const l = streak(id, x => x.r === 'L'), nw = streak(id, x => x.r !== 'W'), k = rk(id), low = k && k.k > nT - Math.max(4, Math.round(nT * .3)); const b0 = Math.max(l >= 3 ? l + 2 : 0, nw >= 5 ? nw : 0); if (!b0) return; const sc = b0 + (isMine(id) ? 1.5 : 0) + (low ? 1 : 0); if (!pr || sc > pr.sc) pr = {id, l, nw, sc, k, low}; });
+        if (pr) {
+          const A = nm(pr.id), k = pr.k ? pr.k.k : '', P = pr.k ? pr.k.pts : '', mine = isMine(pr.id); let tag, h, ico;
+          if (pr.l >= 3 && mine) { sd(3); tag = L2('الصحافة تنتقد فريقك', 'THE PRESS TURN'); ico = 'paper';
+            h = V([`الصحافة تنتقد ${A} بعد ${pr.l} هزائم: «الفريق فقد هويته»`, `عناوين قاسية لـ${A}: ${pr.l} هزائم متتالية وأسئلة بلا إجابة`, `الإعلام يهاجم ${A} بعد السقوط رقم ${pr.l} على التوالي`], [`The press turn on ${A} after ${pr.l} defeats: “the team has lost its identity”`, `Harsh headlines for ${A}: ${pr.l} defeats in a row and no answers`, `Media pile on ${A} after defeat number ${pr.l}`]); }
+          else if (pr.l >= 3 && pr.low) { sd(4); tag = L2('مصير على المحك', 'UNDER PRESSURE'); ico = 'board';
+            h = V([`مجلس إدارة ${A} يجتمع بعد الخسارة رقم ${pr.l}: مصير المدرب على المحك`, `الإدارة تمنح مدرب ${A} مهلة جولتين قبل اتخاذ القرار`, `ضغوط على مدرب ${A}: الفريق في المركز ${k} والإدارة تراقب`], [`${A} board meet after defeat number ${pr.l}: the coach’s future in the balance`, `${A} board give the coach two games to turn it around`, `Pressure on the ${A} coach: ${k}th place and the board are watching`]); }
+          else if (pr.l >= 3) { sd(5); tag = L2('غضب الجماهير', 'FANS’ FURY'); ico = 'whistle';
+            h = V([`الجماهير تطلق الصافرات على مدرب ${A} بعد الهزيمة رقم ${pr.l} على التوالي`, `مدرب ${A} في مرمى الانتقادات: ${pr.l} هزائم متتالية`, `${A} في أزمة: هتافات ضد المدرب وصمت في غرفة الملابس`, `غضب في مدرجات ${A}: ${pr.l} هزائم والجماهير تطالب بالتغيير`], [`Fans whistle the ${A} coach after defeat number ${pr.l} in a row`, `${A} coach under fire: ${pr.l} defeats on the spin`, `${A} in crisis: chants against the coach and silence in the dressing room`, `Anger at ${A}: ${pr.l} losses and the fans want change`]); }
+          else { sd(6); tag = L2('بلا فوز', 'WINLESS'); ico = 'whistle';
+            h = V([`${A} بلا فوز في آخر ${pr.nw} جولات: الأنصار يطالبون بالتغيير`, `${pr.nw} جولات من دون فوز تُدخل ${A} نفق الأزمة`, `${A} يبحث عن الفوز المفقود منذ ${pr.nw} جولات`], [`${A} winless in ${pr.nw}: supporters demand change`, `${pr.nw} games without a win drag ${A} into crisis`, `${A} search for a win after ${pr.nw} games`]); }
+          add(3, {tag, h, p: pr.k ? L2(`${A} في المركز ${k} برصيد ${P} نقطة`, `${A} sit ${ordEn(k)} on ${P} points`) : '', body: nzIcon(ico)});
+        }
+        /* a goal drought for a regular scorer */
+        if (named) {
+          const last = {}; G.evs.forEach(e => { if (!e.n) return; const k = e.n + '|' + e.id, o = last[k] || (last[k] = {n: e.n, id: e.id, g: 0, lr: -1}); o.g++; if (e.ri > o.lr) o.lr = e.ri; });
+          let dr = null; Object.values(last).forEach(o => { const gap = rd - o.lr; if (o.g >= 4 && gap >= 4 && gap <= 9 && played(o.id) && (!dr || o.g > dr.g || (o.g === dr.g && gap > dr.gap))) dr = Object.assign({gap}, o); });
+          if (dr) { sd(7); add(4, {tag: L2('صيام تهديفي', 'GOAL DROUGHT'), h: V([`${dr.n} يصوم عن التهديف منذ ${dr.gap} جولات والجماهير تسأل: فين الأهداف؟`, `${dr.n} بلا هدف منذ ${dr.gap} جولات: هل انطفأ النجم؟`, `الأهداف تغيب عن ${dr.n} للجولة رقم ${dr.gap} على التوالي`], [`${dr.n} goalless for ${dr.gap} rounds and the fans are asking: where are the goals?`, `${dr.n} without a goal in ${dr.gap} rounds: has the star lost his touch?`, `Goals dry up for ${dr.n}: ${dr.gap} rounds and counting`]), p: L2(`سجّل ${dr.g} أهداف مع ${nm(dr.id)} قبل ذلك`, `Scored ${dr.g} for ${nm(dr.id)} before the drought`), body: nzIcon('snow')}); }
+        }
+        /* a fortress at home */
+        let fo = null; (T.teams || []).forEach(id => { const q = seq[id] || [], lastM = q[q.length - 1]; if (!lastM || lastM.ri !== rd || !lastM.home || lastM.r === 'L') return; const h = q.filter(x => x.home); let n = 0; for (let i = h.length - 1; i >= 0 && h[i].r !== 'L'; i--) n++; if (n >= 5 && (!fo || n > fo.n)) fo = {id, n}; });
+        if (fo) { sd(8); const st1 = stn(fo.id) || nm(fo.id); add(4, {tag: L2('حصن لا يُقتحم', 'FORTRESS'), h: V([`${st1} حصن لا يُقتحم: ${nm(fo.id)} بدون خسارة على ملعبه منذ ${fo.n} جولات`, `${nm(fo.id)} يواصل سيطرته على أرضه: ${fo.n} مباريات بلا هزيمة`, `الدخول إلى ${st1} ممنوع: ${nm(fo.id)} لا يخسر في بيته`], [`${st1} remains a fortress: ${nm(fo.id)} unbeaten at home in ${fo.n}`, `${nm(fo.id)} rule at home: ${fo.n} games without defeat`, `No way through at ${st1}: ${nm(fo.id)} do not lose at home`]), p: L2('سلسلة بلا هزيمة على الأرض', 'An unbeaten run on home soil'), body: nzIcon('castle')}); }
+        /* the first win away from home in a long time */
+        let aw = null; (T.teams || []).forEach(id => { const q = seq[id] || [], lastM = q[q.length - 1]; if (!lastM || lastM.ri !== rd || lastM.home || lastM.r !== 'W') return; const away = q.filter(x => !x.home).slice(0, -1); let n = 0; for (let i = away.length - 1; i >= 0 && away[i].r !== 'W'; i--) n++; if (n >= 4 && (!aw || n > aw.n)) aw = {id, n, first: n === away.length}; });
+        if (aw) { sd(9); add(4, {tag: L2('كسر العقدة', 'AWAY DAY'), h: aw.first ? V([`${nm(aw.id)} يكسر عقدة السفر: أول فوز خارج الأرض هذا الموسم`, `أخيرًا خارج الأرض: ${nm(aw.id)} يحقق أول انتصار له بعيدًا عن جماهيره`], [`${nm(aw.id)} break the away curse: first win on the road this season`, `At last on the road: ${nm(aw.id)} win away for the first time this season`]) : V([`${nm(aw.id)} يكسر عقدة السفر: أول فوز خارج الأرض بعد ${aw.n} جولات`, `${nm(aw.id)} يعود بالنقاط الثلاث من السفر بعد ${aw.n} مباريات بلا فوز`], [`${nm(aw.id)} break the away curse: first road win in ${aw.n} games`, `${nm(aw.id)} finally take three points away from home after ${aw.n} games`]), p: L2('انتصار ثمين خارج الديار', 'A precious win away from home'), body: nzIcon('plane')}); }
+        /* the title race */
+        if (rows.length >= 6 && rnd >= 8 && nRounds - rnd >= 4 && rows[0].pts - rows[2].pts <= 4) { sd(10); const a3 = rows.slice(0, 3).map(x => nm(x.id)); add(4, {tag: L2('سباق اللقب', 'TITLE RACE'), h: V([`3 فرق في ${rows[0].pts - rows[2].pts} ${rows[0].pts - rows[2].pts === 1 ? 'نقطة' : 'نقاط'}: سباق اللقب يشتعل`, `${a3[0]} و ${a3[1]} و ${a3[2]} على قمة واحدة: اللقب لم يُحسم`, `الصدارة تتأرجح بين ${a3[0]} و ${a3[1]} و ${a3[2]}`], [`Three clubs within ${rows[0].pts - rows[2].pts} points: the title race heats up`, `${a3[0]}, ${a3[1]} and ${a3[2]} locked together at the top`, `The lead swings between ${a3[0]}, ${a3[1]} and ${a3[2]}`]), p: L2(`${a3[0]} في الصدارة برصيد ${rows[0].pts} نقطة`, `${a3[0]} lead on ${rows[0].pts} points`), body: nzTable(rows.slice(0, 4))}); }
+        /* a big climb or fall in the table */
+        if (rd >= 1 && rows.length > 6) {
+          const Gp = nwAgg(rd - 1); let up = null, dn = null;
+          rows.forEach(r => { const pk = Gp.rk(r.id); if (!pk) return; const d = pk.k - r.k; if (d >= 4 && (!up || d > up.d)) up = {id: r.id, d, k: r.k}; if (d <= -4 && (!dn || -d > dn.d)) dn = {id: r.id, d: -d, k: r.k}; });
+          if (up) { sd(11); add(5, {tag: L2('قفزة في الجدول', 'BIG CLIMB'), h: V([`${nm(up.id)} يقفز ${up.d} مراكز دفعة واحدة إلى المركز ${up.k}`, `صعود صاروخي: ${nm(up.id)} من المركز ${up.k + up.d} إلى ${up.k}`], [`${nm(up.id)} leap ${up.d} places to ${ordEn(up.k)}`, `Rocket ride: ${nm(up.id)} up from ${ordEn(up.k + up.d)} to ${ordEn(up.k)}`]), p: '', body: nzIcon('climb')}); }
+          if (dn) { sd(12); add(5, {tag: L2('سقوط في الجدول', 'FREE FALL'), h: V([`${nm(dn.id)} يهبط ${dn.d} مراكز في جولة واحدة إلى المركز ${dn.k}`, `سقوط حر: ${nm(dn.id)} يتراجع للمركز ${dn.k}`], [`${nm(dn.id)} drop ${dn.d} places in one round to ${ordEn(dn.k)}`, `Free fall: ${nm(dn.id)} slip to ${ordEn(dn.k)}`]), p: '', body: nzIcon('fall')}); }
+        }
+      } catch (e) { /* the news never stops the hub */ }
       /* the table */
       if (rows.length > 2 && rnd >= 2) {
         const a = rows[0], b = rows[1], gap = a.pts - b.pts;
@@ -9867,7 +9945,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       /* the scoring charts */
       if (named && G.scorers[0] && G.scorers[0].n >= 2) { const t3 = G.scorers.slice(0, 3), mx = t3[0].n; add(5, {tag: S.tag.boot, h: S.bootH(t3[0].name, t3[0].n), p: S.bootP(nm(t3[0].id), t3[1] && t3[1].name, t3[1] && t3[1].n), body: `<div class="nzsb">${t3.map((x, i) => `<div class="nzsr"><span class="srk">${i + 1}</span><span class="cw">${nzCr(x.id, 9)}</span><div class="who"><b dir="ltr">${esc(x.name)}</b><small>${esc(nm(x.id))}</small><div class="bar"><i style="width:${Math.round(x.n / mx * 100)}%"></i></div></div><div class="n">${x.n}<small>${L2('هدف', 'goals')}</small></div></div>`).join('')}</div>`}); }
       /* player of the month, every 4 rounds */
-      if (named && rnd % 4 === 0) { const av = {}; G.rats.filter(r => r.ri > rd - 4).forEach(r => { const k = r.n + '|' + r.id; const o = av[k] || (av[k] = {n: r.n, id: r.id, s: 0, c: 0, g: 0, a: 0, p: r.p}); o.s += r.r; o.c++; o.g += r.g; o.a += r.a; }); const pm = Object.values(av).filter(x => x.c >= 3).sort((x, y) => y.s / y.c - x.s / x.c)[0]; if (pm) add(4, {tag: L2('لاعب الشهر', 'PLAYER OF THE MONTH'), h: L2(`${pm.n} لاعب الشهر`, `${pm.n} is player of the month`), p: L2('أفضل متوسط تقييم في آخر 4 جولات', 'Best average rating over the last 4 rounds'), body: nzPlayer((pm.s / pm.c).toFixed(1), L2('متوسط التقييم', 'AVG RATING'), pm.n, pm.id, pm.p, `<i class="hot">⚽ ${pm.g}</i><i>🅰️ ${pm.a}</i><i>${pm.c} ${L2('مباريات', 'games')}</i>`)}); }
+      if (named && rnd % 4 === 0) { const av = {}; G.rats.filter(r => r.ri > rd - 4).forEach(r => { const k = r.n + '|' + r.id; const o = av[k] || (av[k] = {n: r.n, id: r.id, s: 0, c: 0, g: 0, a: 0, p: r.p}); o.s += r.r; o.c++; o.g += r.g; o.a += r.a; }); const pm = Object.values(av).filter(x => x.c >= 3).sort((x, y) => y.s / y.c - x.s / x.c)[0]; if (pm) add(4, {tag: L2('لاعب الشهر', 'PLAYER OF THE MONTH'), h: L2(`${pm.n} لاعب الشهر`, `${pm.n} is player of the month`), p: L2('أفضل متوسط تقييم في آخر 4 جولات', 'Best average rating over the last 4 rounds'), body: nzPlayer((pm.s / pm.c).toFixed(1), L2('متوسط التقييم', 'AVG RATING'), pm.n, pm.id, pm.p, `<i class="hot">${NZ_BALL} ${pm.g}</i><i>${NZ_AST} ${pm.a}</i><i>${pm.c} ${L2('مباريات', 'games')}</i>`)}); }
       /* records, every 5 rounds and in the last round */
       if ((rnd % 5 === 0 || rd === nRounds - 1) && G.matches.length) {
         let big = null; G.matches.forEach(m => { const d = Math.abs(m.x.ga - m.x.gb), t = m.x.ga + m.x.gb; if (!big || d > big.d || (d === big.d && t > big.t)) big = {d, t, m}; });
@@ -9894,11 +9972,26 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const sel = rd == null ? latest : Math.max(-1, Math.min(rd, latest)); let items = newsItems(sel, S, latest);
     /* cups and knockout rounds belong to "now" */
     if (sel === latest) {
+      NSEED = (sel + 1) * 7 + 3;
       const nm = id => teamObj(id).name, lv = id => (CLUB_LV[id] != null ? CLUB_LV[id] : 3), sets = []; (T.ko || []).forEach(r => sets.push({rd: r, label: r.name})); if (T.cup) T.cup.rounds.forEach(r => sets.push({rd: r, label: CUP_NAME[T.lg] + ' · ' + r.name}));
       const done = sets.filter(x => x.rd.matches.some(m => m.res)).pop();
       if (done) { let best = null, bs = -1; done.rd.matches.filter(m => m.res).forEach(m => { const r = m.res, w = winnerOf(m), l = w === m.a ? m.b : m.a, up = lv(l) - lv(w), sc = r.ga + r.gb + Math.max(0, up) * 3 + (r.pa != null ? 2 : 0); if (sc > bs) { bs = sc; best = {r, w, l, up}; } });
-        if (best) { const {r, w, l, up} = best; items.push({pri: 1, tag: up > 0.5 ? S.tag.cups : S.tag.cupr, h: up > 0.5 ? S.cupUps(done.label, nm(w), nm(l)) : S.cupWin(done.label, nm(w), nm(l)), p: S.cupP(r.ga, r.gb, r.pa, r.pb)}); } }
-      if (latest < 0) { const nxt = sets.find(x => x.rd.matches.some(m => !m.res)); if (nxt && !items.length) { const nl = nxt.rd.matches.filter(m => !m.res), pr = nl.slice().sort((x, y) => (lv(y.a) + lv(y.b)) - (lv(x.a) + lv(x.b)))[0]; items.push({pri: 8, tag: S.tag.ahead, h: S.nextH(false, nm(pr.a), nm(pr.b)), p: nxt.label}); } }
+        if (best) { const {r, w, l, up} = best; items.push({pri: 1, body: nzIcon('cup'), tag: up > 0.5 ? S.tag.cups : S.tag.cupr, h: up > 0.5 ? S.cupUps(done.label, nm(w), nm(l)) : S.cupWin(done.label, nm(w), nm(l)), p: S.cupP(r.ga, r.gb, r.pa, r.pb)}); } }
+      if (latest < 0) { const nxt = sets.find(x => x.rd.matches.some(m => !m.res)); if (nxt && !items.length) { const nl = nxt.rd.matches.filter(m => !m.res), pr = nl.slice().sort((x, y) => (lv(y.a) + lv(y.b)) - (lv(x.a) + lv(x.b)))[0]; items.push({pri: 8, body: nzIcon('ball'), tag: S.tag.ahead, h: S.nextH(false, nm(pr.a), nm(pr.b)), p: nxt.label}); } }
+    }
+    if (T.lg && T.u && T.uat) {
+      try {
+        NSEED = (sel + 1) * 7 + 5; const u = T.u, nm = id => teamObj(id).name, V = (a, e) => nsPick(LANG === 'en' ? e : a);
+        T.uat.forEach((a, j) => {
+          if (a !== sel + 1 || uPos(u) <= j) return;
+          const ms = (j < 8 ? (u.mds[j] || []) : ((u.ko[j - 8] || {}).matches || [])).filter(m => m.res); if (!ms.length) return;
+          let best = ms.find(m => isMine(m.a) || isMine(m.b)), sc = -1; const mine = !!best;
+          if (!best) ms.forEach(m => { const t = m.res.ga + m.res.gb + Math.abs(m.res.ga - m.res.gb); if (t > sc) { sc = t; best = m; } });
+          const r = best.res, A = nm(best.a), B = nm(best.b), w = r.ga > r.gb ? best.a : r.gb > r.ga ? best.b : null, W = w ? nm(w) : '', Lz = w ? nm(w === best.a ? best.b : best.a) : '', x = Math.max(r.ga, r.gb), y = Math.min(r.ga, r.gb);
+          const h = w ? V([`ليلة أوروبية: ${W} يعبر ${Lz} ${x}-${y}`, `${W} يتألق في أوروبا ويهزم ${Lz} ${x}-${y}`, `في دوري الأبطال: ${W} يكسب ${Lz} ${x}-${y}`], [`European night: ${W} beat ${Lz} ${x}-${y}`, `${W} shine in Europe and see off ${Lz} ${x}-${y}`, `In the Champions League: ${W} win ${x}-${y} over ${Lz}`]) : V([`${A} و ${B} يتعادلان ${r.ga}-${r.gb} في ليلة أوروبية`, `نقطة لكل فريق في دوري الأبطال: ${A} ${r.ga}-${r.gb} ${B}`], [`${A} and ${B} draw ${r.ga}-${r.gb} on a European night`, `A point each in the Champions League: ${A} ${r.ga}-${r.gb} ${B}`]);
+          items.push({pri: mine ? 2 : 4, tag: mine ? L2('فريقك في أوروبا', 'YOUR EUROPEAN NIGHT') : L2('ليلة أوروبية', 'CHAMPIONS LEAGUE NIGHT'), h, p: L2(`دوري الأبطال · ${UCL_NAMES[j]}`, `Champions League · matchday ${j + 1}`), body: nzIcon('ball')});
+        });
+      } catch (e) { /* the news never stops the hub */ }
     }
     items = items.map((x, i) => Object.assign(x, {i})).sort((a, b) => a.pri - b.pri || a.i - b.i).slice(0, 12);
     return {items, round: sel >= 0 ? sel + 1 : null, rd: sel, latest, S};
@@ -9913,8 +10006,8 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const chv = d => `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
     const older = nb.rd > 0, newer = nb.rd < nb.latest;
     const rl = `<button type="button" class="nwrb" data-nwr="${rtl ? 1 : -1}" ${(rtl ? newer : older) ? '' : 'disabled'} aria-label="${L2('الجولة الأحدث', 'Later round')}">${chv('M15 5l-7 7 7 7')}</button>`, rr = `<button type="button" class="nwrb" data-nwr="${rtl ? -1 : 1}" ${(rtl ? older : newer) ? '' : 'disabled'} aria-label="${L2('الجولة الأقدم', 'Earlier round')}">${chv('M9 5l7 7-7 7')}</button>`;
-    return `<div class="nw" style="--b1:${th.lg1};--b2:${th.lg2};--a:${th.lga};--r:${th.lgr};--t:${th.lgt}"><div class="nwh"><span>📰 ${S.title(T.lg ? lgOf(T.lg).name : '', T.ucl, T.wc)}</span><span class="nwr2" dir="ltr">${nb.latest > 0 ? rl : ''}<b>${nb.round ? S.round(nb.round) : ''}</b>${nb.latest > 0 ? rr : ''}</span></div>` +
-      `<div class="nwb">${left}<div class="nws"><span class="nwt">${x.tag}</span><div class="nwh1" dir="auto">${esc(x.h)}</div>${x.p ? `<div class="nwp" dir="auto">${esc(x.p)}</div>` : ''}${x.body || ''}</div>${right}</div>` +
+    return `<div class="nw" style="--b1:${th.lg1};--b2:${th.lg2};--a:${th.lga};--r:${th.lgr};--t:${th.lgt}"><div class="nwh"><span>${nzSvg('news', 15)} ${S.title(T.lg ? lgOf(T.lg).name : '', T.ucl, T.wc)}</span><span class="nwr2" dir="ltr">${nb.latest > 0 ? rl : ''}<b>${nb.round ? S.round(nb.round) : ''}</b>${nb.latest > 0 ? rr : ''}</span></div>` +
+      `<div class="nwb">${left}<div class="nws"><span class="nwt">${x.tag}</span><div class="nwh1" dir="auto">${esc(x.h)}</div>${x.p ? `<div class="nwp" dir="auto">${esc(x.p)}</div>` : ''}${x.body || nzIcon('news')}</div>${right}</div>` +
       `<div class="nwd">${nb.items.map((_, i) => `<button type="button" data-nwi="${i}" class="${i === idx ? 'on' : ''}" aria-label="${i + 1}"></button>`).join('')}</div></div>`;
   }
 
@@ -10060,6 +10153,14 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   };
   document.addEventListener('click', e => { if (T && T.calOpen && !(e.target.closest && e.target.closest('.cal-dd'))) { T.calOpen = false; renderHub(); } });
   $('#hubBody').addEventListener('change', e => { if (e.target.id === 'calTeam') { T.calTeam = e.target.value; saveT(); renderHub(); } });
+  /* swiping the news card with a finger works like its arrows */
+  { let sx = 0, sy = 0, st = 0, on = false; const hb = $('#hubBody');
+    hb.addEventListener('touchstart', e => { const n = e.target.closest && e.target.closest('.nw .nwb'); if (!n || e.touches.length !== 1) { on = false; return; } on = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now(); }, {passive: true});
+    hb.addEventListener('touchend', e => {
+      if (!on) return; on = false; const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (!T || Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * 1.4 || Date.now() - st > 900) return;
+      const rtl = LANG !== 'en', dir = (dx > 0) === rtl ? 1 : -1; T.nIdx = (T.nIdx || 0) + dir; saveT(); renderHub();
+    }, {passive: true}); }
   $('#hubCta').onclick = e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
     const a = b.dataset.act;
