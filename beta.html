@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.18.0-beta">
+<head><meta name="app-version" content="1.18.1-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -2050,6 +2050,15 @@ body.cx .cxt[hidden]{display:none}body.cx .cxt.pop{animation:cxpop .5s cubic-bez
  .cxd .pl{display:flex;align-items:center;gap:8px;direction:ltr;margin-bottom:10px}.cxd .pl:last-child{margin-bottom:0}.cxd .pl .cnt{margin-inline-start:auto;font:900 26px Orbitron,Cairo,sans-serif;color:var(--cx-acc)}.cxd .pl b{display:block;font:800 13px Cairo,sans-serif;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cxd .pl small{font:700 11px Cairo,sans-serif;opacity:.7}
  .cxd .stk{position:relative;width:44px;height:44px;flex:none}.cxd .stk i{position:absolute;width:28px;height:40px;border-radius:5px;background:repeating-linear-gradient(45deg,#1f3a8a 0 3px,#2c4cae 3px 6px);border:1.5px solid #f4f1e6;box-shadow:0 2px 4px rgba(0,0,0,.4)}
 }
+
+/* the game does not pan sideways, and a phone in landscape asks to be turned upright */
+html,body{overscroll-behavior:none}
+body{touch-action:pan-y pinch-zoom}
+.rothint{display:none}
+@media (orientation:landscape) and (max-height:520px) and (pointer:coarse){
+ body.lockport:not(.tbmode) .rothint{display:grid;position:fixed;inset:0;z-index:9999;place-items:center;background:rgba(5,7,13,.96);color:#eaf0ff;text-align:center;font-family:Cairo,sans-serif;padding:20px}
+ .rothint>div{display:grid;gap:12px;justify-items:center}.rothint b{font:900 20px Cairo,sans-serif}.rothint svg{color:#c6f432;animation:rotp 2.2s ease-in-out infinite}@keyframes rotp{0%,100%{transform:rotate(-90deg)}50%{transform:rotate(0)}}
+}
 </style>
 </head>
 <body>
@@ -2329,7 +2338,7 @@ body.cx .cxt[hidden]{display:none}body.cx .cxt.pop{animation:cxpop .5s cubic-bez
         <button class="btn ghost" id="tkJoin" type="button">ادخل</button><button class="btn ghost" id="tkResume" type="button" hidden>كمّل بطولتك</button></div>
     </div>
     <div id="tkLobby" hidden>
-      <section class="sh-card tk-code"><small>كود البطولة</small><b id="tkCode">----</b><div class="acts"><button class="sh-chip" type="button" id="tkCopy">نسخ</button></div></section>
+      <section class="sh-card tk-code"><small>كود البطولة</small><b id="tkCode">----</b><div class="acts"><button class="sh-chip" type="button" id="tkCopy">نسخ</button><button class="sh-chip" type="button" id="tkInvite">ادعي صاحب</button></div></section>
       <h4>اللاعبين</h4><div class="sh-list" id="tkSeats"></div>
       <div id="tkTeams"></div>
       <button type="button" class="pickbtn" id="tkClubBtn"></button>
@@ -2432,12 +2441,13 @@ body.cx .cxt[hidden]{display:none}body.cx .cxt.pop{animation:cxpop .5s cubic-bez
   <div class="panel set">
     <h2 id="stTitle">الإعدادات</h2>
     <p class="set-pause" id="stPause" hidden></p>
-    <div class="set-g">الماتش</div><div class="set-row"><span class="set-l">وقت الدور</span><div class="seg" id="stTimer" role="group" aria-label="وقت الدور"><button type="button" data-tm="5">5</button><button type="button" data-tm="8">8</button><button type="button" data-tm="10">10</button><button type="button" data-tm="15">15</button><button type="button" data-tm="20">20</button><button type="button" data-tm="0">بدون</button></div></div><div class="set-row"><span class="set-l">نتايج الكمبيوتر</span><div class="seg" id="stRate" role="group" aria-label="نتايج الكمبيوتر"><button type="button" data-rate="0">عشوائية</button><button type="button" data-rate="1">حسب مستوى الأندية</button></div></div><div class="set-g">الشكل</div><div class="set-row"><span class="set-l">شكل الملعب</span><div class="seg" id="stView" role="group" aria-label="شكل الملعب"><button type="button" data-view="p3d">ملعب 3D ✨</button><button type="button" data-view="stadium">ملعب بجمهور 🏟️</button><button type="button" data-view="classic">الشكل القديم</button></div></div><div class="set-row"><span class="set-l">لوحات الإعلانات</span><div class="seg" id="stAnim" role="group" aria-label="لوحات الإعلانات"><button type="button" data-anim="1">متحركة</button><button type="button" data-anim="0">ثابتة</button></div></div><div class="set-row"><span class="set-l">اللغة</span><div class="seg" id="stLang" role="group" aria-label="اللغة"><button type="button" data-lang="ar" data-notr>العربية</button><button type="button" data-lang="en" data-notr>English</button></div></div><div class="set-g">الصوت</div><div class="set-row"><span class="set-l">صوت الجمهور</span><button type="button" class="sw" id="stCrowd" aria-pressed="true"></button></div><div class="set-row"><span class="set-l">مستوى الصوت</span><input type="range" id="stVol" min="0" max="100" step="5" aria-label="مستوى صوت الجمهور"></div><div class="set-row"><span class="set-l">المؤثرات الصوتية</span><button type="button" class="sw" id="stSfx" aria-pressed="true"></button></div><div class="set-g">عام</div><div class="set-row"><span class="set-l">ملء الشاشة</span><button type="button" class="mini" id="stFs">⛶</button></div><div class="set-row"><span class="set-l">القواعد</span><button type="button" class="mini" id="stRules">؟</button></div><div class="set-row"><span class="set-l">الوقت الإضافي</span><div class="seg" id="stEt" role="group" aria-label="الوقت الإضافي"><button type="button" data-et="full">كامل 30 دقيقة</button><button type="button" data-et="golden">الهدف الذهبي</button></div></div>
+    <div class="set-g">الماتش</div><div class="set-row"><span class="set-l">وقت الدور</span><div class="seg" id="stTimer" role="group" aria-label="وقت الدور"><button type="button" data-tm="5">5</button><button type="button" data-tm="8">8</button><button type="button" data-tm="10">10</button><button type="button" data-tm="15">15</button><button type="button" data-tm="20">20</button><button type="button" data-tm="0">بدون</button></div></div><div class="set-row"><span class="set-l">نتايج الكمبيوتر</span><div class="seg" id="stRate" role="group" aria-label="نتايج الكمبيوتر"><button type="button" data-rate="0">عشوائية</button><button type="button" data-rate="1">حسب مستوى الأندية</button></div></div><div class="set-g">الشكل</div><div class="set-row"><span class="set-l">شكل الملعب</span><div class="seg" id="stView" role="group" aria-label="شكل الملعب"><button type="button" data-view="p3d">ملعب 3D ✨</button><button type="button" data-view="stadium">ملعب بجمهور 🏟️</button><button type="button" data-view="classic">الشكل القديم</button></div></div><div class="set-row"><span class="set-l">لوحات الإعلانات</span><div class="seg" id="stAnim" role="group" aria-label="لوحات الإعلانات"><button type="button" data-anim="1">متحركة</button><button type="button" data-anim="0">ثابتة</button></div></div><div class="set-row"><span class="set-l">اللغة</span><div class="seg" id="stLang" role="group" aria-label="اللغة"><button type="button" data-lang="ar" data-notr>العربية</button><button type="button" data-lang="en" data-notr>English</button></div></div><div class="set-g">الصوت</div><div class="set-row"><span class="set-l">صوت الجمهور</span><button type="button" class="sw" id="stCrowd" aria-pressed="true"></button></div><div class="set-row"><span class="set-l">مستوى الصوت</span><input type="range" id="stVol" min="0" max="100" step="5" aria-label="مستوى صوت الجمهور"></div><div class="set-row"><span class="set-l">المؤثرات الصوتية</span><button type="button" class="sw" id="stSfx" aria-pressed="true"></button></div><div class="set-g">عام</div><div class="set-row"><span class="set-l">قفل الشاشة رأسي (الموبايل)</span><button type="button" class="sw" id="stPort" aria-pressed="true"></button></div><div class="set-row"><span class="set-l">ملء الشاشة</span><button type="button" class="mini" id="stFs">⛶</button></div><div class="set-row"><span class="set-l">القواعد</span><button type="button" class="mini" id="stRules">؟</button></div><div class="set-row"><span class="set-l">الوقت الإضافي</span><div class="seg" id="stEt" role="group" aria-label="الوقت الإضافي"><button type="button" data-et="full">كامل 30 دقيقة</button><button type="button" data-et="golden">الهدف الذهبي</button></div></div>
     <div class="set-row"><span class="set-l">ملء الشاشة</span><div class="seg" id="stFs" role="group" aria-label="ملء الشاشة"><button type="button" data-fs="1">تلقائي</button><button type="button" data-fs="0">عادي</button></div></div>
     <div class="set-row"><span class="set-l">حماية الخروج</span><div class="seg" id="stGd" role="group" aria-label="حماية الخروج"><button type="button" data-gd="1">شغّالة</button><button type="button" data-gd="0">مقفولة</button></div></div>
     <div class="set-row"><span class="set-l">الشات</span><div class="seg" id="stChat" role="group" aria-label="الشات"><button type="button" data-ch="1">شغّال</button><button type="button" data-ch="0">مقفول</button></div></div><div class="btns"><button class="btn" id="stClose" type="button">تمام</button><button class="btn ghost" id="stLeave" type="button" hidden>اخرج من الماتش</button></div><p class="ver"></p>
   </div>
 </div>
+<div class="rothint" id="rotHint" role="alert"><div><svg viewBox="0 0 24 24" width="54" height="54" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><b>لف الموبايل رأسي علشان تلعب</b><button type="button" class="btn ghost" id="rotOk">كمّل أفقي</button></div></div>
 <nav id="tabbar" class="sh-tab" hidden aria-label="التنقل">
   <a role="button" tabindex="0" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11L12 3.8 20.5 11"/><path d="M5.5 9.6V20h4.5v-5.5h4V20h4.5V9.6"/></svg><span>الرئيسية</span></a>
   <a role="button" tabindex="0" data-tab="friends"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.2" r="3.1"/><path d="M3 19.6c.6-3.5 3-5.3 6-5.3s5.4 1.8 6 5.3"/><circle cx="17.2" cy="9" r="2.4"/><path d="M17.5 14.3c2.2.3 3.4 1.8 3.8 4.4"/></svg><span>الأصدقاء</span><i class="bd" id="tabFrBadge" hidden></i></a>
@@ -5901,7 +5911,7 @@ body.cx .cxt[hidden]{display:none}body.cx .cxt.pop{animation:cxpop .5s cubic-bez
 
   function renderMeta() {
     $('#halfLbl').textContent = penOn ? 'PENALTIES' : _ended ? (((half === 1 && !golden && !xt) || xt === 1) ? 'HALF TIME' : 'FULL TIME') : (golden || xt) ? 'EXTRA TIME' : half === 1 ? '1ST HALF' : '2ND HALF';
-    $('#clock').dataset.h = ({'HALF TIME': 'HT', 'FULL TIME': 'FT', 'EXTRA TIME': 'ET', 'PENALTIES': 'PK', '1ST HALF': '1H', '2ND HALF': '2H'})[$('#halfLbl').textContent] || '';
+    $('#clock').dataset.h = ({'HALF TIME': 'HT', 'FULL TIME': 'FT', 'EXTRA TIME': 'ET', 'PENALTIES': 'PK', '1ST HALF': '1ST', '2ND HALF': '2ND'})[$('#halfLbl').textContent] || '';
     $('#clock').textContent = penOn ? 'PK' : clockMin() + '’';
     document.querySelectorAll('.deckN').forEach(e => (e.textContent = deck.length));
     $('#deck').classList.toggle('out', deck.length === 0 && hands.me.length + hands.opp.length + floor.length > 0);
@@ -6819,7 +6829,7 @@ body.cx .cxt[hidden]{display:none}body.cx .cxt.pop{animation:cxpop .5s cubic-bez
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.18.0-beta';
+  const APP_VER = '1.18.1-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -7649,6 +7659,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   async function friendInvite(id) {
     if (!ACCT.fb || ACCT.offline) { toast('محتاج إنترنت'); return; }
     try {
+      if (typeof TK !== 'undefined' && TK.code && $('#screen-tk') && !$('#screen-tk').hidden && !$('#tkLobby').hidden) { await tkInviteSend(id); toast('بعتنا دعوة البطولة لـ' + frName(id) + ' ✔'); return; }
       if (!NET) { $('#tOnline').click(); await new Promise(r => setTimeout(r, 80)); $('#olCreate').click(); for (let i = 0; i < 40 && !($('#olCode').textContent || '').trim().match(/^[a-z0-9]{4}$/i); i++) await new Promise(r => setTimeout(r, 150)); }
       const code = ($('#olCode').textContent || '').trim().toLowerCase(); if (!/^[a-z0-9]{4}$/.test(code)) { toast('مقدرناش نفتح روم'); return; }
       const {D, db} = ACCT.fb; await D.set(D.ref(db, 'cardgoal/invites/' + id + '/' + ACCT.user.uid), {c: code, n: ACCT.profile.name, t: D.serverTimestamp()}); toast('بعتنا الدعوة لـ' + frName(id) + ' ✔');
@@ -7658,9 +7669,11 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   async function invIncoming(iv) {
     const {D, db} = ACCT.fb, me = ACCT.user.uid, drop = () => D.remove(D.ref(db, 'cardgoal/invites/' + me + '/' + iv.id)).catch(() => {});
     if (invBusy || !iv.c || !/^[a-z0-9]{4}$/.test(iv.c)) return; if (iv.t && ACCT.fb.now() - iv.t > 180000) { drop(); return; }
-    if (NET || !$('#screen-match').hidden) { return; }
-    invBusy = true; const v = await panel(`<div class="big-emoji">🎮</div><h2>${esc(iv.n || 'صاحبك')} بيعزمك على ماتش</h2><p>تحب تدخل الروم؟</p>`, [{label: 'انضم', value: 'j'}, {label: 'تجاهل', ghost: true, value: 'n'}]); invBusy = false; await drop();
-    if (v === 'j' && !NET) { renderOnline(); show('online'); $('#olJoinCode').value = iv.c; joinRoom(iv.c); }
+    if (NET || !$('#screen-match').hidden || (typeof TK !== 'undefined' && TK.code)) { return; }
+    let tk = null; try { const mm = await D.get(D.ref(db, 'cardgoal/tourneys/' + iv.c + '/meta')); if (mm.exists() && mm.val().host === iv.id && mm.val().st === 'lobby') tk = mm.val(); } catch (e) {}
+    invBusy = true; const v = await panel(`<div class="big-emoji">🎮</div><h2>${esc(iv.n || 'صاحبك')} بيعزمك على ${tk ? 'بطولة أصحاب' : 'ماتش'}</h2><p>${tk ? 'تحب تدخل البطولة؟' : 'تحب تدخل الروم؟'}</p>`, [{label: 'انضم', value: 'j'}, {label: 'تجاهل', ghost: true, value: 'n'}]); invBusy = false; await drop();
+    if (v === 'j' && tk) { show('tk'); tkJoin(iv.c); }
+    else if (v === 'j' && !NET) { renderOnline(); show('online'); $('#olJoinCode').value = iv.c; joinRoom(iv.c); }
   }
 
   /* ---- messages: the last thing each friend wrote to me ---- */
@@ -7721,6 +7734,19 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     }
     if (!ok) { tkMsg('مقدرناش نفتح بطولة. جرّب تاني.'); return; }
     TK.host = true; TK.applied = {}; TK.ver = 0; await tkSeat({c: prefs.myClub && clubDef(prefs.myClub) ? prefs.myClub : ''}); tkWatch(); tkShow('lobby');
+  }
+  /* ---- invite an online friend straight into the lobby (no code to send) ---- */
+  async function tkInviteSend(id) {
+    const {D, db} = ACCT.fb, me = ACCT.user.uid;
+    await D.set(D.ref(db, 'cardgoal/invites/' + id + '/' + me), {c: TK.code, n: String(ACCT.profile.name || '').slice(0, 16), t: D.serverTimestamp()});
+  }
+  function tkInvitePick() {
+    if (!ACCT.fb || ACCT.offline || !TK.code) { toast('محتاج إنترنت'); return; }
+    const ids = FR.ids.filter(id => !(TK.seats && TK.seats[id])); ids.forEach(frUserLoad); ids.sort((a, b) => (frStatus(b).on ? 1 : 0) - (frStatus(a).on ? 1 : 0));
+    const rows = ids.map(id => { const s = frStatus(id), can = s.on && !s.busy; return `<div class="sh-row${s.on ? '' : ' off'}" data-id="${id}">${frAv(id, 42)}<div><b dir="auto">${nameHtml(frName(id), FR.users[id] && FR.users[id].vf)}</b><small class="${s.on ? 'ok' : ''}">${s.txt}</small></div>${can ? '<button type="button" class="sm" data-inv>ادعيه</button>' : `<button type="button" class="sm ghost" disabled>${s.busy ? 'مشغول' : 'مش متصل'}</button>`}</div>`; }).join('') || '<p class="rm-intro">مفيش أصحاب لسه. ضيف أصحاب من تبويب الأصدقاء.</p>';
+    const pr = panel(`<h2>ادعي صاحب للبطولة</h2><p class="rm-intro">بيوصله إشعار ويدخل اللوبي بضغطة.</p><div class="invlist">${rows}</div>`, [{label: 'خلاص', ghost: true, value: 'x'}]);
+    $$('#overlay [data-inv]').forEach(b => { b.onclick = async () => { const id = b.closest('[data-id]').dataset.id; b.disabled = true; try { await tkInviteSend(id); b.textContent = 'اتبعتت ✔'; } catch (e) { b.disabled = false; toast(acErr(e)); } }; });
+    return pr;
   }
   async function tkJoin(codeArg) {
     if (!ACCT.fb || !ACCT.profile) { toast('لازم تسجّل دخول الأول'); return; }
@@ -7993,7 +8019,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   });
   $('#tkSettings').addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.sec) { TK.open = TK.open || {}; TK.open[d.dataset.sec] = d.open; } }, true);
   $('#screen-tk').addEventListener('change', e => { if (e.target.id === 'tkTheme') tkSetOpt('theme', e.target.value); });
-  $('#tkCreate').onclick = tkCreate; $('#tkJoin').onclick = () => tkJoin();
+  $('#tkCreate').onclick = tkCreate; $('#tkJoin').onclick = () => tkJoin(); $('#tkInvite').onclick = tkInvitePick;
   $('#tkClubBtn').onclick = async () => { const taken = tkSeatList().filter(s => s.u !== ACCT.user.uid && s.c).map(s => s.c); const r = await pickClub({title: 'اختار فريقك', exclude: taken}); if (r && r !== 'rand') { await tkSeat({c: r, r: 0}); prefs.myClub = r; savePrefs(); } };
   $('#tkReady').onclick = async () => { const s = TK.seats[ACCT.user.uid]; if (s && s.c) await tkSeat({r: s.r ? 0 : 1}); };
   $('#tkStart').onclick = tkStart;
@@ -9053,6 +9079,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function show(n) {
     if (n !== 'hub' && n !== 'match' && T && T._main) T = T._main;
     if (n !== 'match') { try { pzReset(); } catch (e) {} }
+    document.body.classList.toggle('tbmode', /^tb/.test(n));
     screens.forEach(s => { $('#screen-' + s).hidden = s !== n; });
     $('#screen-match').hidden = n !== 'match';
     if (n !== 'match') document.body.classList.remove('cupnight');
@@ -10428,6 +10455,19 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   $('#hubHome').onclick = () => { T = mainOf(T); show('home'); renderHome(); };
 
   /* ---- controls ---- */
+  /* ---- phones stay upright: no sideways spinning of the game when the phone is tilted ---- */
+  const isPhone = () => { try { return matchMedia('(pointer:coarse)').matches && Math.min(screen.width, screen.height) < 700; } catch (e) { return false; } };
+  const portOn = () => prefs.lockPort !== false && isPhone();
+  function portApply() {
+    document.body.classList.toggle('lockport', portOn());
+    const b = $('#stPort'); if (b) b.setAttribute('aria-pressed', prefs.lockPort !== false);
+    try { if (portOn() && screen.orientation && screen.orientation.lock) screen.orientation.lock('portrait').catch(() => {}); else if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+  }
+  { const o = $('#rotOk'); if (o) o.onclick = () => { prefs.lockPort = false; savePrefs(); portApply(); }; }
+  { const b = $('#stPort'); if (b) b.onclick = () => { prefs.lockPort = prefs.lockPort === false; savePrefs(); portApply(); }; }
+  ['click', 'touchend'].forEach(ev => document.addEventListener(ev, () => { if (portOn()) portApply(); }, {once: true, passive: true}));
+  document.addEventListener('fullscreenchange', portApply); window.addEventListener('orientationchange', () => { try { portApply(); } catch (e) {} });
+  setTimeout(portApply, 0);
   const toggleRules = open => { const cl = !!(M && M.kind === 'classic' && !$('#screen-match').hidden); $('#rulesCl').hidden = !cl; $('#rulesFb').hidden = cl; $('#rules').hidden = !open; if (open) $('#rulesClose').focus(); };
   $('#btnRules').onclick = () => toggleRules(true);
   $('#rulesClose').onclick = () => toggleRules(false);
@@ -10739,7 +10779,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function tbBandUpdate() {
     const sec = $('#screen-tbm'), lgn = sec.dataset.lgn || '';
     $('#tbBand').textContent = (TB.tag ? '' : lgn) + (TB.tag || 'QUICK MATCH') + (TB.type === 'soccer' && !TB.tag ? ' · SOCCER' : '') + ' · ' + (TB.half === 1 ? '1ST HALF' : '2ND HALF');
-    $('#tbHalf').textContent = TB.half === 1 ? '1H' : '2H';
+    $('#tbHalf').textContent = TB.half === 1 ? '1ST' : '2ND';
     $('#tbEnd').innerHTML = TB_SVG.flag + ' ' + (TB.half === 1 ? 'إنهاء الشوط الأول' : 'إنهاء الماتش');
   }
   function tbRender() {
