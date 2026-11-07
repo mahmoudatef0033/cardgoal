@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.18.1-beta">
+<head><meta name="app-version" content="1.18.2-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -2059,6 +2059,20 @@ body{touch-action:pan-y pinch-zoom}
  body.lockport:not(.tbmode) .rothint{display:grid;position:fixed;inset:0;z-index:9999;place-items:center;background:rgba(5,7,13,.96);color:#eaf0ff;text-align:center;font-family:Cairo,sans-serif;padding:20px}
  .rothint>div{display:grid;gap:12px;justify-items:center}.rothint b{font:900 20px Cairo,sans-serif}.rothint svg{color:#c6f432;animation:rotp 2.2s ease-in-out infinite}@keyframes rotp{0%,100%{transform:rotate(-90deg)}50%{transform:rotate(0)}}
 }
+
+/* the cup and the Champions League cards on the league overview */
+.sorow.cmp{position:relative;cursor:default}.sorow.cmp[data-cmp]{cursor:pointer}.sorow.cmp .rn{display:grid;place-items:center;color:#ffd35c}.sorow.cmp.ucl .rn{color:#8fb4ff}
+.sorow.cmp .cl{line-height:1.7}.sorow.cmp .cmt{font-style:normal;font:800 11.5px Cairo,sans-serif;padding:2px 10px;border-radius:12px;background:rgba(255,255,255,.09);margin-inline-start:auto;align-self:flex-start;white-space:nowrap}
+
+.cmpc{padding:12px 14px 10px;margin-bottom:8px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
+.cmpc[data-cmp]{cursor:pointer}.cmpc[data-cmp]:active{transform:scale(.99)}
+.cmpc .h{display:flex;align-items:center;gap:10px}
+.cmpc .i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;color:#ffcf40;border:1.5px solid rgba(255,207,64,.5);background:radial-gradient(circle at 50% 35%,rgba(255,207,64,.2),rgba(255,207,64,.04))}
+.cmpc.ucl .i{color:#8fb4ff;border-color:rgba(143,180,255,.55);background:radial-gradient(circle at 50% 35%,rgba(143,180,255,.22),rgba(143,180,255,.04))}
+.cmpc .t{font:900 15px Cairo,sans-serif;flex:1;min-width:0}
+.cmpc .g{font-style:normal;font:800 11.5px Cairo,sans-serif;padding:2px 10px;border-radius:12px;background:rgba(255,255,255,.09);white-space:nowrap}
+.cmpc .l{font:700 13px/1.7 Cairo,sans-serif;color:#9fb0d0;margin-top:5px}
+.cmpc.ucl .l:last-child{color:#8fb4ff;font-size:12px}
 </style>
 </head>
 <body>
@@ -6829,7 +6843,7 @@ body{touch-action:pan-y pinch-zoom}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.18.1-beta';
+  const APP_VER = '1.18.2-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -10222,32 +10236,102 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     return items;
   }
   const newsLatest = () => { let l = -1; (T.mds || []).forEach((md, i) => { if (md.some(f => f.res)) l = i; }); return l; };
+  /* ---- the cup and the Champions League that run beside the league: their news, and their cards on the overview ---- */
+  const rnTr = t => (LANG === 'en' ? String(t == null ? '' : t).replace(/مرحلة الدوري/g, 'League phase').replace(/الذهاب/g, '1st leg').replace(/الإياب/g, '2nd leg').replace(/الملحق/g, 'Play-off').replace(/دور الـ(\d+)/g, 'Round of $1').replace(/ربع النهائي/g, 'Quarter-finals').replace(/نصف النهائي/g, 'Semi-finals').replace(/النهائي/g, 'Final').replace(/الدور التمهيدي/g, 'Preliminary round').replace(/دور المجموعات/g, 'Group stage') : t);
+  const cupLbl = () => (LANG === 'en' ? ({eng: 'FA Cup', esp: 'Copa del Rey', ita: 'Coppa Italia', ger: 'DFB-Pokal', fra: 'Coupe de France', egy: 'Egypt Cup'})[T.lg] || 'Cup' : (CUP_NAME[T.lg] || ''));
+  const uWith = fn => { const m = T, u = m.u; T = u; try { return fn(); } finally { T = m; } };
+  const uRound = (u, j) => (j < 8 ? {matches: u.mds[j] || [], name: UCL_NAMES[j], leg: 0} : u.ko[j - 8]);
+  function uPhase(u) {
+    if (u.stage === 'done') return L2('انتهى', 'Finished');
+    if (u.stage === 'group') return L2(`مرحلة الدوري · الجولة ${Math.min(8, u.md + 1)} من 8`, `League phase · matchday ${Math.min(8, u.md + 1)} of 8`);
+    const r = u.ko[u.koRound]; return r ? rnTr(r.name) : '';
+  }
+  function uMineStatus(u, id) {
+    if (u.champion === id) return L2('🏆 بطل أوروبا', '🏆 European champions');
+    if (u.out[id]) return L2('خرج من ' + u.out[id], 'Out in the ' + rnTr(u.out[id]));
+    if (u.stage === 'group') {
+      const st = uWith(() => standings(0)), k = st.findIndex(r => r.id === id) + 1, r = st[k - 1];
+      if (!r || !u.md) return L2('لسه ما لعبش', 'Yet to play');
+      return L2(`المركز ${k} من ${u.teams.length} · ${r.pts} نقطة · ${k <= 8 ? 'في المراكز المؤهلة مباشرة' : k <= 24 ? 'في منطقة الملحق' : 'برا المراكز المؤهلة'}`, `${ordEn(k)} of ${u.teams.length} · ${r.pts} pts · ${k <= 8 ? 'direct qualification places' : k <= 24 ? 'play-off places' : 'outside the qualifying places'}`);
+    }
+    const rd = u.ko[u.koRound], m = rd && rd.matches.find(f => f.a === id || f.b === id);
+    if (m) { const o = teamObj(m.a === id ? m.b : m.a).name; return L2(`${rnTr(rd.name)} ضد ${o}`, `${rnTr(rd.name)} vs ${o}`); }
+    return (u.direct || []).includes(id) ? L2('تأهل مباشر لدور الـ16', 'Seeded straight into the last 16') : L2('لسه مستمر', 'Still in');
+  }
+  function uKoLine(rd, m) {
+    const nm = id => teamObj(id).name, r = m.res;
+    if (rd.leg === 1) return `${nm(m.a)} ${r.ga}-${r.gb} ${nm(m.b)}`;
+    const w = winnerOf(m), A = r.ga + (m.agg ? m.agg.a : 0), B = r.gb + (m.agg ? m.agg.b : 0), x = Math.max(A, B), y = Math.min(A, B);
+    return `${nm(w)} ${x}-${y}${r.pa != null ? ' (' + L2('ركلات', 'pens') + ')' : ''}`;
+  }
+  function uclNews(sel, latest) {
+    const u = T.u, nm = id => teamObj(id).name, V = (a, e) => nsPick(LANG === 'en' ? e : a), out = [], js = new Set();
+    T.uat.forEach((a, j) => { if (a === sel + 1 && uPos(u) > j) js.add(j); });
+    if (sel === latest) { let last = -1; for (let j = 0; j < UCL_TOT; j++) { const r = uRound(u, j); if (r && r.matches.some(m => m.res)) last = j; } if (last >= 0) js.add(last); }
+    NSEED = (sel + 1) * 7 + 5;
+    js.forEach(j => {
+      const rd = uRound(u, j), ms = rd.matches.filter(m => m.res); if (!ms.length) return;
+      let best = ms.find(m => isMine(m.a) || isMine(m.b)), sc = -1; const mine = !!best;
+      if (!best) ms.forEach(m => { const t = m.res.ga + m.res.gb + Math.abs(m.res.ga - m.res.gb); if (t > sc) { sc = t; best = m; } });
+      const r = best.res, A = nm(best.a), B = nm(best.b), ko = j >= 8;
+      if (ko && rd.leg !== 1) {                                 // a tie that is settled
+        const w = winnerOf(best), W = nm(w), Lz = nm(w === best.a ? best.b : best.a), a = r.ga + (best.agg ? best.agg.a : 0), b = r.gb + (best.agg ? best.agg.b : 0), x = Math.max(a, b), y = Math.min(a, b), fin = rd.final;
+        out.push({pri: mine ? 2 : 3, tag: fin ? L2('بطل أوروبا', 'EUROPEAN CHAMPIONS') : mine ? L2('فريقك في أوروبا', 'YOUR EUROPEAN NIGHT') : L2('دوري الأبطال', 'CHAMPIONS LEAGUE'), body: nzIcon(fin ? 'cup' : 'ball'),
+          h: fin ? V([`${W} بطل أوروبا: يتوّج بدوري الأبطال على حساب ${Lz}`, `${W} يرفع كأس دوري الأبطال بعد الفوز على ${Lz}`], [`${W} are European champions after beating ${Lz}`, `${W} lift the Champions League trophy against ${Lz}`])
+            : V([`${W} يتأهل على حساب ${Lz} في ${rnTr(rd.base)} بمجموع ${x}-${y}`, `${Lz} يودّع دوري الأبطال في ${rnTr(rd.base)} أمام ${W}`, `${W} يعبر ${Lz} في ${rnTr(rd.base)}: مجموع المباراتين ${x}-${y}`], [`${W} go through against ${Lz} in the ${rnTr(rd.base)}: ${x}-${y} on aggregate`, `${Lz} are out of the Champions League: ${W} win the ${rnTr(rd.base)} tie`, `${W} see off ${Lz} over two legs: ${x}-${y}`]),
+          p: L2(`دوري الأبطال · ${rnTr(rd.name)}`, `Champions League · ${rnTr(rd.name)}`)});
+        return;
+      }
+      const w = r.ga > r.gb ? best.a : r.gb > r.ga ? best.b : null, W = w ? nm(w) : '', Lz = w ? nm(w === best.a ? best.b : best.a) : '', x = Math.max(r.ga, r.gb), y = Math.min(r.ga, r.gb);
+      const h = w ? V([`ليلة أوروبية: ${W} يعبر ${Lz} ${x}-${y}`, `${W} يتألق في أوروبا ويهزم ${Lz} ${x}-${y}`, `في دوري الأبطال: ${W} يكسب ${Lz} ${x}-${y}`], [`European night: ${W} beat ${Lz} ${x}-${y}`, `${W} shine in Europe and see off ${Lz} ${x}-${y}`, `In the Champions League: ${W} win ${x}-${y} over ${Lz}`]) : V([`${A} و ${B} يتعادلان ${r.ga}-${r.gb} في ليلة أوروبية`, `نقطة لكل فريق في دوري الأبطال: ${A} ${r.ga}-${r.gb} ${B}`], [`${A} and ${B} draw ${r.ga}-${r.gb} on a European night`, `A point each in the Champions League: ${A} ${r.ga}-${r.gb} ${B}`]);
+      out.push({pri: mine ? 2 : 4, tag: mine ? L2('فريقك في أوروبا', 'YOUR EUROPEAN NIGHT') : L2('ليلة أوروبية', 'CHAMPIONS LEAGUE NIGHT'), h, p: L2(`دوري الأبطال · ${rnTr(rd.name)}`, `Champions League · ${rnTr(rd.name)}`), body: nzIcon('ball')});
+    });
+    if (sel === latest) {
+      u.mine.forEach(id => { if (!u.md && u.stage === 'group') return; out.push({pri: 3, tag: L2('فريقك في دوري الأبطال', 'YOUR CHAMPIONS LEAGUE'), h: L2(`${nm(id)} في دوري الأبطال: ${uMineStatus(u, id)}`, `${nm(id)} in the Champions League: ${uMineStatus(u, id)}`), p: uPhase(u), body: nzIcon('ball')}); });
+      if (u.stage === 'ko' && u.koRound === 0 && !u.ko[0].matches.some(m => m.res)) out.push({pri: 2, tag: L2('انتهت مرحلة الدوري', 'LEAGUE PHASE OVER'), h: L2(`انتهت مرحلة الدوري في أوروبا: أول 8 تأهلوا مباشرة والـ16 للملحق`, `The league phase is over: the top 8 go straight through, 16 more head to the play-offs`), p: L2('الملحق بعد الجولة القادمة', 'The play-offs come next'), body: nzIcon('ball')});
+    }
+    return out;
+  }
+  function cupNews() {
+    const c = T.cup, out = [], nm = id => teamObj(id).name, lv = id => (CLUB_LV[id] != null ? CLUB_LV[id] : 3), V = (a, e) => nsPick(LANG === 'en' ? e : a), cn = cupLbl();
+    const played = c.rounds.map((r, i) => ({r, i})).filter(x => x.r.matches.some(m => m.res)).pop();
+    NSEED = (T.md + 1) * 7 + 9;
+    if (played) {
+      const mine = played.r.matches.find(m => m.res && (isMine(m.a) || isMine(m.b)));
+      if (mine) { const w = winnerOf(mine), me = isMine(w), lz = w === mine.a ? mine.b : mine.a, r = mine.res;
+        out.push({pri: 2, tag: L2('فريقك في الكأس', 'YOUR CUP TIE'), body: nzIcon('cup'), h: me ? V([`${nm(w)} يتأهل في ${cn} على حساب ${nm(lz)} ${Math.max(r.ga, r.gb)}-${Math.min(r.ga, r.gb)}`, `${nm(w)} يواصل مشوار ${cn}: عبر ${nm(lz)}`], [`${nm(w)} advance in the ${cn} past ${nm(lz)} ${Math.max(r.ga, r.gb)}-${Math.min(r.ga, r.gb)}`, `${nm(w)} march on in the ${cn} after beating ${nm(lz)}`]) : V([`${nm(lz === w ? mine.a : lz)} يودّع ${cn} من ${rnTr(played.r.name)} أمام ${nm(w)}`, `خروج مؤلم من ${cn}: ${nm(w)} يطيح بفريقك`], [`${nm(w === mine.a ? mine.b : mine.a)} are knocked out of the ${cn} by ${nm(w)}`, `A painful exit from the ${cn}: ${nm(w)} win the tie`]), p: rnTr(played.r.name) }); }
+    }
+    if (c.champion) out.push({pri: 1, tag: L2('بطل الكأس', 'CUP WINNERS'), body: nzIcon('cup'), h: L2(`${nm(c.champion)} بطل ${cn}`, `${nm(c.champion)} win the ${cn}`), p: ''});
+    else if (c.r < c.rounds.length) { const cr = c.rounds[c.r], un = cr.matches.filter(m => !m.res);
+      if (un.length === cr.matches.length && un.length) { const pr = un.slice().sort((x, y) => (lv(y.a) + lv(y.b)) - (lv(x.a) + lv(x.b)))[0];
+        out.push({pri: 3, tag: L2('قرعة الكأس', 'CUP DRAW'), body: nzIcon('cup'), h: L2(`قرعة ${rnTr(cr.name)} في ${cn}: ${nm(pr.a)} ضد ${nm(pr.b)}`, `${rnTr(cr.name)} draw in the ${cn}: ${nm(pr.a)} vs ${nm(pr.b)}`), p: L2(`بعد الجولة ${c.at[c.r]}`, `After matchday ${c.at[c.r]}`)}); } }
+    return out;
+  }
+  function compBlock() {
+    if (!T.lg || (!T.cup && !T.u)) return '';
+    let h = ''; const row = (cls, ic, title, tag, lines, act) => `<div class="cmpc ${cls}"${act ? ` data-cmp="${act}" tabindex="0" role="button"` : ''}><div class="h"><span class="i">${nzSvg(ic, 20)}</span><span class="t" dir="${LANG === 'en' ? 'ltr' : 'rtl'}">${esc(title)}</span>${tag ? `<em class="g" dir="auto">${esc(tag)}</em>` : ''}</div>${lines.filter(Boolean).map(x => `<div class="l" dir="${LANG === 'en' ? 'ltr' : 'rtl'}">${esc(x)}</div>`).join('')}</div>`;
+    if (T.cup) { const c = T.cup, cn = cupLbl(), cr = c.champion ? null : c.rounds[c.r], played = c.rounds.map(r => r).filter(r => r.matches.some(m => m.res)).pop(), nm = id => teamObj(id).name;
+      const mine = T.mine.map(id => cupSt(id).replace(/^ · [^:]+: /, '') ? nm(id) + ': ' + cupSt(id).replace(/^ · [^:]+: /, '') : '').filter(Boolean), last = played && played.matches.filter(m => m.res).slice(0, 2).map(m => `${nm(m.a)} ${m.res.ga}-${m.res.gb} ${nm(m.b)}`);
+      h += row('cup', 'cup', cn, c.champion ? L2('انتهى', 'Done') : cr ? rnTr(cr.name) : '', [mine.join(' · '), last && last.length ? L2('آخر دور: ', 'Last round: ') + last.join(' · ') : '', c.champion ? L2('البطل: ', 'Winners: ') + nm(c.champion) : cr ? L2(`الدور الجاي بعد الجولة ${c.at[c.r]}`, `Next round after matchday ${c.at[c.r]}`) : '']); }
+    if (T.u) { const u = T.u, nm = id => teamObj(id).name, due = uclDue(T), nx = u.stage === 'done' ? null : T.uat[Math.min(uPos(u), T.uat.length - 1)];
+      h += row('ucl', 'ball', L2('دوري أبطال أوروبا', 'Champions League'), uPhase(u), [u.mine.map(id => nm(id) + ': ' + uMineStatus(u, id)).join(' · ') || L2('بتتفرج على أوروبا', 'Watching Europe'), u.stage === 'done' ? L2('البطل: ', 'Winners: ') + nm(u.champion) : due ? L2('الجولة الجاية دلوقتي', 'Next round is due now') : L2(`الجولة الجاية بعد الجولة ${nx} من الدوري`, `Next round after league matchday ${nx}`), L2('دوس لفتح دوري الأبطال', 'Tap to open the Champions League')], 'ucl'); }
+    return h ? `<div class="gl">${L2('المسابقات', 'Competitions')}</div>` + h : '';
+  }
+  document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-cmp="ucl"]'); if (b && T && T.u && !T._main) switchComp('ucl'); });
   function newsBuild(rd) {
     const S = NS[LANG === 'en' ? 'en' : 'ar'], rounds = T.mds || []; let latest = -1; rounds.forEach((md, i) => { if (md.some(f => f.res)) latest = i; });
     const sel = rd == null ? latest : Math.max(-1, Math.min(rd, latest)); let items = newsItems(sel, S, latest);
     /* cups and knockout rounds belong to "now" */
     if (sel === latest) {
       NSEED = (sel + 1) * 7 + 3;
-      const nm = id => teamObj(id).name, lv = id => (CLUB_LV[id] != null ? CLUB_LV[id] : 3), sets = []; (T.ko || []).forEach(r => sets.push({rd: r, label: r.name})); if (T.cup) T.cup.rounds.forEach(r => sets.push({rd: r, label: CUP_NAME[T.lg] + ' · ' + r.name}));
+      const nm = id => teamObj(id).name, lv = id => (CLUB_LV[id] != null ? CLUB_LV[id] : 3), sets = []; (T.ko || []).forEach(r => sets.push({rd: r, label: rnTr(r.name)})); if (T.cup) T.cup.rounds.forEach(r => sets.push({rd: r, label: cupLbl() + ' · ' + rnTr(r.name)}));
       const done = sets.filter(x => x.rd.matches.some(m => m.res)).pop();
       if (done) { let best = null, bs = -1; done.rd.matches.filter(m => m.res).forEach(m => { const r = m.res, w = winnerOf(m), l = w === m.a ? m.b : m.a, up = lv(l) - lv(w), sc = r.ga + r.gb + Math.max(0, up) * 3 + (r.pa != null ? 2 : 0); if (sc > bs) { bs = sc; best = {r, w, l, up}; } });
         if (best) { const {r, w, l, up} = best; items.push({pri: 1, body: nzIcon('cup'), tag: up > 0.5 ? S.tag.cups : S.tag.cupr, h: up > 0.5 ? S.cupUps(done.label, nm(w), nm(l)) : S.cupWin(done.label, nm(w), nm(l)), p: S.cupP(r.ga, r.gb, r.pa, r.pb)}); } }
       if (latest < 0) { const nxt = sets.find(x => x.rd.matches.some(m => !m.res)); if (nxt && !items.length) { const nl = nxt.rd.matches.filter(m => !m.res), pr = nl.slice().sort((x, y) => (lv(y.a) + lv(y.b)) - (lv(x.a) + lv(x.b)))[0]; items.push({pri: 8, body: nzIcon('ball'), tag: S.tag.ahead, h: S.nextH(false, nm(pr.a), nm(pr.b)), p: nxt.label}); } }
     }
-    if (T.lg && T.u && T.uat) {
-      try {
-        NSEED = (sel + 1) * 7 + 5; const u = T.u, nm = id => teamObj(id).name, V = (a, e) => nsPick(LANG === 'en' ? e : a);
-        T.uat.forEach((a, j) => {
-          if (a !== sel + 1 || uPos(u) <= j) return;
-          const ms = (j < 8 ? (u.mds[j] || []) : ((u.ko[j - 8] || {}).matches || [])).filter(m => m.res); if (!ms.length) return;
-          let best = ms.find(m => isMine(m.a) || isMine(m.b)), sc = -1; const mine = !!best;
-          if (!best) ms.forEach(m => { const t = m.res.ga + m.res.gb + Math.abs(m.res.ga - m.res.gb); if (t > sc) { sc = t; best = m; } });
-          const r = best.res, A = nm(best.a), B = nm(best.b), w = r.ga > r.gb ? best.a : r.gb > r.ga ? best.b : null, W = w ? nm(w) : '', Lz = w ? nm(w === best.a ? best.b : best.a) : '', x = Math.max(r.ga, r.gb), y = Math.min(r.ga, r.gb);
-          const h = w ? V([`ليلة أوروبية: ${W} يعبر ${Lz} ${x}-${y}`, `${W} يتألق في أوروبا ويهزم ${Lz} ${x}-${y}`, `في دوري الأبطال: ${W} يكسب ${Lz} ${x}-${y}`], [`European night: ${W} beat ${Lz} ${x}-${y}`, `${W} shine in Europe and see off ${Lz} ${x}-${y}`, `In the Champions League: ${W} win ${x}-${y} over ${Lz}`]) : V([`${A} و ${B} يتعادلان ${r.ga}-${r.gb} في ليلة أوروبية`, `نقطة لكل فريق في دوري الأبطال: ${A} ${r.ga}-${r.gb} ${B}`], [`${A} and ${B} draw ${r.ga}-${r.gb} on a European night`, `A point each in the Champions League: ${A} ${r.ga}-${r.gb} ${B}`]);
-          items.push({pri: mine ? 2 : 4, tag: mine ? L2('فريقك في أوروبا', 'YOUR EUROPEAN NIGHT') : L2('ليلة أوروبية', 'CHAMPIONS LEAGUE NIGHT'), h, p: L2(`دوري الأبطال · ${UCL_NAMES[j]}`, `Champions League · matchday ${j + 1}`), body: nzIcon('ball')});
-        });
-      } catch (e) { /* the news never stops the hub */ }
-    }
+    if (T.lg && T.u && T.uat) { try { items.push(...uclNews(sel, latest)); } catch (e) { /* the news never stops the hub */ } }
+    if (sel === latest && T.lg && T.cup) { try { items.push(...cupNews()); } catch (e) {} }
     items = items.map((x, i) => Object.assign(x, {i})).sort((a, b) => a.pri - b.pri || a.i - b.i).slice(0, 12);
     return {items, round: sel >= 0 ? sel + 1 : null, rd: sel, latest, S};
   }
@@ -10267,7 +10351,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   }
 
   function overviewHtml() {
-    let h = (T.ucl ? uclHero() : T.lg === 'esp' ? llHero() : lgHero()) + newsHtml() + cupNote();
+    let h = (T.ucl ? uclHero() : T.lg === 'esp' ? llHero() : lgHero()) + newsHtml() + compBlock();
     if (T.mine.length) {
       h += `<div class="gl">${T.tb ? 'المدربين' : 'فرقك'}</div>` + T.mine.map(id => {
         const t = teamObj(id), lr = T.lg ? standings(0).map((r, i) => Object.assign({k: i + 1}, r)).find(r => r.id === id) : null, st = id === T.champion ? '🏆 البطل' : lr ? `المركز ${lr.k} · ${lr.pts} نقطة · ${lr.p} لعب` + cupSt(id) : T.out[id] ? 'خرج من ' + T.out[id] : (T.stage === 'done' ? '' : 'لسه مستمر');
