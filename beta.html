@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.24.0-beta">
+<head><meta name="app-version" content="1.25.1-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -2186,6 +2186,22 @@ body.classic:not(.four) .lines .box.t::after{top:100%;margin-top:-1.5px;border-t
 body.classic:not(.four) .goal{width:37px;height:0;background:none;border:0;border-top:4px solid #fff;border-radius:0;box-shadow:none}
 body.classic:not(.four) .goal.t{top:13px}body.classic:not(.four) .goal.b{bottom:13px}
 @media (max-height:480px){body.classic:not(.four) .lines .box{width:auto;height:30%;aspect-ratio:40.32/16.5}body.classic:not(.four) .lines .circle{width:104px;height:104px}}
+/* desktop 3D: the stage fills the screen, the scoreboard floats over the crowd, cards scale with the window */
+@media (min-width:1000px) and (min-height:560px){
+body.pro3d .app#screen-match{max-width:none!important;width:100%;position:relative}
+body.pro3d #screen-match .stadium{position:absolute!important;inset:0;margin:0!important;border-radius:0!important;box-shadow:none!important;z-index:1}
+body.pro3d #screen-match .board,body.pro3d #screen-match .ticker,body.pro3d #screen-match #fStrip{position:relative;z-index:20;width:min(860px,60vw);margin-inline:auto}
+body.pro3d #screen-match .board{margin-top:10px;background:linear-gradient(rgba(22,34,61,.9),rgba(10,18,34,.9))}
+body.pro3d #screen-match .ticker{background:rgba(4,7,13,.9)}
+:root{--hw:clamp(46px,min(18.5vw,14vh),160px)!important;--fw:clamp(38px,min(13.8vw,11vh),128px)!important;--ow:clamp(26px,min(8.5vw,7vh),78px)!important}
+body.pro3d .stadium .deck,body.pro3d .stadium .pile{scale:var(--pscale,1.55)}
+}
+@media (min-width:1000px) and (max-height:900px){
+body.pro3d #screen-match .board .poss,body.pro3d #screen-match .board .venue{display:none!important}
+body.pro3d #screen-match .board{padding-block:4px!important;margin-top:6px}
+body.pro3d #screen-match .ticker{padding-block:3px!important}
+}
+
 /* the pods */
 body.four .seatc{display:flex;position:absolute;z-index:6;flex-direction:column;align-items:center;gap:7px;width:84px;padding:0;background:none;border:0;backdrop-filter:none;box-shadow:none;border-radius:0;color:#eef3ff;transform:none}
 body.four .seatc.ta{--tc:#3b7bff}body.four .seatc.tb{--tc:#ff4b66}
@@ -7658,7 +7674,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.24.0-beta';
+  const APP_VER = '1.25.1-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -12660,11 +12676,12 @@ function* drawPro3D(cv, o) {
       if (cH < need) { let d = need - cH, pt = parseFloat(pitch.style.getPropertyValue('--p3t')) || 0, pb = parseFloat(pitch.style.getPropertyValue('--p3b')) || 0, ohq = oh.getBoundingClientRect(), ptMin = Math.max(0, pt + (yGoal + 10 + ohq.height / 2) - ((ohq.top + ohq.bottom) / 2 - stR.top)), room = Math.max(0, pt - ptMin), dt = Math.min(room, d / 2), db = Math.min(pb, d - dt); dt = Math.min(room, d - db);
         pitch.style.setProperty('--p3t', (pt - dt).toFixed(1) + 'px'); pitch.style.setProperty('--p3b', (pb - db).toFixed(1) + 'px'); } }
     const cR = ctr.getBoundingClientRect(), L = m(0, 52.5), R = m(68, 52.5), hOf = id => { const e = $(id); return e ? e.getBoundingClientRect().height : 90; };
-    const xDeck = Math.max(L[0] + 18, colX + 30), xPile = Math.min(R[0] - 18, colX + colW - 32), yMid = L[1];
+    let xDeck = Math.max(L[0] + 18, colX + 30), xPile = Math.min(R[0] - 18, colX + colW - 32); const yMid = L[1], big = colW > 900, D = m(2.5, 53), O = m(64.5, 60), Q = m(63.5, 33.5); if (big) { xDeck = D[0]; xPile = Math.min(O[0], Q[0]); }   /* wide screens: the deck and the piles sit on the grass right beside the touchlines (metres on the real pitch), clear of the ad boards */
     const rel = (x, y) => [(x - (cR.left - stR.left)).toFixed(1) + 'px', (y - (cR.top - stR.top)).toFixed(1) + 'px'];
     /* the deck sits on the halfway line at the left touchline; the opponent's pile just after the line on his side, mine just before it on mine, both at the right touchline */
-    const dk = rel(xDeck, yMid), po = rel(xPile, yMid - hOf('#pileOpp') / 2 - 8), pm = rel(xPile, yMid + hOf('#pileMe') / 2 + 8);
+    const dk = big ? rel(D[0], D[1]) : rel(xDeck, yMid), po = big ? rel(O[0], O[1]) : rel(xPile, yMid - hOf('#pileOpp') / 2 - 8), pm = big ? rel(Q[0], Q[1]) : rel(xPile, yMid + hOf('#pileMe') / 2 + 8);
     [['--dkx', dk[0]], ['--dky', dk[1]], ['--pox', po[0]], ['--poy', po[1]], ['--pmx', pm[0]], ['--pmy', pm[1]]].forEach(([k, v]) => pitch.style.setProperty(k, v));
+    pitch.style.setProperty('--pscale', big ? Math.max(1.25, Math.min(1.95, stR.height / 553)).toFixed(2) : '1');
     p3FitFloor();
     /* the floor cards must stay between the deck on one side and the capture piles on the other */
     { const dkW = ($('.deck') || {offsetWidth: 50}).offsetWidth, pW = Math.max(($('#pileOpp') || {offsetWidth: 50}).offsetWidth, ($('#pileMe') || {offsetWidth: 50}).offsetWidth), cxm = ((cR.left + cR.right) / 2) - stR.left;
