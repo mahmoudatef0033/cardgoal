@@ -1,6 +1,6 @@
-/* CardGoooooooal service worker: the internet first (so a new version always wins), the saved copy only when there is no internet */
-const V = 'cg-sw-1';
-const CORE = ['./beta.html', './manifest.json', './icon-192.png', './icon-512.png'];
+/* CardGoal service worker: the internet first (so a new version always wins), the saved copy only when there is no internet */
+const V = 'cg-sw-2';
+const CORE = ['./beta.html', './manifest.json', './cg-icon-192.png', './cg-icon-512.png', './cg-favicon-32.png'];
 const keyOf = u => { const x = new URL(u, self.location); return x.origin + x.pathname; };
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c => Promise.all(CORE.map(p => fetch(p, {cache: 'reload'}).then(r => (r.ok ? c.put(keyOf(p), r) : null)).catch(() => null)))).then(() => self.skipWaiting()));
