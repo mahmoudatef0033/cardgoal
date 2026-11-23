@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.30.0-beta">
+<head><meta name="app-version" content="1.31.0-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0B1220"><link rel="icon" type="image/png" sizes="32x32" href="cg-favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="cg-favicon-16.png"><link rel="shortcut icon" href="cg-favicon.ico"><link rel="icon" type="image/png" sizes="192x192" href="cg-icon-192.png"><link rel="apple-touch-icon" href="cg-apple-touch.png"><meta property="og:type" content="website"><meta property="og:title" content="كاردجول · CardGoal"><meta property="og:description" content="كوتشينة بطعم الكورة، وكل بصرة جول"><meta property="og:image" content="https://mahmoudatef0033.github.io/cardgoal/cg-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجول · CardGoal</title>
@@ -7794,7 +7794,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.30.0-beta';
+  const APP_VER = '1.31.0-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -7831,6 +7831,17 @@ body.four .fstrip{direction:ltr}
     return {cup: true, band, tag: 'ONLINE MATCH', theme: 'league', lg: k, final: false};
   }
 
+  /* a friendly match takes the look (scoreboard, boards, stadium) of its two clubs, like an online room that picked a competition:
+     same league -> that league, two national teams -> World Cup, anything else (two different leagues...) -> the normal friendly look */
+  const FR_LEAGUES = ['eng', 'esp', 'ita', 'ger', 'fra', 'egy', 'usa'];
+  function friendlyTheme(a, b) {
+    const da = clubDef(a), db = clubDef(b); if (!da || !db) return {};
+    let k = null;
+    if (da.nat && db.nat) k = 'wc';
+    else if (!da.nat && !db.nat && da.lg === db.lg && FR_LEAGUES.includes(da.lg) && LG_THEME[da.lg]) k = da.lg;
+    if (!k) return {};
+    return Object.assign(compCtx(k), {tag: 'FRIENDLY MATCH', band: k === 'wc' ? 'INTERNATIONAL' : ((LG_EN[k] || 'LEAGUE') + ' 26/27')});
+  }
   /* ---- Firebase service: gives the game the same small "room" interface it always used ---- */
   let FBP = null;
   function fbLoad() {
@@ -8853,7 +8864,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       const hn = M.homeName || M.me.name, df = hn && BASE_DEFS.find(d => d[2] === hn), st = df && STADIUMS[df[0]];
       let lg = null; try { const li = th.logo ? await p3Img(th.logo) : null; lg = li ? p3Tint(li, th.logoColor || null) : (M.lg === 'egy' ? await p3Img('egy-mark') : null); } catch (e) {}
       const cup = !!M.cup;
-      cg.info = {band: cup ? String(M.band || '').toUpperCase() : '', tag: cup ? String(M.tag || '').split(' · ').filter(p => !/[^\x00-\x7F]/.test(p)).join(' · ') : '', st: st ? String(st[0]).toUpperCase() : '', an: nm(tl), bn: nm(tr), ia: await cgImgOf(tl.id && LOGOS[tl.id]), ib: await cgImgOf(tr.id && LOGOS[tr.id]), lg};
+      cg.info = {band: cup ? String(M.band || '').toUpperCase() : '', tag: cup ? String(M.tag || '').split(' · ').filter(p => !/[^\x00-\x7F]/.test(p)).join(' · ') : (M.kind === 'friendly' ? 'FRIENDLY MATCH' : ''), st: st ? String(st[0]).toUpperCase() : '', an: nm(tl), bn: nm(tr), ia: await cgImgOf(tl.id && LOGOS[tl.id]), ib: await cgImgOf(tr.id && LOGOS[tr.id]), lg};
     }
     cg.kinds = cg.info ? [0, 1, 2] : [1, 2];
     const GW = o => o.g.reduce((a, b) => a + b.w, 0) + o.gap * (o.g.length - 1);
@@ -11233,7 +11244,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const me = $('#qmMe').value; let opp = $('#qmOpp').value;
     if (opp === 'rand' || opp === me) opp = shuffle(clubObjs().filter(c => c.id !== me))[0].id;
     prefs.myClub = me; savePrefs();
-    const ctx4 = friendlyCtx(teamObj(me), teamObj(opp), true, watch);
+    const ctx4 = friendlyCtx(teamObj(me), teamObj(opp), true, watch); try { Object.assign(ctx4, friendlyTheme(me, opp)); } catch (e) {}
     if (prefs.qm4) { ctx4.four = true; ctx4.seatAv = {1: {k: AVX.randKey(), r: -1}, 2: {k: AVX.randKey(), r: -1}, 3: {k: AVX.randKey(), r: -1}}; }
     startMatchCtx(ctx4);
   };
