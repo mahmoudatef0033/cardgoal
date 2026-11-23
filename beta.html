@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.27.0-beta">
+<head><meta name="app-version" content="1.28.0-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0f16"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجوووووول - CardGoooooooal!</title>
@@ -2280,6 +2280,28 @@ body:has(#tabbar:not([hidden])) .screen{margin-inline-start:236px}
 .tiles:not(:has(#tLeague:not([hidden]))) .tile.wide .ico{margin:0 0 auto;width:50px;height:50px}
 #screen-home .resume{border-radius:24px;padding:20px 24px}
 }
+/* ===== "فريقي": squad, player stats and cloud-save status in the tournament hub ===== */
+.tmx-h{display:flex;align-items:center;gap:12px;margin:4px 0 12px}.tmx-h .crest{font-size:15px}.tmx-h b{display:block;font:900 20px Cairo,sans-serif}.tmx-h small{color:var(--smu);font:700 12px Cairo,sans-serif}
+.tmx-syncrow{margin:-4px 0 12px}.tmx-sync{display:inline-block;font:800 11.5px Cairo,sans-serif;padding:5px 12px;border-radius:12px;background:var(--s2);color:var(--smu)}.tmx-sync.ok{color:var(--sok)}.tmx-sync.err{color:var(--slive)}
+.tmx-rec{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}.tmx-rec>div{background:var(--s1);border:1px solid var(--sbd);border-radius:14px;padding:10px 4px;text-align:center}.tmx-rec b{display:block;font:900 18px Orbitron,Cairo,sans-serif;direction:ltr}.tmx-rec small{color:var(--smu);font:700 11px Cairo,sans-serif}
+.tmx-tb{background:var(--s1);border:1px solid var(--sbd);border-radius:16px;padding:8px 8px 10px;margin-bottom:14px}
+.tmx-hd,.tmx-r{display:grid;grid-template-columns:30px minmax(0,1fr) repeat(5,28px) 30px;align-items:center;gap:4px}
+.tmx-hd{padding:0 2px 6px;border-bottom:1px solid var(--sbd);color:var(--smu);font:800 11px Cairo,sans-serif;text-align:center}.tmx-hd span:nth-child(2){text-align:start}
+.tmx-r{padding:6px 2px;border-bottom:1px solid rgba(255,255,255,.05)}.tmx-r:last-child{border-bottom:0}
+.tmx-n{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#fffdf7;color:#14213d;font:900 13px Cairo,sans-serif}.tmx-n.k{background:linear-gradient(#ffd166,#ffb703)}.tmx-n.g{background:var(--s3);color:var(--stx)}
+.tmx-w b{display:block;font:800 13.5px/1.25 Cairo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tmx-w small{color:var(--smu);font:700 10.5px Cairo,sans-serif}
+.tmx-c{text-align:center;font:800 13px Orbitron,Cairo,sans-serif;color:var(--stx)}.tmx-c.z{color:var(--smu);opacity:.5}.tmx-c.hi{color:var(--sac)}
+.tmx-e{width:30px;height:30px;border-radius:9px;border:1px solid var(--sbd);background:var(--s2);color:var(--stx);cursor:pointer;font-size:13px;padding:0}.tmx-e:hover{border-color:var(--sac)}
+.tmx-note{color:var(--smu);font:700 12px/1.6 Cairo,sans-serif;margin:-6px 2px 12px}
+.tmx-last{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:14px;background:var(--s1);border:1px solid var(--sbd);margin-bottom:6px;font:800 13px Cairo,sans-serif}.tmx-last .w{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;font:900 12px Orbitron,sans-serif}.tmx-last .W{background:rgba(61,220,132,.18);color:var(--sok)}.tmx-last .D{background:rgba(255,209,102,.18);color:#ffd166}.tmx-last .L{background:rgba(255,90,100,.18);color:var(--slive)}.tmx-last .sc{margin-inline-start:auto;font:900 14px Orbitron,sans-serif;direction:ltr}.tmx-last small{color:var(--smu);font-weight:700}
+.tmx-sheet{position:fixed;inset:0;z-index:80;background:rgba(3,6,14,.72);display:flex;align-items:flex-end;justify-content:center}
+.tmx-sheet .in{width:100%;max-width:560px;max-height:84vh;overflow:auto;background:var(--s1);border-radius:22px 22px 0 0;padding:14px 14px 22px;border:1px solid var(--sbd)}
+.tmx-sheet h3{font:900 17px Cairo,sans-serif;margin:2px 0 10px;display:flex;align-items:center;gap:10px}.tmx-sheet h3 button{margin-inline-start:auto}
+.tmx-sheet .gl{font:800 12px Cairo,sans-serif;color:var(--smu);margin:10px 2px 4px}
+.tmx-p{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;cursor:pointer;border:1px solid transparent}.tmx-p:hover{background:var(--s2)}.tmx-p.cur{border-color:var(--sac);background:var(--sac3)}.tmx-p.off{opacity:.4;cursor:default}
+.tmx-p b{font:800 14px Cairo,sans-serif;flex:1}.tmx-p small{color:var(--smu);font:700 11px Cairo,sans-serif}.tmx-p .bd{min-width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:var(--s3);font:900 12px Cairo,sans-serif}
+#hubBody:has(.tmx-tb){padding-bottom:250px}
+
 @media (min-width:1000px) and (min-height:560px) and (max-height:760px){#tabbar::before{width:68%;align-self:center;margin-bottom:4px}#tabbar a{padding:9px 14px}}
 
 
@@ -2434,6 +2456,7 @@ body.four .fstrip{direction:ltr}
     <div class="tabs" id="hubTabs">
       <button type="button" data-tab="overview">نظرة عامة</button>
       <button type="button" data-tab="matches">المباريات</button>
+      <button type="button" data-tab="team">فريقي</button>
       <button type="button" data-tab="calendar">التقويم 📅</button>
       <button type="button" data-tab="table">الترتيب</button>
       <button type="button" data-tab="stats">الإحصائيات</button>
@@ -5722,7 +5745,7 @@ body.four .fstrip{direction:ltr}
     applyOv(id, d); d.roster = d.roster.filter(p => !GONE.has(p.full + '@' + id)); BASE_CACHE[id] = d; return d;
   }
   let ST = store.get('basra.teams2', null) || {clubs: {}, added: [], log: []};
-  const saveST = () => store.set('basra.teams2', ST);
+  const saveST = () => { ST.lt = Date.now(); ST.dirty = 1; store.set('basra.teams2', ST); try { schedSync(3000); } catch (e) {} };
   const allClubIds = () => [...BASE_IDS, ...ST.added.map(c => c.id)];
   const clubObjs = () => allClubIds().map(id => ({id}));
   const clubDef = id => BASE_DEF_OBJ[id] || ST.added.find(c => c.id === id) || null;
@@ -7720,6 +7743,7 @@ body.four .fstrip{direction:ltr}
     const winSide = res.me !== res.opp ? (res.me > res.opp ? 'me' : 'opp') : (pen ? (pen.me > pen.opp ? 'me' : 'opp') : null);
     const win = winSide === null ? null : winSide === 'me';
     try { if (!M.replay) acctRecord(win, scores.me, scores.opp); } catch (e) {}
+    try { psRecord(res, win); } catch (e) {}
     setMsg(M.auto ? (winSide ? 'انتهى الماتش — ' + M[winSide].name + ' كسب' : 'انتهى الماتش بالتعادل') : (win === null ? 'انتهى الماتش بالتعادل' : win ? 'انتهى الماتش — كسبت! 🏆' : 'انتهى الماتش — الخصم كسب'));
     if (win && !M.auto) { confetti(140); sfx.roar(); }
     const head = M.auto ? (winSide ? ['🏁', nm(winSide) + ' كسب الماتش'] : ['🤝', 'تعادل']) : (win === null ? ['🤝', 'تعادل'] : win ? ['🏆', 'مبروك! كسبت الماتش'] : ['😅', 'الخصم كسبها المرة دي']);
@@ -7756,7 +7780,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.27.0-beta';
+  const APP_VER = '1.28.0-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -8593,6 +8617,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function acctDone() {
     ACCT.guest = false; document.body.classList.remove('guest'); document.body.classList.remove('gated'); show('home'); renderHome(); renderMeChip(); try { friendsInit(); } catch (e) {}
     try { unGate(); } catch (e) {}
+    try { schedSync(700); } catch (e) {}
     if (!ACCT.dl) { ACCT.dl = true; deepLink(); }
     setTimeout(() => { try { tutMaybe(); } catch (e) {} }, 900);
   }
@@ -8609,6 +8634,164 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const {D, db} = ACCT.fb, pr = D.ref(db, 'cardgoal/presence/' + ACCT.user.uid);
     D.onValue(D.ref(db, '.info/connected'), s => { if (s.val() === true) D.onDisconnect(pr).set({on: false, t: D.serverTimestamp()}).then(() => D.set(pr, {on: true, t: D.serverTimestamp()})).catch(() => {}); });
   }
+  /* ===== player stats + cloud save (v1.28) =====
+     Local first: every finished match is written to this device at once, so the game works offline.
+     Each device keeps its own stats node on the account (a counter per device), so two phones never overwrite each other;
+     the totals you see are the sum of all of them. The squads you edit (ST) go up as one document, the newest edit wins. */
+  const PS_KEY = 'basra.pstats', PSR_KEY = 'basra.pstats.rem', PS_TEST = false;
+  const psRand = () => { let s = ''; const a = 'abcdefghijklmnopqrstuvwxyz0123456789'; for (let i = 0; i < 8; i++) s += a[Math.floor(Math.random() * a.length)]; return s; };
+  const psNew = uid => ({v: 1, dev: psRand(), uid: uid || null, t0: Date.now(), c: {}, hist: [], pend: 0});
+  let PS = (() => { const s = store.get(PS_KEY, null); return s && s.v === 1 && /^[a-z0-9]{6,12}$/.test(s.dev || '') && s.c ? s : psNew(); })();
+  let PSR = store.get(PSR_KEY, null) || {};
+  const psSave = () => store.set(PS_KEY, PS);
+  let psBusy = false, psTimer = 0, psState = 'local', psFirst = false;
+  function psRecord(res, win) {
+    if (!M || !M.named || M.replay || M.four || (M.auto && !PS_TEST) || TUT) return;
+    const id = M.me && M.me.id; if (!id || !clubDef(id)) return;
+    const oid = (M.opp && M.opp.id) || '', gf = res.me, ga = res.opp, evs = res.events || [];
+    const c = PS.c[id] || (PS.c[id] = {t: [0, 0, 0, 0, 0, 0, 0], p: {}, o: {}, s: [0, 0]});
+    const t = c.t; t[0]++; t[win === true ? 1 : win === null ? 2 : 3]++; t[4] += gf; t[5] += ga; if (ga === 0) t[6]++;
+    if (win === true) { c.s[0]++; c.s[1] = Math.max(c.s[1], c.s[0]); } else c.s[0] = 0;
+    const per = {};
+    evs.forEach(e => {
+      if (e.who !== 'me') return;
+      if (e.name) { const a = c.p[e.name] || (c.p[e.name] = [0, 0, 0, 0]); a[0]++; per[e.name] = (per[e.name] || 0) + 1; }
+      if (e.assist) { const a = c.p[e.assist] || (c.p[e.assist] = [0, 0, 0, 0]); a[1]++; }
+    });
+    Object.keys(per).forEach(n => { if (per[n] >= 3) c.p[n][2]++; });
+    if (res.motm && res.motm.who === 'me' && res.motm.name) { const a = c.p[res.motm.name] || (c.p[res.motm.name] = [0, 0, 0, 0]); a[3]++; }
+    if (oid) { const o = c.o[oid] || (c.o[oid] = [0, 0, 0, 0, 0, 0]); o[0]++; o[win === true ? 1 : win === null ? 2 : 3]++; o[4] += gf; o[5] += ga; }
+    PS.hist.unshift([Date.now(), id, oid, gf, ga, String(M.kind || '').slice(0, 8), win === true ? 'W' : win === null ? 'D' : 'L']);
+    if (PS.hist.length > 30) PS.hist.length = 30;
+    PS.pend = 1; psSave(); schedSync(2500);
+  }
+  const psParts = () => [PS, ...Object.keys(PSR).map(k => PSR[k])];
+  function psTotals(id) {
+    const t = [0, 0, 0, 0, 0, 0, 0], p = {}, s = [0, 0];
+    psParts().forEach(x => { const c = x && x.c && x.c[id]; if (!c) return; (c.t || []).forEach((v, i) => { t[i] += v || 0; }); Object.keys(c.p || {}).forEach(n => { const a = p[n] || (p[n] = [0, 0, 0, 0]); (c.p[n] || []).forEach((v, i) => { a[i] += v || 0; }); }); if (c.s) { s[1] = Math.max(s[1], c.s[1] || 0); if (x === PS) s[0] = c.s[0] || 0; } });
+    return {t, p, s};
+  }
+  function psRecent(id, n) { const all = []; psParts().forEach(x => (x && x.hist || []).forEach(h => { if (h[1] === id) all.push(h); })); all.sort((a, b) => b[0] - a[0]); return all.slice(0, n); }
+  /* cloud: stats */
+  function schedSync(ms) { clearTimeout(psTimer); psTimer = setTimeout(() => { cloudSync().catch(() => {}); }, ms || 2500); }
+  window.addEventListener('online', () => schedSync(800));
+  setInterval(() => { if (PS.pend || ST.dirty || (ACCT.user && !psFirst)) schedSync(50); }, 60000);
+  const stHas = () => Object.keys(ST.clubs || {}).length > 0 || (ST.added || []).length > 0;
+  async function stCloud(D, db, base) {
+    const snap = await D.get(D.ref(db, base + '/sq')), v = snap.val();
+    let remote = null; if (v && v.d) { try { remote = JSON.parse(v.d); } catch (e) {} }
+    const rl = (remote && remote.lt) || 0, ll = ST.lt || (stHas() ? 1 : 0);
+    if (remote && rl > ll && remote.clubs && Array.isArray(remote.added)) {
+      ST = Object.assign({log: []}, remote, {dirty: 0}); store.set('basra.teams2', ST);
+      try { if (!$('#screen-room').hidden) renderRoom(); } catch (e) {}
+    } else if ((ll > rl || ST.dirty) && stHas()) {
+      await D.set(D.ref(db, base + '/sq'), {d: JSON.stringify(Object.assign({}, ST, {dirty: undefined})), ts: D.serverTimestamp()});
+      ST.dirty = 0; store.set('basra.teams2', ST);
+    }
+  }
+  async function cloudSync() {
+    const fb = ACCT.fb, u = ACCT.user;
+    if (!fb || !u || ACCT.guest || ACCT.offline || !navigator.onLine) { psState = (u && !ACCT.guest && (PS.pend || ST.dirty)) ? 'wait' : 'local'; refreshTeamTab(); return; }
+    if (psBusy) return;
+    psBusy = true;
+    try {
+      const {D, db} = fb, base = 'cardgoal/private/' + u.uid;
+      if (PS.uid && PS.uid !== u.uid) { store.set(PS_KEY + '.old.' + PS.uid, PS); PS = psNew(u.uid); PSR = {}; store.set(PSR_KEY, PSR); psSave(); }
+      if (!PS.uid) { PS.uid = u.uid; if (Object.keys(PS.c).length) PS.pend = 1; psSave(); }
+      if (PS.pend) { await D.set(D.ref(db, base + '/ps/' + PS.dev), {d: JSON.stringify({v: 1, c: PS.c, hist: PS.hist, t0: PS.t0}), ts: D.serverTimestamp()}); PS.pend = 0; psSave(); }
+      const v = (await D.get(D.ref(db, base + '/ps'))).val() || {}, rem = {};
+      Object.keys(v).forEach(dv => { if (dv === PS.dev || !v[dv] || !v[dv].d) return; try { const o = JSON.parse(v[dv].d); if (o && o.c) rem[dv] = o; } catch (e) {} });
+      PSR = rem; store.set(PSR_KEY, PSR);
+      await stCloud(D, db, base);
+      psState = 'ok'; psFirst = true;
+    } catch (e) { psState = 'err'; }
+    finally { psBusy = false; refreshTeamTab(); }
+  }
+  /* "My team" tab in the tournament hub */
+  const teamOk = () => !!(T && T.named && !T.tb && T.mine && T.mine.length);
+  const teamId = () => { if (!T || !T.mine || !T.mine.length) return null; if (!T.teamSel || !T.mine.includes(T.teamSel)) T.teamSel = T.mine[0]; return T.teamSel; };
+  const syncChip = () => {
+    const sg = !ACCT.user || ACCT.guest ? 'local' : psState;
+    return sg === 'ok' ? '<span class="tmx-sync ok">☁️ محفوظ على حسابك</span>' : sg === 'wait' ? '<span class="tmx-sync">⏳ هيترفع لما النت يرجع</span>' : sg === 'err' ? '<span class="tmx-sync err">⚠️ تعذّر الحفظ، هنحاول تاني</span>' : (ACCT.user && !ACCT.guest) ? '<span class="tmx-sync">⏳ بيتحفظ…</span>' : '<span class="tmx-sync">📱 على الجهاز بس · سجّل دخول عشان يتحفظ</span>';
+  };
+  let tmSig = '';
+  const teamSig = () => { const id = teamId(); if (!id) return ''; const t = psTotals(id); return psState + '|' + ((!ACCT.user || ACCT.guest) ? 'g' : 'u') + '|' + t.t.join(',') + '|' + Object.keys(t.p).length + '|' + (ST.lt || 0); };
+  function teamTabHtml() {
+    tmSig = teamSig();
+    const id = teamId(); if (!id) return '<p class="rm-intro">مفيش فريق ليك في البطولة دي.</p>';
+    const df = clubDef(id), sq = squadOf(id), info = infoOf(id), tot = psTotals(id), tt = tot.t;
+    const sc = T.scorers || {}, cell = (v, hi) => `<span class="tmx-c${v ? (hi ? ' hi' : '') : ' z'}">${v || '·'}</span>`;
+    const row = (n, cls, label, pos, nameKey, bold) => {
+      const a = tot.p[nameKey] || [0, 0, 0, 0], tg = sc[id + '|' + nameKey] || 0;
+      return `<div class="tmx-r"><span class="tmx-n ${cls}">${n}</span><div class="tmx-w"><b dir="auto">${esc(label || '—')}</b><small>${esc(pos || '')}</small></div>${cell(tg, 1)}${cell(a[0], 1)}${cell(a[1])}${cell(a[2])}${cell(a[3])}<button class="tmx-e" type="button" data-tm="swap" data-n="${bold}" aria-label="غيّر اللاعب">✏️</button></div>`;
+    };
+    const ranks = RK.map(r => row(r, '', sq[r], (info[r] || {}).pos, sq[r], r)).join('');
+    const rankLabels = new Set(RK.map(r => sq[r]));
+    const komiRow = rankLabels.has(sq.komi)
+      ? `<div class="tmx-r"><span class="tmx-n k">⭐</span><div class="tmx-w"><b dir="auto">${esc(sq.komi)}</b><small>الكومي · نفس لاعب كارت ${RK.find(r => sq[r] === sq.komi)}</small></div><span></span><span></span><span></span><span></span><span></span><button class="tmx-e" type="button" data-tm="swap" data-n="komi" aria-label="غيّر الكومي">✏️</button></div>`
+      : row('⭐', 'k', sq.komi, (info.komi || {}).pos, sq.komi, 'komi');
+    const gkRow = `<div class="tmx-r"><span class="tmx-n g">🧤</span><div class="tmx-w"><b dir="auto">${esc(sq.gk || '—')}</b><small>الحارس الأساسي · شباك نضيفة: ${tt[6]}</small></div><span></span><span></span><span></span><span></span><span></span><button class="tmx-e" type="button" data-tm="swap" data-n="gk" aria-label="غيّر الحارس">✏️</button></div>`;
+    const pct = tt[0] ? Math.round(tt[1] / tt[0] * 100) : 0;
+    const names = Object.keys(tot.p).sort((a, b) => tot.p[b][0] - tot.p[a][0]), top = names[0];
+    const rec = psRecent(id, 5).map(h => { const o = clubDef(h[2]); return `<div class="tmx-last"><span class="w ${h[6]}">${{W: 'ف', D: 'ت', L: 'خ'}[h[6]]}</span><span dir="auto">${esc(o ? o.name : '—')}</span><small>${esc({league: 'دوري', ko: 'كأس', cup: 'كأس', quick: 'ودي'}[h[5]] || '')} · ${new Date(h[0]).toLocaleDateString('ar-EG', {day: 'numeric', month: 'short'})}</small><span class="sc">${h[3]} - ${h[4]}</span></div>`; }).join('');
+    const sel = T.mine.length > 1 ? `<div class="seg" role="group" style="margin-bottom:12px">${T.mine.map(m => `<button type="button" data-tm="sel" data-id="${m}" aria-pressed="${m === id}">${esc(clubDef(m).name)}</button>`).join('')}</div>` : '';
+    return `${sel}<div class="tmx-h">${crest(df, true)}<div><b>${esc(df.name)}</b><small>${lgFlag(lgOf(df.lg))} ${esc(lgOf(df.lg).name)}</small>${top && tot.p[top][0] ? `<small style="display:block">هدّاف الفريق: ${esc(top)} (${tot.p[top][0]})</small>` : ''}</div></div><div class="tmx-syncrow">${syncChip()}</div>
+      <div class="tmx-rec"><div><b>${tt[0]}</b><small>ماتش</small></div><div><b>${tt[1]}-${tt[2]}-${tt[3]}</b><small>ف · ت · خ</small></div><div><b>${tt[4]}:${tt[5]}</b><small>الأهداف</small></div><div><b>${pct}%</b><small>نسبة الفوز</small></div></div>
+      <div class="tmx-tb"><div class="tmx-hd"><span>#</span><span>اللاعب</span><span title="في البطولة دي">بطولة</span><span>كله ⚽</span><span>🅰️</span><span title="هاتريك">🎩</span><span title="أحسن لاعب في الماتش">🏅</span><span></span></div>${ranks}${komiRow}${gkRow}</div>
+      <p class="tmx-note">الأرقام بتتسجّل من ماتشاتك اللي بتلعبها بنفسك (مش اللي بيتحسبوا بالمحاكاة). دوس ✏️ تبدّل اللاعب على أي رقم أو الكومي أو الحارس.</p>
+      ${rec ? `<div class="gl">آخر ماتشاتك بالفريق ده${tot.s[1] ? ' · أطول سلسلة فوز: ' + tot.s[1] : ''}</div>${rec}` : '<p class="rm-intro">لسه مفيش ماتشات اتسجّلت بالفريق ده. أول ماتش تلعبه هتلاقي أرقامه هنا.</p>'}
+      <div class="row"><button class="btn ghost" type="button" data-tm="room" data-id="${id}">غرفة الفرق الكاملة (الإضافة والاستيراد)</button></div>`;
+  }
+  function refreshTeamTab() { try { if (T && T.tab === 'team' && $('#screen-hub') && !$('#screen-hub').hidden && !$('.tmx-sheet') && teamSig() !== tmSig) renderHub(); } catch (e) {} }
+  function teamSheet(n) {
+    const id = teamId(), d = clubData(id), isGk = n === 'gk';
+    const old = $('.tmx-sheet'); if (old) old.remove();
+    const el = document.createElement('div'); el.className = 'tmx-sheet';
+    const tot = psTotals(id);
+    const body = POS_ORDER.map(g => {
+      if (isGk && g !== 'GK') return '';
+      const ps = d.roster.filter(p => grp(p) === g); if (!ps.length) return '';
+      return `<div class="gl">${POS[g]}</div>` + ps.map(p => {
+        const at = slotOf(d, p.id), isG = d.gk === p.id, cur = (n === 'komi' ? (d.komi || d.slots.Q) : n === 'gk' ? d.gk : d.slots[n]) === p.id;
+        const off = (!isGk && isG) || (isGk && at);
+        const a = tot.p[labelOf(p)] || [0, 0, 0, 0];
+        return `<div class="tmx-p${cur ? ' cur' : ''}${off ? ' off' : ''}" data-tm="pick" data-p="${esc(p.id)}" role="button" tabindex="0"><span class="bd">${isG ? '🧤' : at || ''}</span><b dir="auto">${esc(p.full || p.name)}</b><small>${a[0] ? '⚽ ' + a[0] : ''}</small><small>${esc(p.pos)}</small></div>`;
+      }).join('');
+    }).join('');
+    el.innerHTML = `<div class="in"><h3>${n === 'komi' ? '⭐ اختار الكومي' : isGk ? '🧤 اختار الحارس الأساسي' : 'مين يبقى رقم ' + esc(n) + '؟'}<button class="btn ghost" type="button" data-tm="close" style="padding:6px 16px;font-size:14px">إغلاق</button></h3>${body}</div>`;
+    el.dataset.n = n; document.body.appendChild(el);
+  }
+  function teamPick(n, pid) {
+    const id = teamId(), d = clubData(id), p = d.roster.find(x => x.id === pid); if (!p) return;
+    if (n === 'gk') {
+      if (grp(p) !== 'GK') { toast('الحارس لازم يكون من حراس المرمى'); return; }
+      if (slotOf(d, pid)) { toast(p.name + ' على كارت، غيّر الكارت الأول'); return; }
+      editClub(id).gk = pid; saveST(); toast('الحارس الأساسي بقى ' + p.name);
+    } else {
+      if (d.gk === pid) { toast(p.name + ' هو الحارس الأساسي، غيّر الحارس الأول'); return; }
+      if (n === 'komi') { editClub(id).komi = pid; saveST(); toast('الكومي بقى ' + p.name + ' ⭐'); }
+      else { assignSlot(id, n, pid); toast(p.name + ' بقى رقم ' + n); }
+    }
+    const s = $('.tmx-sheet'); if (s) s.remove(); renderHub();
+  }
+  $('#hubBody').addEventListener('click', e => {
+    const b = e.target.closest('[data-tm]'); if (!b) return; const a = b.dataset.tm;
+    if (a === 'sel') { T.teamSel = b.dataset.id; renderHub(); }
+    else if (a === 'swap') teamSheet(b.dataset.n);
+    else if (a === 'room') { RM.view = 'club'; RM.club = b.dataset.id; RM.tab = 'squad'; RM.q = ''; RM.sel = null; show('room'); renderRoom(); }
+  });
+  document.addEventListener('click', e => {
+    const s = e.target.closest('.tmx-sheet'); if (!s) return;
+    if (e.target === s) { s.remove(); return; }
+    const b = e.target.closest('[data-tm]'); if (!b) return;
+    if (b.dataset.tm === 'close') s.remove(); else if (b.dataset.tm === 'pick') teamPick(s.dataset.n, b.dataset.p);
+  });
+  document.addEventListener('keydown', e => {
+    const s = $('.tmx-sheet'); if (!s) return;
+    if (e.key === 'Escape') { s.remove(); return; }
+    const b = e.target && e.target.closest && e.target.closest('.tmx-p'); if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); teamPick(s.dataset.n, b.dataset.p); }
+  });
+  /*__TESTHOOK__*/
   function acctRecord() {
     if (!GATE || !ACCT.profile || !ACCT.fb || ACCT.offline || !M || M.auto) return;
     const {D, db} = ACCT.fb, cu = {m: D.increment(1)}; if (M.online) cu.om = D.increment(1);
@@ -11786,13 +11969,14 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     if (!T.mine) T.mine = T.myId ? [T.myId] : [];
     T.out = T.out || {}; T.assists = T.assists || {};
     if (!T.tab || T.tab === 'scorers') T.tab = 'overview';
+    if (T.tab === 'team' && !teamOk()) T.tab = 'overview';
     if (T.tab === 'table' && T.fmt === 'ko') T.tab = 'overview';
     if (T.tab === 'calendar' && (!T.lg || T.tb)) T.tab = 'overview';
     $('#screen-hub').classList.toggle('hub-ucl', !!T.ucl); $('#screen-hub').classList.toggle('hub-esp', T.lg === 'esp');
     $('#hubTitle').innerHTML = T.tb ? esc(T.title || 'بطولة المدربين') : (T.lg === 'eng' ? '<i class="lgmark lion"></i>' : T.lg === 'esp' ? '<i class="lgmark ll"></i> ' : T.lg === 'ita' ? SA_MK : T.lg === 'ger' ? BL_MK : T.wc ? '<i class="wcmark"></i> ' : '') + esc(T.wc ? 'كاس العالم 2026 · 48 منتخب' : T.lg ? lgOf(T.lg).name + ' ' + seasonLbl() : T.ucl ? 'دوري أبطال أوروبا ' + seasonLbl() + ' · ' + T.n + ' فرق' : FMTS[T.fmt].label + ' · ' + T.n + ' فرق');
     $('#hubStage').innerHTML = T.tb ? `<span>${stageLabel()}</span>` : (T.mine.length ? T.mine.map(id => crest(teamObj(id))).join('') : '<span>👁️</span>') + `<span>${stageLabel()}</span>`;
-    $$('#hubTabs button').forEach(b => { b.hidden = (b.dataset.tab === 'table' && T.fmt === 'ko') || (b.dataset.tab === 'calendar' && (!T.lg || T.tb)); b.setAttribute('aria-pressed', b.dataset.tab === T.tab); if (b.dataset.tab === T.tab && b.scrollIntoView) b.scrollIntoView({block: 'nearest', inline: 'center'}); });
-    $('#hubBody').innerHTML = tkLiveBar() + champHtml() + (T.tab === 'overview' ? overviewHtml() : T.tab === 'matches' ? matchesHtml() : T.tab === 'calendar' ? calendarHtml() : T.tab === 'table' ? tableHtml() : statsTabHtml());
+    $$('#hubTabs button').forEach(b => { b.hidden = (b.dataset.tab === 'table' && T.fmt === 'ko') || (b.dataset.tab === 'calendar' && (!T.lg || T.tb)) || (b.dataset.tab === 'team' && !teamOk()); b.setAttribute('aria-pressed', b.dataset.tab === T.tab); if (b.dataset.tab === T.tab && b.scrollIntoView) b.scrollIntoView({block: 'nearest', inline: 'center'}); });
+    $('#hubBody').innerHTML = tkLiveBar() + champHtml() + (T.tab === 'overview' ? overviewHtml() : T.tab === 'matches' ? matchesHtml() : T.tab === 'calendar' ? calendarHtml() : T.tab === 'table' ? tableHtml() : T.tab === 'team' ? teamTabHtml() : statsTabHtml());
     if (T.tab === 'calendar') requestAnimationFrame(() => { const n = document.querySelector('.cal-c.next'); if (n) n.scrollIntoView({block: 'center'}); });
     let cta = '';
     if (T.tb) {
