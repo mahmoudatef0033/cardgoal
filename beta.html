@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.34.1-beta">
+<head><meta name="app-version" content="1.34.2-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0B1220"><link rel="icon" type="image/png" sizes="32x32" href="cg-favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="cg-favicon-16.png"><link rel="shortcut icon" href="cg-favicon.ico"><link rel="icon" type="image/png" sizes="192x192" href="cg-icon-192.png"><link rel="apple-touch-icon" href="cg-apple-touch.png"><meta property="og:type" content="website"><meta property="og:title" content="كاردجول · CardGoal"><meta property="og:description" content="كوتشينة بطعم الكورة، وكل بصرة جول"><meta property="og:image" content="https://mahmoudatef0033.github.io/cardgoal/cg-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجول · CardGoal</title>
@@ -1000,6 +1000,16 @@ body.cupnight.th-ucl{background:var(--ucl-lines) center top/cover no-repeat,radi
 @keyframes cgBounce{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-.5em) rotate(180deg)}}
 .cg-spin{display:inline-block;width:1.35em;height:1.35em;vertical-align:-.3em;margin-inline-end:.35em;background:var(--cg-mark) center/contain no-repeat;animation:cgBounce 1.1s cubic-bezier(.3,0,.5,1) infinite}
 #tabbar>.brand{display:none}
+/* ===== v1.34.2: cleaner statistics + responsive squad cards ===== */
+.sx-seg{display:flex;background:#121a2a;border-radius:14px;padding:4px;gap:4px;margin:2px 0 8px}.sx-seg button{flex:1;border:0;background:transparent;color:#9fb0c8;padding:10px 4px;border-radius:11px;font:800 13px Cairo,sans-serif;cursor:pointer;white-space:nowrap}.sx-seg button[aria-pressed=true]{background:#0B1220;color:#fff;box-shadow:0 0 0 1px rgba(201,247,58,.55)}
+.sx-l{background:#0f1726;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden}.sx-h,.sx-r{display:grid;grid-template-columns:34px 1fr 54px;align-items:center;gap:6px;padding:9px 12px}.sx-h{font-weight:800;font-size:11px;color:#9fb0c8;background:rgba(255,255,255,.04)}.sx-h span:last-child,.sx-r .v{text-align:center}
+.sx-r{border-top:1px solid rgba(255,255,255,.07)}.sx-r.me{background:rgba(201,247,58,.09)}.sx-r .n{font:800 12px 'Orbitron',sans-serif;color:#9fb0c8;text-align:center}.sx-r .p{display:grid;gap:2px;min-width:0}.sx-r .p b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sx-r .p small{display:flex;align-items:center;gap:5px;font-weight:700;font-size:11px;color:#9fb0c8}.sx-r .v{font:800 17px 'Orbitron',sans-serif;color:#C9F73A}
+.sx-cr{display:inline-flex;width:16px;height:16px;flex:none}.sx-cr>*{width:16px!important;height:16px!important;font-size:9px}
+.tx-line{display:flex;justify-content:center;gap:6px;position:relative;z-index:1}.tx-pk{flex:0 0 calc((100% - 24px)/5);max-width:68px;width:auto}
+.tx-pk .cd{height:auto;aspect-ratio:5/6.6;background:linear-gradient(160deg,#ffffff,#e9edf3);border:1px solid rgba(0,0,0,.08);padding:4px 5px}.tx-pk .cd b{font-size:clamp(13px,4.3vw,17px)}.tx-pk .cd i{font-size:clamp(10px,3vw,13px)}.tx-pk .cd em{position:absolute;left:3px;right:3px;bottom:4px;font:800 clamp(8.5px,2.6vw,10px) 'Orbitron',sans-serif;font-style:normal;color:#44506a;text-align:center}.tx-pk .nm{font-size:clamp(9.5px,2.9vw,11px)}
+.tx-pk .bd{inset-inline-end:3px;top:4px}.tx-pk .bd s{font-size:clamp(8px,2.4vw,9px);padding:1px 3px}
+.tx-pr .nums{gap:12px}.tx-pr .nums small{font-size:9px}
+
 /* ===== v1.34.1: the rich news slides (tweets, versus card, table, studio) ===== */
 .nws .rb{width:100%;display:grid;gap:7px;margin-top:8px;text-align:start}
 .rb-tw{background:rgba(255,255,255,.07);border-radius:13px;padding:8px 11px;font-weight:700;font-size:13px;line-height:1.7;color:#eef3ff}.rb-tw b{display:block;font-weight:800;font-size:11.5px;color:#9fb0c8;direction:ltr;text-align:start}.rb-tw span{display:block;font-size:11px;color:#9fb0c8}
@@ -7868,7 +7878,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.34.1-beta';
+  const APP_VER = '1.34.2-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -9080,11 +9090,18 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function psOpp(id, parts) { const o = {}; (parts || psParts()).forEach(x => { const c = x && x.c && x.c[id]; if (!c || !c.o) return; Object.keys(c.o).forEach(k => { const a = o[k] || (o[k] = [0, 0, 0, 0, 0, 0]); (c.o[k] || []).forEach((v, i) => { a[i] += v || 0; }); }); }); return o; }
   const txShort = l => String(l || '').split(' ').slice(-1)[0];
   const txJersey = c => `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M13 5L4 10l4 8 4-2v20h16V16l4 2 4-8-9-5c-1 3-4 5-7 5s-6-2-7-5z" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.4" stroke-linejoin="round"/></svg>`;
+  function carBank(old) {
+    const pg = Object.assign({}, old.pg || {}), u = old.u || {};
+    const add = (mp, i) => Object.keys(mp || {}).forEach(k => { const id = k.slice(0, k.indexOf('|')); if (!(old.mine || []).includes(id)) return; (pg[k] = pg[k] ? pg[k].slice() : [0, 0])[i] += mp[k]; });
+    add(old.scorers, 0); add(old.cScorers, 0); add(u.scorers, 0); add(old.assists, 1); add(old.cAssists, 1); add(u.assists, 1); return pg;
+  }
   function txData(id) {
-    const d = clubData(id), tot = psTotals(id, txParts()), sc = T.scorers || {}, as = T.assists || {}, byId = pid => d.roster.find(x => x.id === pid);
-    const pl = RK.map(r => { const p = byId(d.slots[r]); const lb = p ? labelOf(p) : 'Player ' + r; const a = tot.p[lb] || [0, 0, 0, 0]; return {r, p, lb, a, tg: sc[id + '|' + lb] || 0, as: as[id + '|' + lb] || 0}; });
-    let star = null; pl.forEach(x => { const v = x.tg * 2 + x.as; if (v > 0 && (!star || v > star.v)) star = {v, r: x.r}; });
-    return {d, tot, pl, star: star ? star.r : null, byId};
+    const d = clubData(id), tot = psTotals(id, txParts()), m = mainOf(T), u = m.u || {}, pg = m.pg || {}, byId = pid => d.roster.find(x => x.id === pid);
+    const sum = (k, ...maps) => maps.reduce((n, mp) => n + ((mp && mp[k]) || 0), 0);
+    const nums = lb => { const k = id + '|' + lb, sg = sum(k, m.scorers, m.cScorers, u.scorers), sa = sum(k, m.assists, m.cAssists, u.assists), b = pg[k] || [0, 0], a = tot.p[lb] || [0, 0, 0, 0]; return {sg, sa, cg: b[0] + sg, ca: b[1] + sa, ht: a[2], mv: a[3]}; };
+    const pl = RK.map(r => { const p = byId(d.slots[r]), lb = p ? labelOf(p) : 'Player ' + r; return {r, p, lb, n: nums(lb)}; });
+    let star = null; pl.forEach(x => { const v = x.n.sg * 2 + x.n.sa; if (v > 0 && (!star || v > star.v)) star = {v, r: x.r}; });
+    return {d, tot, pl, star: star ? star.r : null, byId, nums};
   }
   function teamTabHtml() {
     tmSig = teamSig();
@@ -9104,26 +9121,27 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function txTok(x, X, cls, key, labelTop) {
     const p = x.p; if (!p) return '';
     const d = X.d, isCap = d.cap === p.id, isStar = X.star === x.r, isNew = String(p.id).startsWith('c');
-    return `<button type="button" class="tx-pk ${cls || ''}${x.tg >= 3 ? ' hot' : ''}${isNew ? ' new' : ''}" data-tx="open" data-k="${key}"><span class="cd"><b>${labelTop || x.r}</b><i>♠</i><span class="bd">${x.tg ? `<s>⚽${x.tg}</s>` : ''}${x.a[1] ? `<s class="a">🅰${x.a[1]}</s>` : ''}${isCap ? '<s class="c">C</s>' : ''}${isStar ? '<s class="s">⭐</s>' : ''}</span><small>${esc(p.pos || '')}</small></span><span class="nm" dir="auto">${esc(txShort(x.lb))}</span></button>`;
+    return `<button type="button" class="tx-pk ${cls || ''}${x.n.sg >= 3 ? ' hot' : ''}${isNew ? ' new' : ''}" data-tx="open" data-k="${key}"><span class="cd"><b>${labelTop || x.r}</b><i>♠</i><span class="bd">${x.n.sg ? `<s>⚽${x.n.sg}</s>` : ''}${x.n.sa ? `<s class="a">🅰${x.n.sa}</s>` : ''}${isCap ? '<s class="c">C</s>' : ''}${isStar ? '<s class="s">⭐</s>' : ''}</span><em>${esc(p.pos || '')}</em></span><span class="nm" dir="auto">${esc(txShort(x.lb))}</span></button>`;
   }
+  const txRows = arr => { const n = arr.length, k = Math.max(1, Math.ceil(n / 5)), out = []; let i = 0; for (let r = 0; r < k; r++) { const take = Math.ceil((n - i) / (k - r)); out.push(arr.slice(i, i + take)); i += take; } return out; };
   function txSeg(id, X) {
-    const {d, tot, pl} = X, tt = tot.t;
+    const {d, tot, pl} = X;
     if (TX.seg === 'squad') {
-      const line = g => `<div class="tx-line">${pl.filter(x => x.p && grp(x.p) === g).map(x => txTok(x, X, '', x.r)).join('')}</div>`;
-      const gkP = X.byId(d.gk), kmP = X.byId(d.komi || d.slots.Q), gkx = {p: gkP, lb: gkP ? labelOf(gkP) : '', a: [0, 0, 0, 0], tg: 0}, kmx = {p: kmP, lb: kmP ? labelOf(kmP) : '', a: [0, 0, 0, 0], tg: 0, r: 'K'};
+      const line = g => txRows(pl.filter(x => x.p && grp(x.p) === g)).map(row => `<div class="tx-line">${row.map(x => txTok(x, X, '', x.r)).join('')}</div>`).join('');
+      const gkP = X.byId(d.gk), kmP = X.byId(d.komi || d.slots.Q), gkx = {p: gkP, lb: gkP ? labelOf(gkP) : '', n: gkP ? X.nums(labelOf(gkP)) : {sg: 0, sa: 0}}, kmx = {p: kmP, lb: kmP ? labelOf(kmP) : '', n: kmP ? X.nums(labelOf(kmP)) : {sg: 0, sa: 0}, r: 'K'};
       const tail = `<div class="tx-line">${gkP ? txTok(gkx, X, 'gk', 'gk', 'GK') : ''}${kmP ? txTok(kmx, X, 'km', 'komi', '★') : ''}</div>`;
-      const list = pl.map(x => `<button type="button" class="tx-pr" data-tx="open" data-k="${x.r}"><span class="rk">${x.r}</span><div><b dir="auto">${esc(x.lb)}</b><small>${esc(x.p ? x.p.pos : '')}</small></div><div class="nums"><span>${x.tg}<small>بطولة</small></span><span>${x.a[0]}<small>كله</small></span><span>${x.a[1]}<small>أسيست</small></span></div></button>`).join('');
+      const list = pl.map(x => `<button type="button" class="tx-pr" data-tx="open" data-k="${x.r}"><span class="rk">${x.r}</span><div><b dir="auto">${esc(x.lb)}</b><small>${esc(x.p ? x.p.pos : '')}</small></div><div class="nums"><span>${x.n.sg}<small>الموسم</small></span><span>${x.n.cg}<small>المسيرة</small></span><span>${x.n.sa}<small>أسيست</small></span></div></button>`).join('');
       return `<div class="tx-sub"><button type="button" data-tx="view" data-k="pitch" aria-pressed="${TX.view === 'pitch'}">ملعب</button><button type="button" data-tx="view" data-k="list" aria-pressed="${TX.view === 'list'}">قايمة</button></div>` + (TX.view === 'pitch' ? `<div class="tx-pitch">${line('FW')}${line('MF')}${line('DF')}${tail}</div>` : `<div class="tx-list">${list}</div>`) +
-        `<p class="tx-note">${carOk() ? 'التعديلات هنا (لاعب من برا القايمة، الأرقام، الكومي، الكابتن) بتخص المسيرة دي بس، والنادي نفسه ما بيتغيّرش.' : 'التعديل هنا بيغيّر النادي كله (زي غرفة الفرق).'} ${carOk() ? 'الأرقام هنا للمسيرة دي بس (من ماتشاتك اللي لعبتها فيها).' : 'الأرقام هنا للنادي كله (كل ماتشاتك بيه).'} دوس على أي لاعب.</p>`;
+        `<p class="tx-note">${carOk() ? 'التعديلات هنا (لاعب من برا القايمة، الأرقام، الكومي، الكابتن) بتخص المسيرة دي بس، والنادي نفسه ما بيتغيّرش.' : 'التعديل هنا بيغيّر النادي كله (زي غرفة الفرق).'} الأرقام: "الموسم" و"أسيست" من الموسم الحالي (كل البطولات)، و"المسيرة" بتجمع المواسم كلها. دوس على أي لاعب.</p>`;
     }
     if (TX.seg === 'stars') {
-      const by = i => pl.slice().sort((a, b) => b.a[i] - a.a[i]), sc = by(0)[0], as = by(1)[0], mv = by(3)[0], mx = Math.max(1, ...pl.map(x => x.a[0]));
-      const card = (e, x, i, l) => `<div class="tx-star"><div class="e">${e}</div><b dir="auto">${x && x.a[i] ? esc(txShort(x.lb)) : '—'}</b><span class="v">${x ? x.a[i] : 0}</span><small>${l}</small></div>`;
-      const rk = by(0).filter(x => x.a[0] > 0).map((x, i) => `<button type="button" class="tx-rk" data-tx="open" data-k="${x.r}"><em>${i + 1}</em><div dir="auto">${esc(x.lb)}<div class="tx-bar"><i style="width:${x.a[0] / mx * 100}%"></i></div></div><em>${x.a[0]}</em></button>`).join('');
-      return `<div class="tx-stars">${card('🥇', sc, 0, 'الهداف')}${card('🎯', as, 1, 'أسيست')}${card('⭐', mv, 3, 'نجم الماتش')}</div>` + (rk ? `<div class="tx-rank">${rk}</div>` : '<p class="rm-intro">لسه مفيش أهداف اتسجّلت. أول ماتش تلعبه هتلاقي الترتيب هنا.</p>');
+      const by = k => pl.slice().sort((a, b) => b.n[k] - a.n[k]), sc = by('cg')[0], as = by('ca')[0], mv = by('mv')[0], mx = Math.max(1, ...pl.map(x => x.n.cg));
+      const card = (e, x, k, l) => `<div class="tx-star"><div class="e">${e}</div><b dir="auto">${x && x.n[k] ? esc(txShort(x.lb)) : '—'}</b><span class="v">${x ? x.n[k] : 0}</span><small>${l}</small></div>`;
+      const rk = by('cg').filter(x => x.n.cg > 0).map((x, i) => `<button type="button" class="tx-rk" data-tx="open" data-k="${x.r}"><em>${i + 1}</em><div dir="auto">${esc(x.lb)}<div class="tx-bar"><i style="width:${x.n.cg / mx * 100}%"></i></div></div><em>${x.n.cg}</em></button>`).join('');
+      return `<div class="tx-stars">${card('🥇', sc, 'cg', 'هداف المسيرة')}${card('🎯', as, 'ca', 'أسيست المسيرة')}${card('⭐', mv, 'mv', 'نجم الماتش')}</div>` + (rk ? `<div class="tx-rank">${rk}</div>` : '<p class="rm-intro">لسه مفيش أهداف اتسجّلت. أول ماتش هتلاقي الترتيب هنا.</p>');
     }
     if (TX.seg === 'matches') {
-      const rec = psRecent(id, 10, txParts()); if (!rec.length) return '<p class="rm-intro">لسه مفيش ماتشات اتسجّلت بالفريق ده. أول ماتش تلعبه هتلاقي أرقامه هنا.</p>';
+      const rec = psRecent(id, 10, txParts()); if (!rec.length) return '<p class="rm-intro">لسه مفيش ماتشات اتسجّلت بالفريق ده. أول ماتش تلعبه بنفسك هتلاقيه هنا.</p>';
       return `<div class="tx-mt">${rec.map(h => { const o = clubDef(h[2]); return `<div class="tx-mc">${o ? crest(o) : ''}<div><b dir="auto">${esc(o ? o.name : '—')}</b><small>${esc({league: 'دوري', ko: 'كأس', cup: 'كأس', quick: 'ودي'}[h[5]] || 'ماتش')} · ${new Date(h[0]).toLocaleDateString('ar-EG', {day: 'numeric', month: 'short'})}</small></div><div class="sc"><strong>${h[3]}-${h[4]}</strong><span class="bg ${h[6]}">${{W: 'ف', D: 'ت', L: 'خ'}[h[6]]}</span></div></div>`; }).join('')}</div>` + (tot.s[1] ? `<p class="tx-note">أطول سلسلة فوز: ${tot.s[1]}</p>` : '');
     }
     const o = psOpp(id, txParts()), ks = Object.keys(o).sort((a, b) => o[b][0] - o[a][0]).slice(0, 8);
@@ -9134,15 +9152,15 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   function txSheet(key, pick) {
     const old = $('.tx-sheet'); if (old) old.remove(); if (!key) return;
     const id = teamId(), X = txData(id), {d, tot} = X, isGk = key === 'gk', isKo = key === 'komi', car = carOk();
-    const pid = isGk ? d.gk : isKo ? (d.komi || d.slots.Q) : d.slots[key], p = X.byId(pid), lb = p ? labelOf(p) : '—', a = tot.p[lb] || [0, 0, 0, 0], tg = (T.scorers || {})[id + '|' + lb] || 0, tg4 = Math.max(1, tot.t[4]);
+    const pid = isGk ? d.gk : isKo ? (d.komi || d.slots.Q) : d.slots[key], p = X.byId(pid), lb = p ? labelOf(p) : '—', N = X.nums(lb);
     const el = document.createElement('div'); el.className = 'tx-sheet'; el.dataset.k = key;
     let h = `<div class="in"><div class="tx-top"><div class="tx-big"><b>${isGk ? 'GK' : isKo ? 'K' : esc(key)}</b><i>♠</i></div><div><h3 dir="auto">${esc(p ? p.full || p.name : '—')}</h3><small>${esc(p ? (POS_AR[p.pos] || p.pos || '') : '')}${p && p.nat ? ' · ' + esc(p.nat) : ''}${isKo ? ' · الكومي' : isGk ? ' · الحارس الأساسي' : ''}</small></div></div>`;
-    h += `<div class="tx-tiles"><div><b>${tg}</b><small>أهداف البطولة</small></div><div><b>${a[0]}</b><small>أهداف كلها</small></div><div><b>${a[1]}</b><small>أسيست</small></div><div><b>${a[2]}</b><small>هاتريك</small></div><div><b>${a[3]}</b><small>نجم الماتش</small></div><div><b>${Math.min(100, Math.round((a[0] + a[1]) * 100 / tg4))}%</b><small>مساهمة</small></div></div>`;
+    h += `<div class="tx-tiles"><div><b>${N.sg}</b><small>أهداف الموسم</small></div><div><b>${N.cg}</b><small>أهداف المسيرة</small></div><div><b>${N.sa}</b><small>أسيست الموسم</small></div><div><b>${N.ca}</b><small>أسيست المسيرة</small></div><div><b>${N.ht}</b><small>هاتريك (ماتشاتك)</small></div><div><b>${N.mv}</b><small>نجم الماتش (ماتشاتك)</small></div></div>`;
     h += `<div class="tx-act"><button class="btn" type="button" data-tx="pick">${pick ? 'إخفاء القايمة' : 'غيّر اللاعب'}</button>${car && !isGk && p ? `<button class="btn ghost" type="button" data-tx="cap">${d.cap === p.id ? 'شيل الكابتن' : '🅲 كابتن'}</button>` : ''}<button class="btn ghost" type="button" data-tx="close">إغلاق</button></div>`;
     if (pick) {
       h += `<div class="tx-sec">${isKo ? '⭐ اختار الكومي' : isGk ? '🧤 اختار الحارس' : 'مين يبقى رقم ' + esc(key) + '؟'}</div><div class="tx-cand">` + (isGk ? ['GK'] : ['FW', 'MF', 'DF', 'GK']).map(g => {
         const ps = d.roster.filter(q => grp(q) === g); if (!ps.length) return '';
-        return `<div class="tx-sec" style="margin:8px 2px 2px">${POS[g]}</div>` + ps.map(q => { const at = slotOf(d, q.id), isG = d.gk === q.id, cur = q.id === pid, off = (!isGk && isG) || (isGk && at), l2 = labelOf(q), s2 = tot.p[l2] || [0, 0, 0, 0]; return `<button type="button" class="tx-pr${cur ? ' cur' : ''}${off ? ' off' : ''}" data-tx="set" data-p="${esc(q.id)}"><span class="rk">${isG ? '🧤' : at || '·'}</span><div><b dir="auto">${esc(q.full || q.name)}</b><small>${esc(q.pos || '')}${s2[0] ? ' · ⚽ ' + s2[0] : ''}${String(q.id).startsWith('c') ? ' · مضاف للمسيرة' : ''}</small></div></button>`; }).join('');
+        return `<div class="tx-sec" style="margin:8px 2px 2px">${POS[g]}</div>` + ps.map(q => { const at = slotOf(d, q.id), isG = d.gk === q.id, cur = q.id === pid, off = (!isGk && isG) || (isGk && at), l2 = labelOf(q), s2 = [X.nums(l2).cg]; return `<button type="button" class="tx-pr${cur ? ' cur' : ''}${off ? ' off' : ''}" data-tx="set" data-p="${esc(q.id)}"><span class="rk">${isG ? '🧤' : at || '·'}</span><div><b dir="auto">${esc(q.full || q.name)}</b><small>${esc(q.pos || '')}${s2[0] ? ' · ⚽ ' + s2[0] : ''}${String(q.id).startsWith('c') ? ' · مضاف للمسيرة' : ''}</small></div></button>`; }).join('');
       }).join('') + '</div>';
       if (car) {
         h += `<div class="tx-sec">➕ لاعب من برا القايمة (للمسيرة دي بس)</div><div class="tx-add"><label>الاسم<input id="txName" type="text" maxlength="22" dir="auto" autocomplete="off"></label><div class="g2"><label>المركز<select id="txPos">${(isGk ? ['GK'] : POS_CODES.filter(c => c !== 'GK')).map(c => `<option value="${c}">${c} · ${POS_AR[c] || ''}</option>`).join('')}</select></label><label>الجنسية (زي EGY)<input id="txNat" type="text" maxlength="3" dir="ltr" autocomplete="off" style="text-transform:uppercase"></label></div>${isGk || isKo ? '' : `<label>ياخد رقم<select id="txRank">${RK.map(r => `<option value="${r}"${r === key ? ' selected' : ''}>${r}${d.slots[r] ? ' · ' + esc(txShort(labelOf(X.byId(d.slots[r])))) : ''}</option>`).join('')}</select></label>`}<button class="btn" type="button" data-tx="addp">${isKo ? 'أضفه وخلّيه الكومي' : isGk ? 'أضفه وخلّيه الحارس' : 'أضفه وخلّيه ياخد الرقم'}</button></div>`;
@@ -9198,16 +9216,21 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     o.b = clamp100(o.b + (w ? 3 : l ? -4 : 0) + (r.opp - r.me >= 3 ? -2 : 0)); o.f = clamp100(o.f + (w ? 4 : l ? -5 : -1) + (r.me - r.opp >= 3 ? 2 : 0));
     o.last = {me: r.me, opp: r.opp, oid: meIsA ? fx.b : fx.a};
   }
-  const PCQ = () => { const o = officeState(), l = o.last || {me: 0, opp: 0}; const win = l.me > l.opp;
-    return win
-      ? {q: dsx('إزاي شايف الفوز ده؟', 'كيف تقيّم هذا الفوز؟'), a: [
-          {n: dsx('واثق', 'واثق'), t: dsx('الفريق جاهز لأي لقب، ومش خايفين من حد.', 'الفريق جاهز لأي لقب، ولا نخشى أحدًا.'), b: 3, f: 6},
-          {n: dsx('حذر', 'حذر'), t: dsx('لسه بدري. شغلنا الأساسي ما يتغيّرش.', 'ما زال الوقت مبكرًا. عملنا الأساسي لن يتغيّر.'), b: 4, f: 1},
-          {n: dsx('بتلوم الحكم', 'يلوم الحكم'), t: dsx('التحكيم أثّر في النتيجة بشكل واضح.', 'التحكيم أثّر في النتيجة بشكل واضح.'), b: -4, f: 3}]}
-      : {q: dsx('إيه رأيك في النتيجة؟', 'ما تعليقك على النتيجة؟'), a: [
-          {n: dsx('مسؤولية', 'تحمّل المسؤولية'), t: dsx('أنا المسؤول الأول، وهنصلّح الأخطاء.', 'أتحمّل المسؤولية الأولى، وسنصحّح الأخطاء.'), b: 3, f: 2},
-          {n: dsx('دفاع عن اللاعبين', 'دعم اللاعبين'), t: dsx('اللاعبين قدّموا اللي عندهم، والحظ ما كانش معانا.', 'اللاعبون قدّموا ما لديهم، والحظ لم يحالفنا.'), b: 1, f: 4},
-          {n: dsx('بتلوم الحكم', 'يلوم الحكم'), t: dsx('التحكيم أثّر في النتيجة بشكل واضح.', 'التحكيم أثّر في النتيجة بشكل واضح.'), b: -4, f: 3}]}; };
+  const PCQ = () => { const o = officeState(), l = o.last || {me: 0, opp: 0}, k = playedN(), pk = (arr, i) => arr[(k * 3 + i * 5 + (mainOf(T).season || 1)) % arr.length], E = mainOf(T).lg === 'egy';
+    const cls = l.me > l.opp ? 'w' : l.me === l.opp ? 'd' : 'l';
+    const Q = {
+      w: E ? ['إزاي شايف الفوز ده؟', 'إيه اللي غيّر شكل الماتش النهارده؟', 'مين كان أحسن لاعب عندك الليلة؟', 'الجمهور فرحان، هتقول لهم إيه؟', 'هل ده أحسن أداء ليكم الموسم ده؟', 'الماتش الجاي صعب، جاهزين؟', 'إيه سر الحماس اللي شفناه؟'] : ['كيف تقيّم هذا الفوز؟', 'ما الذي غيّر شكل المباراة اليوم؟', 'من كان أفضل لاعب لديك الليلة؟', 'الجماهير سعيدة، ماذا تقول لها؟', 'هل هذا أفضل أداء لكم هذا الموسم؟', 'المباراة المقبلة صعبة، هل أنتم جاهزون؟', 'ما سرّ الحماس الذي رأيناه؟'],
+      d: E ? ['إيه رأيك في التعادل؟', 'حسّيت إنكم كنتم الأحسن؟', 'التعادل ده نقطتين ضاعوا ولا نقطة مكسوبة؟', 'إيه اللي ناقص الفريق؟', 'هل الحكم ظلمكم؟', 'هتغيّر في التشكيلة الماتش الجاي؟'] : ['ما رأيك في التعادل؟', 'هل شعرت أنكم الأفضل؟', 'هل هو نقطتان ضائعتان أم نقطة مكسوبة؟', 'ما الذي ينقص الفريق؟', 'هل ظلمكم الحكم؟', 'هل ستغيّر التشكيلة في المباراة المقبلة؟'],
+      l: E ? ['إيه رأيك في النتيجة؟', 'الجمهور غضبان، هتقول لهم إيه؟', 'هل هتغيّر الخطة؟', 'إيه سبب الخسارة بالظبط؟', 'اللاعبين كانوا في مستواهم؟', 'هل المجلس لسه واثق فيك؟'] : ['ما تعليقك على النتيجة؟', 'الجماهير غاضبة، ماذا تقول لها؟', 'هل ستغيّر الخطة؟', 'ما سبب الخسارة تحديدًا؟', 'هل كان اللاعبون في مستواهم؟', 'هل ما زالت الإدارة واثقة بك؟']};
+    const A = {
+      conf: E ? ['الفريق جاهز لأي لقب، ومش خايفين من حد.', 'ثقتي في اللاعبين كبيرة، واللي جاي أحلى.', 'إحنا بنبني حاجة كبيرة، واستنّوا اللي جاي.', 'الشغل بيتعمل صح، والنتايج هتيجي.'] : ['الفريق جاهز لأي لقب ولا نخشى أحدًا.', 'ثقتي في اللاعبين كبيرة والقادم أجمل.', 'نبني شيئًا كبيرًا فانتظروا القادم.', 'العمل يسير بشكل صحيح والنتائج ستأتي.'],
+      caut: E ? ['لسه بدري. شغلنا الأساسي ما يتغيّرش.', 'ماتش وعدّى، والتركيز على اللي جاي.', 'الدوري طويل، ومحتاجين نكمّل بهدوء.'] : ['ما زال الوقت مبكرًا وعملنا الأساسي لن يتغيّر.', 'مباراة انتهت والتركيز على القادمة.', 'الدوري طويل ونحتاج إلى المتابعة بهدوء.'],
+      blame: E ? ['التحكيم أثّر في النتيجة بشكل واضح.', 'في قرارات كتير ما كانتش في صالحنا.', 'الحكم كان محتاج يراجع أكتر من لقطة.'] : ['التحكيم أثّر في النتيجة بوضوح.', 'كانت هناك قرارات كثيرة ليست في صالحنا.', 'كان على الحكم مراجعة أكثر من لقطة.'],
+      own: E ? ['أنا المسؤول الأول، وهنصلّح الأخطاء.', 'الخسارة بتاعتي أنا، واللاعبين أبرياء.', 'الغلط عندي، والحل كمان عندي.'] : ['أتحمّل المسؤولية الأولى وسنصحّح الأخطاء.', 'الخسارة مسؤوليتي وحدي واللاعبون أبرياء.', 'الخطأ عندي والحل عندي أيضًا.'],
+      def: E ? ['اللاعبين قدّموا اللي عندهم، والحظ ما كانش معانا.', 'روح الفريق موجودة، والنتايج هترجع.', 'اللاعبين ما قصّروش أبدًا.'] : ['اللاعبون قدّموا ما لديهم والحظ لم يحالفنا.', 'روح الفريق موجودة والنتائج ستعود.', 'اللاعبون لم يقصّروا أبدًا.']};
+    const nm = E ? {conf: 'واثق', caut: 'حذر', blame: 'بتلوم الحكم', own: 'مسؤولية', def: 'دفاع عن اللاعبين'} : {conf: 'واثق', caut: 'حذر', blame: 'يلوم الحكم', own: 'تحمّل المسؤولية', def: 'دعم اللاعبين'};
+    const mk = (kind, b, f, i) => ({n: nm[kind], t: pk(A[kind], i), b, f});
+    return {q: pk(Q[cls], 0), a: cls === 'w' ? [mk('conf', 3, 6, 1), mk('caut', 4, 1, 2), mk('blame', -4, 3, 3)] : [mk('own', 3, 2, 1), mk('def', 1, 4, 2), mk('blame', -4, 3, 3)]}; };
   function officeHtml() {
     if (!carOk() || T._main || T.ucl || LANG === 'en') return '';
     const o = officeState(), mp = playedN(), me = T.mine[0], canPc = mp > 0 && o.k !== mp && o.last;
@@ -9231,46 +9254,68 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
   const rbTw = (h, t, n) => `<div class="rb-tw"><b>@${h}</b>${esc(t)}<span>${n} إعجاب</span></div>`;
   const rbChips = f => f.map(x => `<i class="${x}">${{W: 'ف', D: 'ت', L: 'خ'}[x]}</i>`).join('');
   function newsPlus(sel, latest) {
-    const mt = mainOf(T), me = T.mine[0], rounds = T.mds || [], nm = id => teamObj(id).name, lv = id => (CLUB_LV[id] != null ? CLUB_LV[id] : 3), o = officeState(), out = [];
+    const mt = mainOf(T), me = T.mine[0], rounds = T.mds || [], nm = id => teamObj(id).name, lv = id => (CLUB_LV[id] != null ? CLUB_LV[id] : 3), o = officeState(), out = [], E = mt.lg === 'egy';
     const resOf = (fx, id) => { const r = fx.res; return fx.a === id ? {gf: r.ga, ga: r.gb} : {gf: r.gb, ga: r.ga}; };
     const formOf = (id, n) => { const f = []; for (let i = 0; i <= sel; i++) (rounds[i] || []).forEach(fx => { if (fx.res && (fx.a === id || fx.b === id)) { const x = resOf(fx, id); f.push(x.gf > x.ga ? 'W' : x.gf < x.ga ? 'L' : 'D'); } }); return f.slice(-n); };
+    const goalsOf = (id, n) => { let g = 0, c = 0, k = 0; for (let i = sel; i >= 0 && k < n; i--) (rounds[i] || []).forEach(fx => { if (fx.res && (fx.a === id || fx.b === id) && k < n) { const x = resOf(fx, id); g += x.gf; c += x.ga; k++; } }); return {g, c, k}; };
     const AR = {W: 'ف', D: 'ت', L: 'خ'}, fs = id => formOf(id, 5).map(x => AR[x]).join(' ') || '—';
     const st = standings(0), rk = id => st.findIndex(r => r.id === id) + 1, row = id => st.find(r => r.id === id) || {pts: 0};
-    const myFx = (rounds[sel] || []).find(fx => fx.res && (fx.a === me || fx.b === me)), ic = nzIcon('ball');
+    const myFx = (rounds[sel] || []).find(fx => fx.res && (fx.a === me || fx.b === me)), ic = nzIcon('ball'), dsx2 = (e, f) => (E ? e : f);
+    const sd = (sel + 1) * 13 + String(me).length * 7 + playedN(), pk = (arr, i) => arr[(sd + (i || 0) * 5) % arr.length];
     const add = (pri, tag, h, p, icon) => out.push({pri, tag, h: '\u200F' + h, p: p ? '\u200F' + p : p, body: icon || nzIcon('news')});
     if (myFx) {
-      const x = resOf(myFx, me), opp = myFx.a === me ? myFx.b : myFx.a, d = x.gf - x.ga, F = formOf(me, 8); let lossRun = 0; for (let i = F.length - 1; i >= 0 && F[i] === 'L'; i--) lossRun++;
-      const det = dsx(`المركز ${rk(me)} برصيد ${row(me).pts} نقطة · آخر 5: ${fs(me)}`, `المركز ${rk(me)} برصيد ${row(me).pts} نقطة · آخر 5: ${fs(me)}`);
+      const x = resOf(myFx, me), opp = myFx.a === me ? myFx.b : myFx.a, d = x.gf - x.ga, F = formOf(me, 8), meA = myFx.a === me; let lossRun = 0; for (let i = F.length - 1; i >= 0 && F[i] === 'L'; i--) lossRun++;
+      const evs = ((myFx.res.rep && myFx.res.rep.ev) || []).slice().sort((a, b) => a.m - b.m), mine = evs.filter(e => (e.s === 'a') === meA), against = evs.filter(e => (e.s === 'a') !== meA);
+      const late = mine.filter(e => e.m >= 80), lateAg = against.filter(e => e.m >= 80);
+      const goalsTxt = mine.length ? dsx2('الأهداف', 'الأهداف') + ': ' + mine.map(e => `${e.n || '—'} ${e.m}'`).join(' · ') : '';
+      const agTxt = against.length ? dsx2('أهداف الخصم', 'أهداف الخصم') + ': ' + against.map(e => `${e.n || '—'} ${e.m}'`).join(' · ') : '';
+      const det = [goalsTxt, agTxt, dsx2(`المركز ${rk(me)} برصيد ${row(me).pts} نقطة`, `المركز ${rk(me)} برصيد ${row(me).pts} نقطة`) + ' · ' + dsx2('آخر 5', 'آخر 5') + ': ' + fs(me)].filter(Boolean).join(' · ');
       let h;
-      if (d > 0 && lv(opp) - lv(me) >= 1) h = dsx(`زلزال! ${nm(me)} يطيح بـ${nm(opp)} ${x.gf}-${x.ga}`, `زلزال في الدوري: ${nm(me)} يطيح بـ${nm(opp)} ${x.gf}-${x.ga}`);
-      else if (d >= 3) h = dsx(`اكتساح! ${nm(me)} يسحق ${nm(opp)} ${x.gf}-${x.ga}`, `اكتساح كبير: ${nm(me)} يكتسح ${nm(opp)} ${x.gf}-${x.ga}`);
-      else if (d > 0) h = dsx(`${nm(me)} يكسب ${nm(opp)} ${x.gf}-${x.ga}`, `${nm(me)} يتغلب على ${nm(opp)} ${x.gf}-${x.ga}`);
-      else if (d <= -3) h = dsx(`فضيحة! ${nm(opp)} يكتسح ${nm(me)} ${x.ga}-${x.gf}`, `فضيحة كروية: ${nm(opp)} يكتسح ${nm(me)} ${x.ga}-${x.gf}`);
-      else if (d < 0) h = dsx(`فشل جديد: ${nm(me)} يخسر أمام ${nm(opp)} ${x.gf}-${x.ga}`, `خسارة موجعة لـ${nm(me)} أمام ${nm(opp)} (${x.gf}-${x.ga})`);
-      else h = dsx(`تعادل ${x.gf}-${x.ga} بين ${nm(me)} و${nm(opp)}`, `تعادل ${x.gf}-${x.ga} بين ${nm(me)} و${nm(opp)}`);
-      add(0, '🔴 ' + dsx('عاجل', 'عاجل'), h, det, ic);
-      if (lossRun >= 3) add(0, '😡 ' + dsx('غضب الجماهير', 'غضب الجماهير'), dsx(`صافرات استهجان وغضب شديد: الجمهور بيهاجم ${myName()} بعد ${lossRun} هزائم ورا بعض`, `صافرات استهجان وغضب شديد: الجماهير تهاجم ${myName()} بعد ${lossRun} هزائم متتالية`), dsx('المجلس بيدرس الموقف والضغط بيزيد.', 'الإدارة تدرس الموقف والضغط يتزايد.'));
-      if (o.said) { const oq = d > 0 ? dsx('كنا نستاهل أكتر من كده، بس الحظ ما كانش معانا.', 'كنا نستحق أكثر من ذلك، لكن الحظ لم يحالفنا.') : d < 0 ? dsx('اللاعبين نفّذوا الخطة، وهنكمّل بنفس الروح.', 'اللاعبون نفّذوا الخطة وسنواصل بالروح نفسها.') : dsx('نقطة نقبلها، ولسه الطريق طويل.', 'نقطة نقبلها والطريق ما زال طويلًا.');
-        add(1, '🎤 ' + dsx('تصريحات', 'تصريحات'), '«' + o.said + '»', `${myName()} · ${dsx('بعد ماتش', 'بعد مباراة')} ${nm(opp)} · ${dsx('مدرب الخصم', 'مدرب الخصم')}: «${oq}»`); }
-      const sc = ['ar1', 'fan_7', 'derby_talks', 'kora_live', 'fan_21'], tone = d > 0 ? dsx('الفوز ده يستاهل 🔥', 'فوز يستحق الاحتفال 🔥') : d < 0 ? dsx('الأداء ده مش مقبول 😡', 'الأداء غير مقبول 😡') : dsx('نقطة والأداء كان متوسط 😐', 'نقطة والأداء متوسط 😐');
-      add(5, '📱 ' + dsx('السوشيال', 'السوشيال'), dsx(`الجمهور بيتكلم عن ماتش ${nm(opp)}`, `الجماهير تتحدث عن مباراة ${nm(opp)}`), '', `<div class="rb">${rbTw(sc[sel % 5] + '_' + (10 + sel * 3), tone, (4 + sel * 2) + ' ' + dsx('آلاف', 'آلاف'))}${rbTw(sc[(sel + 2) % 5], dsx('الحكم كان محتاج يراجع الإعادة 😅', 'قرارات الحكم تستحق المراجعة 😅'), (1 + sel) + '.' + (3 + sel) + ' ' + dsx('ألف', 'ألف'))}</div>`);
-      add(5, '📺 ' + dsx('الأستوديو', 'الأستوديو'), dsx('الأستوديو: الناس بتتكلم عن الماتش', 'الأستوديو يحلّل المباراة'), '', `<div class="rb"><div class="rb-pun"><div class="av">🎙️</div><div><b>${dsx('مذيع الأستوديو', 'مقدّم البرنامج')}</b><div>${d > 0 ? dsx('«النهارده ده كان درس في الكورة، والفريق عارف هو رايح فين!»', '«قدّم الفريق أداءً مقنعًا للغاية، ويعرف جيدًا إلى أين يتجه.»') : d < 0 ? dsx('«الأداء ده مش مقبول، والفريق محتاج وقفة مع نفسه!»', '«الأداء غير مقبول، والفريق بحاجة إلى وقفة مع نفسه.»') : dsx('«نقطة مش وحشة، بس الفريق قادر على أحسن.»', '«نقطة مقبولة، لكن الفريق قادر على الأفضل.»')}</div></div></div><div class="rb-pun"><div class="av">🎯</div><div><b>${dsx('المحلل الفني', 'المحلل الفني')}</b><div>${dsx('«الفرق كان في الوسط، ومن يسيطر عليه يكسب.»', '«الفارق كان في الوسط، ومن يسيطر عليه يحسم اللقاء.»')}</div></div></div><div class="rb-fic">شخصيات خيالية من وحي البرامج الرياضية</div></div>`);
+      if (d > 0 && lv(opp) - lv(me) >= 1) h = dsx2(`زلزال! ${nm(me)} يطيح بـ${nm(opp)} ${x.gf}-${x.ga}`, `زلزال في الدوري: ${nm(me)} يطيح بـ${nm(opp)} ${x.gf}-${x.ga}`);
+      else if (d >= 3) h = dsx2(`اكتساح! ${nm(me)} يسحق ${nm(opp)} ${x.gf}-${x.ga}`, `اكتساح كبير: ${nm(me)} يكتسح ${nm(opp)} ${x.gf}-${x.ga}`);
+      else if (d > 0) h = dsx2(`${nm(me)} يكسب ${nm(opp)} ${x.gf}-${x.ga}`, `${nm(me)} يتغلب على ${nm(opp)} ${x.gf}-${x.ga}`);
+      else if (d <= -3) h = dsx2(`فضيحة! ${nm(opp)} يكتسح ${nm(me)} ${x.ga}-${x.gf}`, `فضيحة كروية: ${nm(opp)} يكتسح ${nm(me)} ${x.ga}-${x.gf}`);
+      else if (d < 0) h = dsx2(`فشل جديد: ${nm(me)} يخسر أمام ${nm(opp)} ${x.gf}-${x.ga}`, `خسارة موجعة لـ${nm(me)} أمام ${nm(opp)} (${x.gf}-${x.ga})`);
+      else h = dsx2(`تعادل ${x.gf}-${x.ga} بين ${nm(me)} و${nm(opp)}`, `تعادل ${x.gf}-${x.ga} بين ${nm(me)} و${nm(opp)}`);
+      add(0, '🔴 عاجل', h, det, ic);
+      if (late.length) { const L = late[late.length - 1]; add(0, '⏱️ هدف قاتل', dsx2(`هدف قاتل! ${L.n || 'لاعبك'} يسجّل في الدقيقة ${L.m}`, `هدف قاتل: ${L.n || 'لاعبك'} يسجّل في الدقيقة ${L.m}`), dsx2(`${nm(me)} ${x.gf}-${x.ga} ${nm(opp)}`, `${nm(me)} ${x.gf}-${x.ga} ${nm(opp)}`) + (d > 0 && d <= 1 ? ' · ' + dsx2('الهدف حسم الماتش', 'الهدف حسم اللقاء') : d === 0 ? ' · ' + dsx2('الهدف أنقذ نقطة', 'الهدف أنقذ نقطة') : ''), ic); }
+      else if (lateAg.length) { const L = lateAg[lateAg.length - 1]; add(0, '⏱️ هدف قاتل', dsx2(`هدف قاتل ضدك! ${L.n || 'الخصم'} يسجّل في الدقيقة ${L.m}`, `هدف قاتل ضدك: ${L.n || 'الخصم'} يسجّل في الدقيقة ${L.m}`), dsx2(`${nm(me)} ${x.gf}-${x.ga} ${nm(opp)}`, `${nm(me)} ${x.gf}-${x.ga} ${nm(opp)}`), ic); }
+      if (lossRun >= 3) add(0, '😡 غضب الجماهير', dsx2(`صافرات استهجان وغضب شديد: الجمهور بيهاجم ${myName()} بعد ${lossRun} هزائم ورا بعض`, `صافرات استهجان وغضب شديد: الجماهير تهاجم ${myName()} بعد ${lossRun} هزائم متتالية`), dsx2('المجلس بيدرس الموقف والضغط بيزيد.', 'الإدارة تدرس الموقف والضغط يتزايد.'));
+      if (o.said) { const oq = d > 0 ? dsx2('كنا نستاهل أكتر من كده، بس الحظ ما كانش معانا.', 'كنا نستحق أكثر من ذلك، لكن الحظ لم يحالفنا.') : d < 0 ? dsx2('اللاعبين نفّذوا الخطة، وهنكمّل بنفس الروح.', 'اللاعبون نفّذوا الخطة وسنواصل بالروح نفسها.') : dsx2('نقطة نقبلها، ولسه الطريق طويل.', 'نقطة نقبلها والطريق ما زال طويلًا.');
+        add(1, '🎤 تصريحات', '«' + o.said + '»', `${myName()} · ${dsx2('بعد ماتش', 'بعد مباراة')} ${nm(opp)} · ${dsx2('مدرب الخصم', 'مدرب الخصم')}: «${oq}»`); }
+      /* the studio and the fans: a different line every round */
+      const cl = d >= 3 ? 'bw' : d > 0 ? 'w' : d === 0 ? 'd' : d > -3 ? 'l' : 'bl', me_ = nm(me), op_ = nm(opp), xs = x.gf, ys = x.ga, g5 = goalsOf(me, 5), nxn = (() => { try { const f = nextFx(); return f ? nm(f.a === me ? f.b : f.a) : ''; } catch (e) { return ''; } })(), gap = st[0] ? st[0].pts - row(me).pts : 0;
+      const HOST = {
+        bw: E ? [`النهارده ${me_} مش بيلعب كورة، ده بيدّي درس ويمشي!`, `اكتساح بكل معنى الكلمة، و${op_} مش لاقي حل!`, `ماتش من طرف واحد، والنتيجة ${xs}-${ys} بتحكي كل حاجة!`, `الأرقام دي بتقول إن ${me_} داخل الموسم ده جد!`, `شكلنا هنشوف ${me_} على القمة قريب!`, `${op_} لازم يراجع نفسه بعد الليلة دي، الفارق كان واضح!`] : [`قدّم ${me_} أداءً استثنائيًا واكتسح ${op_}.`, `فوز كاسح يعكس الفارق الواضح بين الفريقين.`, `مباراة من طرف واحد والنتيجة ${xs}-${ys} تلخّص كل شيء.`, `بهذا الأداء يضع ${me_} نفسه ضمن المرشحين للقب.`, `${op_} بحاجة إلى مراجعة شاملة بعد هذه الليلة.`, `أرقام مرعبة لـ${me_} الليلة.`],
+        w: E ? [`فوز مهم لـ${me_}، والتلات نقط ما فيهاش كلام!`, `${me_} عرف يحسمها في الوقت المناسب، برافو!`, `ماتش صعب وانتصار يستاهل الاحتفال.`, `الفريق ده بيعرف يكسب حتى لو مش في أحسن حالاته!`, `نقاط غالية، والدوري لسه طويل.`, `${me_} بيثبت إنه رقم صعب في المنافسة.`] : [`فوز مهم يضيف ثلاث نقاط غالية.`, `حسم ${me_} المباراة في الوقت المناسب.`, `انتصار صعب يستحق الإشادة.`, `يؤكد ${me_} أنه قادر على الفوز حتى في أيامه الصعبة.`, `نقاط ثمينة والدوري ما زال طويلًا.`, `${me_} يثبت أنه رقم صعب في المنافسة.`],
+        d: E ? [`نقطة مش وحشة، بس ${me_} كان يقدر ياخد أكتر.`, `تعادل بطعم الخسارة، والفرصة ضاعت.`, `ماتش متوازن، والنتيجة عادلة.`, `نقطة ممكن تفرق في آخر الموسم.`, `الأداء ما كانش مقنع، والتعادل أنقذ الموقف.`, `ما فيش غالب ولا مغلوب، بس الجمهور كان عايز أكتر.`] : [`نقطة مقبولة لكن ${me_} كان قادرًا على الأفضل.`, `تعادل بطعم الخسارة بعد فرص ضائعة.`, `مباراة متكافئة والنتيجة عادلة.`, `نقطة قد تكون مؤثرة في ختام الموسم.`, `الأداء لم يكن مقنعًا والتعادل أنقذ الموقف.`, `لا غالب ولا مغلوب لكن الجماهير كانت تنتظر أكثر.`],
+        l: E ? [`خسارة مؤلمة لـ${me_}، ولازم وقفة مع النفس.`, `الأداء مش مقبول، والنتيجة مستحقة لـ${op_}.`, `المدرب لازم يراجع حساباته بسرعة.`, `${me_} كان تايه النهارده في كل خطوط الملعب.`, `الجمهور مش هيسكت على نتيجة زي كده.`, `ضربة قوية للفريق، ولازم رد فعل في الماتش الجاي.`] : [`خسارة مؤلمة لـ${me_} تستدعي وقفة صادقة.`, `الأداء غير مقبول والنتيجة مستحقة لـ${op_}.`, `على الجهاز الفني مراجعة حساباته سريعًا.`, `بدا ${me_} تائهًا في معظم فترات اللقاء.`, `الجماهير لن تتقبّل نتيجة كهذه بسهولة.`, `ضربة قوية تتطلب ردّ فعل في المباراة المقبلة.`],
+        bl: E ? [`فضيحة بكل المقاييس! ${me_} اتكسر من ${op_} ${ys}-${xs}.`, `ليلة سودا على ${me_}، ومحتاجين تفسير!`, `الدفاع كان مفتوح، والنتيجة كارثة.`, `لو الأداء كده هيكون موسم صعب جدًا.`, `غضب كبير في المدرجات، والأسئلة كتير.`, `${me_} محتاج يصحى بسرعة قبل ما الموضوع يكبر.`] : [`فضيحة بكل المقاييس: ${me_} يتلقى هزيمة ثقيلة ${ys}-${xs}.`, `ليلة سوداء تتطلب تفسيرًا.`, `الدفاع بدا مفتوحًا والنتيجة كارثية.`, `إذا استمر الأداء هكذا فالموسم سيكون صعبًا.`, `غضب كبير في المدرجات وأسئلة كثيرة.`, `على ${me_} أن يستفيق سريعًا قبل أن تتفاقم الأزمة.`]};
+      const ANL = E ? [`في آخر ${g5.k} ماتشات سجّل ${g5.g} واستقبل ${g5.c}، والأرقام بتحكي.`, gap > 0 ? `الفريق في المركز ${rk(me)}، والفارق ${gap} نقطة عن الصدارة.` : `الفريق في الصدارة، والمطلوب الحفاظ عليها.`, 'الوسط هو مفتاح اللعب، ومن يسيطر عليه يكسب.', 'الدفاع محتاج تركيز أكتر في الكرات الثابتة.', 'الأطراف كانت سلاح الفريق الليلة.', 'الضغط العالي من أول دقيقة غيّر شكل الماتش.', 'التبديلات جت في وقتها، وده فرق كتير.', nxn ? `الماتش الجاي قدام ${nxn}، وهيكون اختبار حقيقي.` : 'الفريق محتاج يحافظ على التركيز.'] : [`في آخر ${g5.k} مباريات سجّل ${g5.g} واستقبل ${g5.c}، والأرقام تتحدث.`, gap > 0 ? `الفريق في المركز ${rk(me)} بفارق ${gap} نقطة عن الصدارة.` : 'الفريق في الصدارة والمطلوب الحفاظ عليها.', 'الوسط هو مفتاح اللعب ومن يسيطر عليه يحسم اللقاء.', 'الدفاع يحتاج إلى تركيز أكبر في الكرات الثابتة.', 'كانت الأطراف سلاح الفريق الأبرز الليلة.', 'الضغط العالي منذ الدقيقة الأولى غيّر شكل المباراة.', 'جاءت التبديلات في وقتها وكان لها أثر كبير.', nxn ? `المباراة المقبلة أمام ${nxn} وستكون اختبارًا حقيقيًا.` : 'الفريق بحاجة إلى المحافظة على تركيزه.'];
+      add(5, '📺 الأستوديو', dsx2(`الأستوديو: ${d > 0 ? 'الناس بتتكلم عن فوزك' : d < 0 ? 'الناس بتنتقد الأداء' : 'الناس منقسمة حول التعادل'}`, `الأستوديو: ${d > 0 ? 'إشادة بالفوز' : d < 0 ? 'انتقاد للأداء' : 'آراء منقسمة حول التعادل'}`), '', `<div class="rb"><div class="rb-pun"><div class="av">🎙️</div><div><b>${dsx2('مذيع الأستوديو', 'مقدّم البرنامج')}</b><div>«${pk(HOST[cl], 0)}»</div></div></div><div class="rb-pun"><div class="av">🎯</div><div><b>${dsx2('المحلل الفني', 'المحلل الفني')}</b><div>«${pk(ANL, 1)}»</div></div></div><div class="rb-fic">شخصيات خيالية من وحي البرامج الرياضية</div></div>`);
+      const HN = ['fan_ahly', 'kora_live', 'derby_talks', 'el_gamahir', 'mr_goal', 'tactics_x', 'ultras_21', 'sport_now'];
+      const TW = {
+        w: E ? ['الفوز ده يستاهل 🔥', 'برافو يا شباب، كده الشغل 👏', 'النهارده الماتش كان حلو بجد', 'ثلاث نقاط في الجيب وزي الفل', 'الجمهور فرحان والأداء كان كبير'] : ['فوز يستحق الاحتفال 🔥', 'أحسنتم يا شباب، هكذا يكون العمل 👏', 'مباراة رائعة بحق', 'ثلاث نقاط ثمينة وأداء مميز', 'الجماهير سعيدة والأداء كان كبيرًا'],
+        d: E ? ['نقطة والأداء كان متوسط 😐', 'كنا نقدر ناخد أكتر من كده', 'التعادل ده مش وحش بس مش مقنع', 'الهجوم مش بيخلّص الفرص 😅', 'لسه الفريق محتاج حاجة'] : ['نقطة والأداء متوسط 😐', 'كنا قادرين على الأفضل', 'تعادل غير سيئ لكنه غير مقنع', 'الهجوم لا يستغل الفرص 😅', 'الفريق بحاجة إلى المزيد'],
+        l: E ? ['الأداء ده مش مقبول 😡', 'محتاجين وقفة جد مع نفسنا', 'الدفاع كان نايم النهارده', 'مش كده الشغل يا مدرب 😤', 'النتيجة دي هتوجع'] : ['الأداء غير مقبول 😡', 'نحتاج إلى وقفة جادة', 'الدفاع كان غائبًا اليوم', 'هذا ليس المطلوب يا مدرب 😤', 'هذه النتيجة موجعة']};
+      const tk = d > 0 ? 'w' : d < 0 ? 'l' : 'd';
+      add(5, '📱 السوشيال', dsx2(`الجمهور بيتكلم عن ماتش ${nm(opp)}`, `الجماهير تتحدث عن مباراة ${nm(opp)}`), '', `<div class="rb">${rbTw(HN[sd % 8] + '_' + (10 + sel * 3), pk(TW[tk], 0), (4 + (sd % 9)) + ' ' + dsx2('آلاف', 'آلاف'))}${rbTw(HN[(sd + 3) % 8], pk(TW[tk], 2), (1 + (sd % 4)) + '.' + (1 + (sd % 8)) + ' ' + dsx2('ألف', 'ألف'))}</div>`);
     }
     const nx = (() => { try { return nextFx(); } catch (e) { return null; } })();
     if (nx && (nx.a === me || nx.b === me) && !nx.res) { const op = nx.a === me ? nx.b : nx.a, dl = lv(me) - lv(op) + (nx.a === me ? .4 : -.2), pw = Math.max(15, Math.min(70, Math.round(40 + dl * 12))), pd = 26, pl = 100 - pw - pd, hh = (psOpp(me, txParts())[op] || [0, 0, 0, 0]), rc = realCoachOf(op);
-      add(2, '📊 ' + dsx('قبل الماتش بالأرقام', 'قبل المباراة بالأرقام'), dsx(`الماتش الجاي: ${nm(me)} × ${nm(op)}`, `المباراة المقبلة: ${nm(me)} × ${nm(op)}`), `${dsx('توقّع: فوزك', 'التوقّع: فوزك')} ${pw}% · ${dsx('تعادل', 'تعادل')} ${pd}% · ${dsx('خسارة', 'خسارة')} ${pl}% · ${dsx('سجلك قدامه', 'سجلك أمامه')}: ${hh[1]} ف ${hh[2]} ت ${hh[3]} خ${rc ? ' · ' + dsx('مدربه', 'مدربه') + ': ' + rc : ''}`, `<div class="rb"><div class="rb-vs"><div>${crest(teamObj(me))}<span>${esc(nm(me))}</span><span class="rb-f">${rbChips(formOf(me, 5))}</span></div><strong>VS</strong><div>${crest(teamObj(op))}<span>${esc(nm(op))}</span><span class="rb-f">${rbChips(formOf(op, 5))}</span></div></div><div class="rb-bar"><i style="flex:${pw};background:#C9F73A"></i><i style="flex:${pd};background:#9fb0c8"></i><i style="flex:${pl};background:#ff5d73"></i></div></div>`); }
-    const ps = mt.ps && mt.ps.c && mt.ps.c[me], pn = ps ? Object.entries(ps.p) : [];
-    if (pn.length) { const top = pn.slice().sort((a, b) => b[1][0] - a[1][0])[0], as = pn.slice().sort((a, b) => b[1][1] - a[1][1])[0]; if (top[1][0] >= 2) add(3, '⭐ ' + dsx('محطة', 'محطة'), dsx(`${top[0]} يسجّل هدفه رقم ${top[1][0]} مع المسيرة`, `${top[0]} يسجّل هدفه رقم ${top[1][0]} مع المسيرة`), as && as[1][1] ? dsx(`وصانع الألعاب: ${as[0]} (${as[1][1]} أسيست)`, `وصانع الألعاب: ${as[0]} (${as[1][1]} تمريرات حاسمة)`) : ''); }
-    add(3, '🏛️ ' + dsx('مجلس الإدارة', 'الإدارة'), o.b >= 60 ? dsx('المجلس راضي عن المسيرة', 'الإدارة راضية عن المسيرة') : dsx('المجلس قلقان من النتايج', 'الإدارة قلقة من النتائج'), `${dsx('الثقة', 'الثقة')} ${o.b}% · ${dsx('مزاج الجمهور', 'مزاج الجماهير')} ${o.f}%`);
-    add(4, '🗂️ ' + dsx('لقطة من الجدول', 'لقطة من الجدول'), dsx(`${nm(me)} في المركز ${rk(me)}`, `${nm(me)} في المركز ${rk(me)}`), '', `<div class="rb"><table class="rb-t">${st.slice(0, 4).map((r, i) => `<tr class="${r.id === me ? 'me' : ''}"><td class="n">${i + 1}</td><td>${esc(nm(r.id))}</td><td class="p">${r.pts}</td></tr>`).join('')}${rk(me) > 4 ? `<tr class="me"><td class="n">${rk(me)}</td><td>${esc(nm(me))}</td><td class="p">${row(me).pts}</td></tr>` : ''}</table></div>`);
+      add(2, '📊 قبل الماتش بالأرقام', dsx2(`الماتش الجاي: ${nm(me)} × ${nm(op)}`, `المباراة المقبلة: ${nm(me)} × ${nm(op)}`), `${dsx2('توقّع: فوزك', 'التوقّع: فوزك')} ${pw}% · تعادل ${pd}% · خسارة ${pl}% · ${dsx2('سجلك قدامه', 'سجلك أمامه')}: ${hh[1]} ف ${hh[2]} ت ${hh[3]} خ${rc ? ' · مدربه: ' + rc : ''}`, `<div class="rb"><div class="rb-vs"><div>${crest(teamObj(me))}<span>${esc(nm(me))}</span><span class="rb-f">${rbChips(formOf(me, 5))}</span></div><strong>VS</strong><div>${crest(teamObj(op))}<span>${esc(nm(op))}</span><span class="rb-f">${rbChips(formOf(op, 5))}</span></div></div><div class="rb-bar"><i style="flex:${pw};background:#C9F73A"></i><i style="flex:${pd};background:#9fb0c8"></i><i style="flex:${pl};background:#ff5d73"></i></div></div>`); }
+    const X0 = txData(me), top = X0.pl.slice().sort((a, b) => b.n.cg - a.n.cg)[0], asx = X0.pl.slice().sort((a, b) => b.n.ca - a.n.ca)[0];
+    if (top && top.n.cg >= 2) add(3, '⭐ محطة', dsx2(`${top.lb} يسجّل هدفه رقم ${top.n.cg} مع المسيرة`, `${top.lb} يسجّل هدفه رقم ${top.n.cg} مع المسيرة`), asx && asx.n.ca ? dsx2(`وصانع الألعاب: ${asx.lb} (${asx.n.ca} أسيست)`, `وصانع الألعاب: ${asx.lb} (${asx.n.ca} تمريرات حاسمة)`) : '');
+    add(3, '🏛️ ' + dsx2('مجلس الإدارة', 'الإدارة'), o.b >= 60 ? dsx2('المجلس راضي عن المسيرة', 'الإدارة راضية عن المسيرة') : dsx2('المجلس قلقان من النتايج', 'الإدارة قلقة من النتائج'), `الثقة ${o.b}% · ${dsx2('مزاج الجمهور', 'مزاج الجماهير')} ${o.f}%`);
+    add(4, '🗂️ لقطة من الجدول', `${nm(me)} في المركز ${rk(me)}`, '', `<div class="rb"><table class="rb-t">${st.slice(0, 4).map((r, i) => `<tr class="${r.id === me ? 'me' : ''}"><td class="n">${i + 1}</td><td>${esc(nm(r.id))}</td><td class="p">${r.pts}</td></tr>`).join('')}${rk(me) > 4 ? `<tr class="me"><td class="n">${rk(me)}</td><td>${esc(nm(me))}</td><td class="p">${row(me).pts}</td></tr>` : ''}</table></div>`);
     let worst = null; st.forEach(r => { if (r.id === me) return; const F = formOf(r.id, 4); const l = F.filter(x => x === 'L').length; if (F.length >= 4 && l >= 3 && (!worst || l > worst.l)) worst = {id: r.id, l}; });
-    if (worst) add(5, '🕵️ ' + dsx('أخبار المنافسين', 'أخبار المنافسين'), dsx(`أزمة في ${nm(worst.id)}: ${worst.l} هزائم في آخر 4 ماتشات`, `أزمة في ${nm(worst.id)}: ${worst.l} هزائم في آخر 4 مباريات`), dsx(`الفريق في المركز ${rk(worst.id)} والإدارة بتدرس الخيارات.`, `الفريق في المركز ${rk(worst.id)} والإدارة تدرس الخيارات.`));
+    if (worst) add(5, '🕵️ أخبار المنافسين', dsx2(`أزمة في ${nm(worst.id)}: ${worst.l} هزائم في آخر 4 ماتشات`, `أزمة في ${nm(worst.id)}: ${worst.l} هزائم في آخر 4 مباريات`), dsx2(`الفريق في المركز ${rk(worst.id)} والإدارة بتدرس الخيارات.`, `الفريق في المركز ${rk(worst.id)} والإدارة تدرس الخيارات.`));
     const hist = mt.hist || [], lastS = hist[hist.length - 1], lp = lastS && (lastS.mine || []).find(x => x.id === me);
-    if (lp && lp.pos) add(6, '🗃️ ' + dsx('من الأرشيف', 'من الأرشيف'), rk(me) < lp.pos ? dsx('أحسن من الموسم اللي فات', 'أفضل من الموسم الماضي') : rk(me) > lp.pos ? dsx('أقل من الموسم اللي فات', 'أقل من الموسم الماضي') : dsx('زي الموسم اللي فات', 'مثل الموسم الماضي'), dsx(`الموسم الماضي أنهيت في المركز ${lp.pos}، ودلوقتي في المركز ${rk(me)}.`, `أنهيت الموسم الماضي في المركز ${lp.pos}، وأنت الآن في المركز ${rk(me)}.`));
+    if (lp && lp.pos) add(6, '🗃️ من الأرشيف', rk(me) < lp.pos ? dsx2('أحسن من الموسم اللي فات', 'أفضل من الموسم الماضي') : rk(me) > lp.pos ? dsx2('أقل من الموسم اللي فات', 'أقل من الموسم الماضي') : dsx2('زي الموسم اللي فات', 'مثل الموسم الماضي'), dsx2(`الموسم الماضي أنهيت في المركز ${lp.pos}، ودلوقتي في المركز ${rk(me)}.`, `أنهيت الموسم الماضي في المركز ${lp.pos}، وأنت الآن في المركز ${rk(me)}.`));
     const att = 18000 + ((sel + 1) * 7919 + String(me).length * 131) % 47000, atx = Math.round(att / 100) * 100;
-    add(6, '🏟️ ' + dsx('من الاستاد', 'من الاستاد'), atx > 50000 ? dsx(`الاستاد كامل العدد: ${atx.toLocaleString('en')} متفرج`, `الملعب مكتمل العدد: ${atx.toLocaleString('en')} متفرج`) : dsx(`حضور ${atx.toLocaleString('en')} متفرج`, `حضور ${atx.toLocaleString('en')} متفرجًا`), dsx('الجو حلو والملعب في حالة ممتازة.', 'الأجواء رائعة والملعب في حالة ممتازة.'));
-    const tp = topOf(T.scorers)[0]; if (tp && tp.n >= 2) add(5, '🏅 ' + dsx('جوايز الشهر', 'جوائز الشهر'), dsx(`نجم الشهر: ${tp.name}`, `نجم الشهر: ${tp.name}`), `${tp.n} ${dsx('أهداف', 'أهداف')} · ${nm(tp.id)}`);
-    add(7, '📰 ' + dsx('ملخّص الجولة', 'ملخص الجولة'), dsx(`ملخّص الجولة ${sel + 1}`, `موجز الجولة ${sel + 1}`), `${dsx('المتصدر', 'المتصدر')}: ${nm(st[0].id)} · ${dsx('الأخير', 'المتذيل')}: ${nm(st[st.length - 1].id)}${tp ? ' · ' + dsx('الهداف', 'الهداف') + ': ' + tp.name + ' (' + tp.n + ')' : ''}`);
+    add(6, '🏟️ من الاستاد', atx > 50000 ? dsx2(`الاستاد كامل العدد: ${atx.toLocaleString('en')} متفرج`, `الملعب مكتمل العدد: ${atx.toLocaleString('en')} متفرج`) : dsx2(`حضور ${atx.toLocaleString('en')} متفرج`, `حضور ${atx.toLocaleString('en')} متفرجًا`), dsx2('الجو حلو والملعب في حالة ممتازة.', 'الأجواء رائعة والملعب في حالة ممتازة.'));
+    const tp = topOf(T.scorers)[0]; if (tp && tp.n >= 2) add(5, '🏅 ' + dsx2('جوايز الشهر', 'جوائز الشهر'), `نجم الشهر: ${tp.name}`, `${tp.n} أهداف · ${nm(tp.id)}`);
+    add(7, '📰 ملخّص الجولة', dsx2(`ملخّص الجولة ${sel + 1}`, `موجز الجولة ${sel + 1}`), `المتصدر: ${nm(st[0].id)} · ${dsx2('الأخير', 'المتذيل')}: ${nm(st[st.length - 1].id)}${tp ? ' · الهداف: ' + tp.name + ' (' + tp.n + ')' : ''}`);
     return out;
   }
   /* ---- statistics: one table, a competition filter ---- */
@@ -9284,11 +9329,12 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     let rows = Object.keys(acc).map(k => { const i = k.indexOf('|'); return {id: k.slice(0, i), name: k.slice(i + 1), g: acc[k].g, a: acc[k].a, s: acc[k].g + acc[k].a}; });
     if (SX.mine) rows = rows.filter(r => isMine(r.id));
     const key = SX.typ === 'a' ? 'a' : SX.typ === 's' ? 's' : 'g';
-    rows = rows.filter(r => r[key] > 0).sort((x, y) => y[key] - x[key] || y.s - x.s || x.name.localeCompare(y.name)).slice(0, 15);
-    const chip = (a, k, v, n, dis) => `<button type="button" data-sx="${a}" data-v="${v}" aria-pressed="${k}" ${dis ? 'disabled' : ''}>${n}</button>`;
-    let h = `<div class="sx-b">${chip('comp', SX.comp === 'all', 'all', 'الكل')}${chip('comp', SX.comp === 'lg', 'lg', 'الدوري', !has.lg)}${chip('comp', SX.comp === 'cup', 'cup', 'الكأس', !has.cup)}${chip('comp', SX.comp === 'ucl', 'ucl', 'دوري الأبطال', !has.ucl)}</div>` +
-      `<div class="sx-b">${chip('typ', SX.typ === 'g', 'g', '⚽ الهدافين')}${chip('typ', SX.typ === 'a', 'a', '🅰️ الصنّاع')}${chip('typ', SX.typ === 's', 's', '⚡ المساهمة')}${T.mine.length ? chip('mine', SX.mine, 'm', '🧑‍💼 فريقك فقط') : ''}</div>`;
-    h += rows.length ? `<table class="sx-t"><tr><th>#</th><th class="l">اللاعب</th><th>⚽</th><th>🅰️</th><th>المجموع</th></tr>${rows.map((r, i) => `<tr class="${isMine(r.id) ? 'me' : ''}"><td class="n">${i + 1}</td><td class="l"><div class="pl"><b dir="auto">${esc(r.name)}</b><span>${teamLine(r.id)}</span></div></td><td class="${key === 'g' ? 'k' : 'n'}">${r.g}</td><td class="${key === 'a' ? 'k' : 'n'}">${r.a}</td><td class="${key === 's' ? 'k' : 'n'}">${r.s}</td></tr>`).join('')}</table>` : '<p class="rm-intro">لسه مفيش أرقام في الاختيار ده.</p>';
+    rows = rows.filter(r => r[key] > 0).sort((x, y) => y[key] - x[key] || y.s - x.s || x.name.localeCompare(y.name)).slice(0, 20);
+    const btn = (a, on, v, n, dis) => `<button type="button" data-sx="${a}" data-v="${v}" aria-pressed="${on}" ${dis ? 'disabled' : ''}>${n}</button>`;
+    let h = `<div class="sx-seg" role="group">${btn('typ', SX.typ === 'g', 'g', '⚽ الهدافين')}${btn('typ', SX.typ === 'a', 'a', '🅰️ صنّاع اللعب')}${btn('typ', SX.typ === 's', 's', '⚡ المساهمة')}</div>` +
+      `<div class="sx-b">${btn('comp', SX.comp === 'all', 'all', 'كل البطولات')}${btn('comp', SX.comp === 'lg', 'lg', 'الدوري', !has.lg)}${btn('comp', SX.comp === 'cup', 'cup', 'الكأس', !has.cup)}${btn('comp', SX.comp === 'ucl', 'ucl', 'دوري الأبطال', !has.ucl)}${T.mine.length ? btn('mine', SX.mine, 'm', '🧑‍💼 فريقك') : ''}</div>`;
+    const colTitle = {g: 'الأهداف', a: 'الأسيست', s: 'المجموع'}[key];
+    h += rows.length ? `<div class="sx-l"><div class="sx-h"><span>#</span><span>اللاعب</span><span>${colTitle}</span></div>${rows.map((r, i) => `<div class="sx-r${isMine(r.id) ? ' me' : ''}"><span class="n">${i + 1}</span><span class="p"><b dir="auto">${esc(r.name)}</b><small><span class="sx-cr">${crest(teamObj(r.id))}</span>${esc(teamObj(r.id).name)}${key === 's' ? ` · ${r.g} ⚽ + ${r.a} 🅰️` : key === 'g' ? (r.a ? ` · ${r.a} 🅰️` : '') : (r.g ? ` · ${r.g} ⚽` : '')}</small></span><span class="v">${r[key]}</span></div>`).join('')}</div>` : '<p class="rm-intro">لسه مفيش أرقام في الاختيار ده.</p>';
     const ts = teamStats(), gk = (() => { try { return gkStats().slice(0, 3); } catch (e) { return []; } })();
     if (ts.length) { const by = (f, d) => ts.slice().sort((a, b) => d * (f(b) - f(a)) || b.p - a.p)[0]; const at = by(x => x.gf, 1), df = by(x => x.ga, -1);
       h += `<div class="sx-b" style="margin-top:12px"><button type="button" disabled>🔥 أقوى هجوم: ${esc(teamObj(at.id).name)} (${at.gf})</button><button type="button" disabled>🧱 أقوى دفاع: ${esc(teamObj(df.id).name)} (${df.ga})</button>${gk.length ? `<button type="button" disabled>🧤 القفاز الذهبي: ${esc(gk[0].name)} (${gk[0].cs})</button>` : ''}</div>`; }
@@ -10831,6 +10877,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     const ids = nextUclIds(old, rows), wantU = prefs.lgUcl !== false && old.mine.some(id => ids.includes(id));
     T = newLeague(old.lg, old.mine, !!old.cup, {teams: old.teams.slice(), dbl: old.dbl, season: (old.season || 1) + 1, ucl: wantU, uclIds: ids});
     T.season = (old.season || 1) + 1; T.hist = hist; if (!T.uIds) T.uIds = ids.slice();
+    try { T.pg = carBank(old); T.car = old.car; T.sqx = old.sqx; T.ps = old.ps; T.off = old.off; } catch (e) {}
     saveT(); show('hub'); renderHub(); leagueDraw();
   }
   async function leagueDraw() {
