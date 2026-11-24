@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.33.1-beta">
+<head><meta name="app-version" content="1.33.2-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0B1220"><link rel="icon" type="image/png" sizes="32x32" href="cg-favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="cg-favicon-16.png"><link rel="shortcut icon" href="cg-favicon.ico"><link rel="icon" type="image/png" sizes="192x192" href="cg-icon-192.png"><link rel="apple-touch-icon" href="cg-apple-touch.png"><meta property="og:type" content="website"><meta property="og:title" content="كاردجول · CardGoal"><meta property="og:description" content="كوتشينة بطعم الكورة، وكل بصرة جول"><meta property="og:image" content="https://mahmoudatef0033.github.io/cardgoal/cg-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجول · CardGoal</title>
@@ -5875,10 +5875,13 @@ body.four .fstrip{direction:ltr}
     }
     return {me, opp: o};
   }
+  /* real head coaches of the clubs (checked 24 Nov 2026; update here when a coach changes) */
+  const REAL_COACH = {"ahly":"Hussein Ammouta","zam":"Motamed Gamal","pyr":"Rulani Mokwena","eg_mas":"Nabil Kouki","eg_cer":"Moamen Soliman","eg_smo":"Ahmed Abdel Aziz","eg_mok":"Sami Kamsan","eg_itt":"Hamza El-Gamal","eg_nbe":"Ayman El-Ramady","eg_enp":"Mohamed Barakat","eg_pet":"Sayed Eid","eg_wad":"Mostafa Shebita","eg_gha":"Khaled Galal","eg_gou":"Alaa Abdel Aal","eg_abq":"Haitham Shaaban","eg_asy":"Reda Shehata","eg_qan":"Abdel Nasser Mohamed","eg_zed":"Mohamed Shawky","eg_mod":"Mohamed Amine Benhachem","eg_gai":"Gomaa Mashhour","city":"Enzo Maresca","liv":"Andoni Iraola","ars":"Mikel Arteta","che":"Xabi Alonso","mun":"Mauricio Pochettino","bha":"Fabian Hürzeler","avl":"Unai Emery","bou":"Marco Rose","bre":"Keith Andrews","cov":"Frank Lampard","cry":"Thomas Frank","eve":"David Moyes","ful":"Álvaro Arbeloa","hul":"Sergej Jakirović","ips":"Gary O'Neil","lee":"Daniel Farke","ncl":"Matthias Jaissle","nfo":"Oliver Glasner","sun":"Régis Le Bris","tot":"Roberto De Zerbi","barca":"Hansi Flick","real":"José Mourinho","atm":"Diego Simeone","ath":"Edin Terzić","rso":"Pellegrino Matarazzo","vil":"Iñigo Pérez","bet":"Manuel Pellegrini","sev":"Luis García","val":"Javier Aguirre","cel":"Claudio Giráldez","osa":"Jagoba Arrasate","get":"José Bordalás","ray":"Beñat San José","epy":"Eder Sarabia","elc":"Martín Anselmi","ala":"Quique Sánchez Flores","lev":"Luís Castro","rac":"José Alberto López","dep":"Antonio Hidalgo","mal":"Juan Francisco Funes","int":"Cristian Chivu","juv":"Luciano Spalletti","mil":"Rúben Amorim","nap":"Massimiliano Allegri","roma":"Gian Piero Gasperini","com":"Cesc Fàbregas","ata":"Maurizio Sarri","bol":"Raffaele Palladino","cag":"Fabio Pisacane","fio":"Paolo Vanoli","fro":"Massimiliano Alvini","gen":"Daniele De Rossi","laz":"Gennaro Gattuso","lec":"Eusebio Di Francesco","mon":"Ivan Jurić","par":"Alberto Gilardino","sas":"Roberto D'Aversa","tor":"Ignazio Abate","udi":"Paolo Zanetti","ven":"Davide Nicola","bay":"Vincent Kompany","bvb":"Niko Kovač","stu":"Sebastian Hoeneß","rbl":"Martín Demichelis","psg":"Luis Enrique","lil":"Davide Ancelotti","len":"Didier Digard","mia":"Guillermo Hoyos","psv":"Peter Bosz","fey":"Giovanni van Bronckhorst","clb":"Ivan Leko","por":"Francesco Farioli","spo":"Paulo Fonseca","gal":"Okan Buruk","fen":"Emre Belözoğlu","bod":"Kjetil Knutsen","vik":"Bjarte Lunde Aarsheim & Morten Jensen","sla":"Jindřich Trpišovský","las":"Dietmar Kühbauer","sab":"Valdas Dambrauskas","aek":"Marko Nikolić","sha":"Arda Turan","slo":"Yaya Touré"};
+  const realCoachOf = id => REAL_COACH[id] || '';
   function teamObj(id, kit) {
     if (!clubDef(id)) id = 'barca';
     const df = clubDef(id), kc = kitCols(id), k = kit === 'away' ? 'away' : 'home';
-    return {id, name: df.name, short: df.short, c1: kc[k][0], c2: kc[k][1], kit: k, kits: kc, squad: squadOf(id), info: infoOf(id)};
+    return {id, name: df.name, short: df.short, c1: kc[k][0], c2: kc[k][1], kit: k, kits: kc, coach: realCoachOf(id), squad: squadOf(id), info: infoOf(id)};
   }
   (function migrateOldSquads() {
     const old = store.get('basra.squads', null);
@@ -7843,7 +7846,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.33.1-beta';
+  const APP_VER = '1.33.2-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -12368,7 +12371,7 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
       const fx = nextFx(), grp = T.stage === 'group' && !cupDue() && T.mine.length;
       if (grp && fx) {
         const oppId = isMine(fx.a) ? fx.b : fx.a, e = earlierSlot();
-        cta = `<div class="cta2"><button class="btn" data-act="play" type="button"><span>العب ماتشك</span><small dir="auto">${esc(teamObj(oppId).name)} · ${isMine(fx.a) ? HA.h + ' في ملعبك' : HA.a + ' خارج ملعبك'}${fx.t != null ? ' · ' + hhmm(fx.t) : ''}</small></button>` +
+        cta = `<div class="cta2"><button class="btn" data-act="play" type="button"><span>العب ماتشك</span><small dir="auto">${esc(teamObj(oppId).name)}${realCoachOf(oppId) ? ' (' + esc(realCoachOf(oppId)) + ')' : ''} · ${isMine(fx.a) ? HA.h + ' في ملعبك' : HA.a + ' خارج ملعبك'}${fx.t != null ? ' · ' + hhmm(fx.t) : ''}</small></button>` +
           (e ? `<button class="btn sec" data-act="nextslot" type="button"><span>الماتش الجاي</span><small>${hhmm(e.t)}</small></button>` : `<button class="btn sec" data-act="play" type="button"><span>افتح ماتشك</span><small>الماتشات اللي قبلك خلصت</small></button>`) + '</div>' +
           '<button class="btn ghost ic" data-act="watchmine" type="button" title="شاهد ماتشك" aria-label="شاهد ماتشك">👁️</button><button class="btn ghost ic" data-act="simmine" type="button" title="محاكاة المباراة" aria-label="محاكاة المباراة">⚡</button>';
       } else if (grp) {
