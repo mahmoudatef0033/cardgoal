@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.34.3-beta">
+<head><meta name="app-version" content="1.34.4-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0B1220"><link rel="icon" type="image/png" sizes="32x32" href="cg-favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="cg-favicon-16.png"><link rel="shortcut icon" href="cg-favicon.ico"><link rel="icon" type="image/png" sizes="192x192" href="cg-icon-192.png"><link rel="apple-touch-icon" href="cg-apple-touch.png"><meta property="og:type" content="website"><meta property="og:title" content="كاردجول · CardGoal"><meta property="og:description" content="كوتشينة بطعم الكورة، وكل بصرة جول"><meta property="og:image" content="https://mahmoudatef0033.github.io/cardgoal/cg-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجول · CardGoal</title>
@@ -1000,6 +1000,8 @@ body.cupnight.th-ucl{background:var(--ucl-lines) center top/cover no-repeat,radi
 @keyframes cgBounce{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-.5em) rotate(180deg)}}
 .cg-spin{display:inline-block;width:1.35em;height:1.35em;vertical-align:-.3em;margin-inline-end:.35em;background:var(--cg-mark) center/contain no-repeat;animation:cgBounce 1.1s cubic-bezier(.3,0,.5,1) infinite}
 #tabbar>.brand{display:none}
+#olVs{display:none;margin-top:6px}#olNseg:has(button[data-n="4"][aria-pressed="true"])+#olVs{display:flex}
+
 /* ===== v1.34.3: tappable tweets, no overlap while scrolling ===== */
 .rb-tw2{background:rgba(255,255,255,.07);border-radius:14px;padding:9px 11px;text-align:start}.rb-tw2 .h{display:flex;gap:8px;align-items:center}.rb-tw2 .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7a5cff,#2d2160);display:grid;place-items:center;font:900 14px Cairo,sans-serif;flex:none}.rb-tw2 .h b{display:block;font-weight:800;font-size:12.5px}.rb-tw2 .h b u{text-decoration:none;color:#7cc4ff;font-size:11px}.rb-tw2 .h span:not(.av){display:block;font-weight:700;font-size:10.5px;color:#9fb0c8}
 .rb-tw2 p{font-weight:700;font-size:13.5px;line-height:1.65;margin:6px 0 4px;color:#fff}.rb-tw2 .f{display:flex;gap:6px;justify-content:space-between}.rb-tw2 .f button{flex:1;border:0;background:rgba(255,255,255,.06);color:#c4d3ee;border-radius:10px;padding:5px 4px;font:700 12px Cairo,sans-serif;cursor:pointer}.rb-tw2 .f button em{font-style:normal;font-family:'Orbitron',sans-serif;font-size:11px}.rb-tw2 .f button.on{background:rgba(255,93,115,.2);color:#ffd1d8}
@@ -2624,6 +2626,7 @@ body.four .fstrip{direction:ltr}
       <label class="field" id="olCoachField" style="margin:0;width:100%"><span>اسمك (المدرب)</span><input id="olCoach" type="text" maxlength="16" dir="auto" autocomplete="off" placeholder="اكتب اسمك"></label>
       <h3>اعمل روم</h3>
       <div class="seg" id="olNseg" role="group" aria-label="عدد اللاعبين"><button type="button" data-n="2" aria-pressed="true">لاعبين</button><button type="button" data-n="4" aria-pressed="false">4 لاعبين · فريقين</button></div>
+      <div class="seg" id="olVs" role="group" aria-label="مين معاك"><button type="button" data-v="0" aria-pressed="true">أصحاب (2 ضد 2)</button><button type="button" data-v="1" aria-pressed="false">🤝 أنا وصاحبي ضد الكمبيوتر</button></div>
       <p>هتاخد كود ولينك ابعتهم لصاحبك.</p>
       <button class="btn" id="olCreate" type="button">اعمل روم</button>
       <div class="ol-or">— أو —</div>
@@ -7292,7 +7295,7 @@ body.four .fstrip{direction:ltr}
       if (cpu.has(a)) return `<div class="ol4s cpu" data-a="${a}"><span class="ol4a"><span class="crest emo">🤖</span></span><b>كمبيوتر</b>${host ? `<button type="button" class="ol4b" data-act="nocpu" data-a="${a}">شيل ×</button>` : '<i class="ol-chip">…</i>'}</div>`;
       return `<div class="ol4s empty" data-a="${a}"><span class="ol4a"><span class="crest emo">＋</span></span><b>فاضي</b>${n.cfg && mySeatA != null && mySeatA !== a ? `<button type="button" class="ol4b" data-act="sit" data-a="${a}">اقعد هنا</button>` : ''}${host ? `<button type="button" class="ol4b g" data-act="cpu" data-a="${a}">+ كمبيوتر</button>` : ''}</div>`;
     };
-    const teamHtml = t => { const T = tm[t], c = T.club; return `<div class="ol4t"><div class="ol4h"><b>الفريق ${OL4_T[t]}</b><span class="ol4c">${c ? crest(cleanTeam(c)) + ' ' + esc(c.name || '') : (T.capPid ? 'الكابتن لسه ما اختارش فريق' : 'فريق الكمبيوتر')}</span></div><div class="ol4r">${T.seats.map(seatHtml).join('')}</div></div>`; };
+    const teamHtml = t => { const T = tm[t], c = T.club; return `<div class="ol4t"><div class="ol4h"><b>${t === 0 ? HA.h + ' ' + L2('صاحب الأرض', 'HOME') : HA.a + ' ' + L2('الضيف', 'AWAY')}</b><span class="ol4c">${c ? crest(cleanTeam(c)) + ' ' + esc(c.name || '') : (T.capPid ? 'الكابتن لسه ما اختارش فريق' : 'فريق الكمبيوتر')}</span></div><div class="ol4r">${T.seats.map(seatHtml).join('')}</div></div>`; };
     $('#ol4').innerHTML = teamHtml(0) + '<div class="ol4v">ضد</div>' + teamHtml(1);
     $$('#ol4 [data-act]').forEach(b => { b.onclick = () => { const a = +b.dataset.a, act = b.dataset.act; if (act === 'sit') { n.want = a; pushState4(); } else if (host) { const s = new Set(n.cpuWant || []); if (act === 'cpu') s.add(a); else s.delete(a); n.cpuWant = [...s]; hostCfg4(); } }; });
     { const t0 = $('#olTimer'), cur = n.timer == null ? 15 : n.timer; t0.hidden = false;
@@ -7324,7 +7327,7 @@ body.four .fstrip{direction:ltr}
     const cpu = new Set((n.cpuWant || []).filter(a => a !== 0)), used = new Set([0]), assign = {}; assign[n.room.pid] = 0;
     const others = Object.keys(n.st4).sort();
     others.forEach(p => { const w = n.st4[p].want; if (w != null && w > 0 && w < 4 && !used.has(w)) { assign[p] = w; used.add(w); cpu.delete(w); } });
-    others.forEach(p => { if (assign[p] != null) return; for (let a = 1; a < 4; a++) if (!used.has(a)) { assign[p] = a; used.add(a); cpu.delete(a); break; } });
+    others.forEach(p => { if (assign[p] != null) return; for (const a of (n.vsCpu ? [2, 1, 3] : [1, 2, 3])) if (!used.has(a)) { assign[p] = a; used.add(a); cpu.delete(a); break; } });
     n.cpuWant = [...cpu]; const cfg = {assign, cpu: [...cpu].sort()}, s = JSON.stringify(cfg);
     if (s !== n.cfgS) { n.cfgS = s; n.cfg = cfg; n.room.emit('cfg4', cfg).catch(() => {}); }
     renderLobby4();
@@ -7352,6 +7355,7 @@ body.four .fstrip{direction:ltr}
     for (let i = 0; i < 5 && !ok; i++) { code = genCode(); try { await netOpen(code, 'h', {create: true, opts: {n: 4}}); ok = true; } catch (e) { lastE = e; if (!/taken/.test(String(e && e.message))) break; } }
     $('#olCreate').disabled = false; if (!ok) { setOl('#olStatus2', olErr(lastE)); return; }
     const n = NET; n.four = true; n.coach = coach; setOl('#olStatus2', ''); n.timer = turnSec(); n.et = prefs.et === 'golden' ? 'golden' : 'full'; showOlCode(code); lobby4(n); enterLobby4(n);
+    n.vsCpu = OLVS; if (OLVS) { n.cpuWant = [1, 3]; try { hostCfg4(); } catch (e) {} }
   }
   function lobby4(n) {
     n.st4 = {}; n.cfg = null; n.want = null; n.cpuWant = [];
@@ -7883,7 +7887,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.34.3-beta';
+  const APP_VER = '1.34.4-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
@@ -11201,6 +11205,8 @@ const CHAR_UNLOCK = {c7: 14, c8: 60};
     renderLobby();
   }
   $$('#olNseg button').forEach(b => { b.onclick = () => { prefs.olN = +b.dataset.n; savePrefs(); $$('#olNseg button').forEach(x => x.setAttribute('aria-pressed', x === b)); }; });
+  let OLVS = false;
+  $$('#olVs button').forEach(b => { b.onclick = () => { OLVS = b.dataset.v === '1'; $$('#olVs button').forEach(x => x.setAttribute('aria-pressed', x === b)); }; });
   $('#olCreate').onclick = () => { if (prefs.olN === 4) host4(); else hostRoom(); };
   $('#olJoin').onclick = () => joinRoom();
   $('#olClubBtn').onclick = async () => {
