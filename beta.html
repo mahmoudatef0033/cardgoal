@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta name="app-version" content="1.34.5-beta">
+<head><meta name="app-version" content="1.34.6-beta">
 <meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0B1220"><link rel="icon" type="image/png" sizes="32x32" href="cg-favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="cg-favicon-16.png"><link rel="shortcut icon" href="cg-favicon.ico"><link rel="icon" type="image/png" sizes="192x192" href="cg-icon-192.png"><link rel="apple-touch-icon" href="cg-apple-touch.png"><meta property="og:type" content="website"><meta property="og:title" content="كاردجول · CardGoal"><meta property="og:description" content="كوتشينة بطعم الكورة، وكل بصرة جول"><meta property="og:image" content="https://mahmoudatef0033.github.io/cardgoal/cg-og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="كاردجول"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>كاردجول · CardGoal</title>
@@ -1000,6 +1000,19 @@ body.cupnight.th-ucl{background:var(--ucl-lines) center top/cover no-repeat,radi
 @keyframes cgBounce{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-.5em) rotate(180deg)}}
 .cg-spin{display:inline-block;width:1.35em;height:1.35em;vertical-align:-.3em;margin-inline-end:.35em;background:var(--cg-mark) center/contain no-repeat;animation:cgBounce 1.1s cubic-bezier(.3,0,.5,1) infinite}
 #tabbar>.brand{display:none}
+/* ===== v1.34.6: 4-player table (partner fan, plain backs, capsule, tidy floor) ===== */
+body.four .ohand .card{transform:translateY(var(--oty,0px)) rotate(calc(180deg + var(--orot,0deg)))}
+body.four .ohand .card.back{background:repeating-linear-gradient(135deg,#2c63ff 0 7px,#0f2f94 7px 14px)!important;border:calc(var(--ow)*.07) solid #fff}
+body.four .ohand .card.back::before{display:none!important}
+body.four:not(.pro3d) .ohand{top:64px}
+body.four #seatT{flex-direction:row!important;width:auto!important;gap:8px!important;margin-left:0!important;top:12px!important;left:50%;transform:translateX(-50%)!important;padding:3px 14px 3px 6px!important;background:rgba(9,18,38,.88)!important;border:1.5px solid var(--tc,#3b7bff)!important;border-radius:999px!important;backdrop-filter:blur(4px)}
+body.four #seatT .cw{width:30px!important;height:30px!important;margin:0!important;flex:none}
+body.four #seatT .rg .crest,body.four #seatT .rg .crest.big{width:30px!important;height:30px!important}
+body.four #seatT .rg{inset:-2px}
+body.four #seatT .avb{width:18px;height:18px;right:-9px;bottom:-4px;box-shadow:0 0 0 1.5px #0b1424,0 0 0 2.5px var(--tc)}
+body.four #seatT .tr{display:none}
+body.four #seatT .nm{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;max-width:96px;font-size:12px}
+
 /* ===== v1.34.5: iPhone app bottom bar, two avatars per team ===== */
 .sh-tab{height:calc(68px + env(safe-area-inset-bottom,0px))}
 html:has(body.shellmode){padding-bottom:0}
@@ -6412,7 +6425,7 @@ body.four .fstrip{direction:ltr}
     if (M.four && !penOn) { renderSideHand('rhand', seatHands[1]); renderSideHand('lhand', seatHands[3]); fourUi(); }
     tHand.forEach((c, i) => {
       const el = document.createElement('div');
-      el.className = 'card back'; { const om = (tHand.length - 1) / 2; el.style.setProperty('--orot', (-(i - om) * 6) + 'deg'); el.style.setProperty('--oty', (-Math.abs(i - om) * 5) + 'px'); }
+      el.className = 'card back'; { const om = (tHand.length - 1) / 2; if (M.four) { const a = -(i - om) * 18; el.style.setProperty('--orot', a + 'deg'); el.style.setProperty('--oty', (-(1 - Math.cos(a * Math.PI / 180)) * 100) + 'px'); } else { el.style.setProperty('--orot', (-(i - om) * 6) + 'deg'); el.style.setProperty('--oty', (-Math.abs(i - om) * 5) + 'px'); } }
       if (c.dealt) { el.classList.add('dealt'); el.style.setProperty('--i', i); c.dealt = false; }
       o.appendChild(el);
     });
@@ -6422,7 +6435,7 @@ body.four .fstrip{direction:ltr}
     f.style.setProperty('--fscale', floor.length > 10 ? .72 : floor.length > 7 ? .85 : 1);
     floor.forEach((c, i) => {
       const el = cardEl(c, 'div', c.by || null);
-      el.style.setProperty('--r', c.rot + 'deg');
+      el.style.setProperty('--r', (M && M.four ? [-9, 3, 11, -5, 7][i % 5] : c.rot) + 'deg');
       if (c.fresh) { el.classList.add('fresh-' + c.fresh); c.fresh = null; }
       if (c.dealt) { el.classList.add('dealt'); el.style.setProperty('--i', i); c.dealt = false; }
       f.appendChild(el);
@@ -7892,7 +7905,7 @@ body.four .fstrip{direction:ltr}
   "appId": "1:712356390660:web:6fb54f12d2a8ee0f845251",
   "measurementId": "G-5JX3MH8EKM"
 };
-  const APP_VER = '1.34.5-beta';
+  const APP_VER = '1.34.6-beta';
   const FB_SDK = '10.14.1';
   let ROOM = null, NET = null;
   if (!FB_CFG && window.claude && window.claude.use) window.claude.use('room').then(r => { ROOM = r; renderHome(); }).catch(() => {});
